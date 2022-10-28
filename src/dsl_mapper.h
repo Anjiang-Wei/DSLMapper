@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef __STENCIL_MAPPER_H__
-#define __STENCIL_MAPPER_H__
+#ifndef __DSL_MAPPER_H__
+#define __DSL_MAPPER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,4 +26,4 @@ void register_mappers();
 }
 #endif
 
-#endif // __STENCIL_MAPPER_H__
+#endif // __DSL_MAPPER_H__

@@ -3,7 +3,7 @@ ifndef LEGION_DIR
 $(error LEGION_DIR variable is not defined, aborting build)
 endif
 INCLUDE_PATH=-I$(LEGION_DIR)/runtime -I$(LEGION_DIR)/bindings/regent -I$(CUDA)/include
-CXXFLAGS=-std=c++11 -O2 -Wall -Werror -fPIC -shared
+CXXFLAGS=-std=c++14 -O2 -fPIC -shared # -Wall -Werror
 
 objects=libdsl_mapper.so
 

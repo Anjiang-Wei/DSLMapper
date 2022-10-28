@@ -15,9 +15,9 @@
 #define alignTo128Bytes false
 #define SPARSE_INSTANCE false
 
-#define USE_LOGGING_MAPPER
+// #define USE_LOGGING_MAPPER
 
-#include "my_mapper.h"
+#include "dsl_mapper.h"
 
 #include "mappers/logging_wrapper.h"
 #include "mappers/default_mapper.h"
@@ -1303,7 +1303,21 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
 static void create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs)
 {
   log_mapper.debug("Inside create_mappers local_procs.size() = %ld", local_procs.size());
+  bool use_logging_wrapper = false;
+  auto args = Runtime::get_input_args();
   bool backpressure = false;
+  for (auto idx = 0; idx < args.argc; ++idx)
+  {
+    if (strcmp(args.argv[idx], "-wrapper") == 0)
+    {
+      use_logging_wrapper = true;
+    }
+    // todo: in the final public-use version, remove this
+    if (strcmp(args.argv[idx], "-tm:enable_backpressure") == 0)
+    {
+      backpressure = true;
+    }
+  }
   for (std::set<Processor>::const_iterator it = local_procs.begin();
         it != local_procs.end(); it++)
   {
@@ -1312,17 +1326,20 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     {
       mapper = new NSMapper(runtime->get_mapper_runtime(), machine, *it, "ns_mapper", true);
       mapper->register_user_sharding_functors(runtime);
-      backpressure = (mapper->tree_result.task2limit.size() > 0);
+      // backpressure = (mapper->tree_result.task2limit.size() > 0);
     }
     else
     {
       mapper = new NSMapper(runtime->get_mapper_runtime(), machine, *it, "ns_mapper", false);
     }
-#ifdef USE_LOGGING_MAPPER
-    runtime->replace_default_mapper(new Mapping::LoggingWrapper(mapper), (backpressure ? (Processor::NO_PROC) : (*it)));
-#else
-    runtime->replace_default_mapper(mapper, (backpressure ? (Processor::NO_PROC) : (*it)));
-#endif
+    if (use_logging_wrapper)
+    {
+      runtime->replace_default_mapper(new Mapping::LoggingWrapper(mapper), (backpressure ? (Processor::NO_PROC) : (*it)));
+    }
+    else
+    {
+      runtime->replace_default_mapper(mapper, (backpressure ? (Processor::NO_PROC) : (*it)));
+    }
     if (backpressure)
     {
       break;
