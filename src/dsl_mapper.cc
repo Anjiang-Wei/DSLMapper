@@ -184,9 +184,11 @@ private:
 public:
   static Tree2Legion tree_result;
   static std::unordered_map<std::string, ShardingID> task2sid;
+  static bool backpressure;
 };
 
 Tree2Legion NSMapper::tree_result;
+bool NSMapper::backpressure;
 std::unordered_map<std::string, ShardingID> NSMapper::task2sid;
 
 std::string NSMapper::get_policy_file()
@@ -948,7 +950,9 @@ void NSMapper::report_profiling(const MapperContext ctx,
 void NSMapper::select_tasks_to_map(const MapperContext ctx,
                                       const SelectMappingInput& input,
                                            SelectMappingOutput& output) {
-  if (this->tree_result.task2limit.size() == 0)
+  //if (this->tree_result.task2limit.size() == 0)
+  // todo: change this in final version
+  if (NSMapper::backpressure == false)
   {
     DefaultMapper::select_tasks_to_map(ctx, input, output);
   }
@@ -1047,7 +1051,10 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
 Mapper::MapperSyncModel NSMapper::get_mapper_sync_model() const {
   // If we're going to attempt to backpressure tasks, then we need to use
   // a sync model with high gaurantees.
-  if (this->tree_result.task2limit.size() > 0) {
+  // todo: change this in the final version
+  // if (this->tree_result.task2limit.size() > 0) {
+  if (NSMapper::backpressure == true)
+  {
     return SERIALIZED_NON_REENTRANT_MAPPER_MODEL;
   }
   // Otherwise, we can do whatever the default mapper is doing.
@@ -1305,7 +1312,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
   log_mapper.debug("Inside create_mappers local_procs.size() = %ld", local_procs.size());
   bool use_logging_wrapper = false;
   auto args = Runtime::get_input_args();
-  bool backpressure = false;
+  NSMapper::backpressure = false;
   for (auto idx = 0; idx < args.argc; ++idx)
   {
     if (strcmp(args.argv[idx], "-wrapper") == 0)
@@ -1315,7 +1322,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     // todo: in the final public-use version, remove this
     if (strcmp(args.argv[idx], "-tm:enable_backpressure") == 0)
     {
-      backpressure = true;
+      NSMapper::backpressure = true;
     }
   }
   for (std::set<Processor>::const_iterator it = local_procs.begin();
@@ -1326,6 +1333,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     {
       mapper = new NSMapper(runtime->get_mapper_runtime(), machine, *it, "ns_mapper", true);
       mapper->register_user_sharding_functors(runtime);
+      // todo: change back to this in final version
       // backpressure = (mapper->tree_result.task2limit.size() > 0);
     }
     else
@@ -1334,13 +1342,13 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     }
     if (use_logging_wrapper)
     {
-      runtime->replace_default_mapper(new Mapping::LoggingWrapper(mapper), (backpressure ? (Processor::NO_PROC) : (*it)));
+      runtime->replace_default_mapper(new Mapping::LoggingWrapper(mapper), (NSMapper::backpressure ? (Processor::NO_PROC) : (*it)));
     }
     else
     {
-      runtime->replace_default_mapper(mapper, (backpressure ? (Processor::NO_PROC) : (*it)));
+      runtime->replace_default_mapper(mapper, (NSMapper::backpressure ? (Processor::NO_PROC) : (*it)));
     }
-    if (backpressure)
+    if (NSMapper::backpressure)
     {
       break;
     }
