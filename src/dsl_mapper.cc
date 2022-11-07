@@ -104,12 +104,12 @@ public:
   virtual void default_policy_select_target_processors(MapperContext ctx,
                                                        const Task &task,
                                                        std::vector<Processor> &target_procs);
-  virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
-                                                              Memory target_memory,
-                                                              const RegionRequirement &req,
-                                                              const LayoutConstraintSet &constraints,
-                                                              bool force_new_instances,
-                                                              bool meets_constraints);
+  // virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
+  //                                                             Memory target_memory,
+  //                                                             const RegionRequirement &req,
+  //                                                             const LayoutConstraintSet &constraints,
+  //                                                             bool force_new_instances,
+  //                                                             bool meets_constraints);
   virtual void map_task(const MapperContext ctx,
                         const Task &task,
                         const MapTaskInput &input,
@@ -513,15 +513,15 @@ void NSMapper::default_policy_select_target_processors(MapperContext ctx,
     }
 }
 
-LogicalRegion NSMapper::default_policy_select_instance_region(MapperContext ctx,
-                                                              Memory target_memory,
-                                                              const RegionRequirement &req,
-                                                              const LayoutConstraintSet &constraints,
-                                                              bool force_new_instances,
-                                                              bool meets_constraints)
-{
-  return req.region;
-}
+// LogicalRegion NSMapper::default_policy_select_instance_region(MapperContext ctx,
+//                                                               Memory target_memory,
+//                                                               const RegionRequirement &req,
+//                                                               const LayoutConstraintSet &constraints,
+//                                                               bool force_new_instances,
+//                                                               bool meets_constraints)
+// {
+//   return req.region;
+// }
 
 template <typename Handle>
 void NSMapper::maybe_append_handle_name(const MapperContext ctx,
