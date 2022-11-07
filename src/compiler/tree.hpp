@@ -1068,7 +1068,7 @@ public:
     ConstraintsNode()
     {
         reverse = false;
-        aos = true;
+        aos = false; // laid out in SOA format by default
         compact = false;
         exact = false;
         align = false;
