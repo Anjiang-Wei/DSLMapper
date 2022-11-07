@@ -489,7 +489,9 @@ void NSMapper::default_policy_select_target_processors(MapperContext ctx,
         std::vector<std::vector<int>> res;
         if (!task.is_index_space)
         {
-            res = tree_result.runsingle(&task, this);
+            // res = tree_result.runsingle(&task, this);
+          target_procs.push_back(task.orig_proc);
+          return;
         }
         else
         {
