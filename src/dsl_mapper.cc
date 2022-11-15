@@ -605,7 +605,8 @@ void NSMapper::map_task_post_function(const MapperContext   &ctx,
       }
     }
   }
-  if (tree_result.query_max_instance(task_name, proc_kind) > 0)
+  // todo: remove boolean in the final version
+  if (NSMapper::backpressure && tree_result.query_max_instance(task_name, proc_kind) > 0)
   {
     output.task_prof_requests.add_measurement<ProfilingMeasurements::OperationStatus>();
   }
