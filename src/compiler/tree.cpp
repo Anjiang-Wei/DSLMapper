@@ -218,6 +218,8 @@ Node* InstanceLimitNode::run(std::stack<std::unordered_map<std::string, Node*>>&
   {
     std::unordered_map<Processor::Kind, int> kind_int;
     kind_int.insert({proc_kind, num});
+    // in select_tasks_to_map, we don't know the type of processors yet
+    kind_int.insert({Processor::NO_KIND, num});
     Tree2Legion::task2limit.insert({task_name, kind_int});
   }
   return NULL;

@@ -906,8 +906,9 @@ void NSMapper::report_profiling(const MapperContext ctx,
                                   const TaskProfilingInfo& input) {
   // We should only get profiling responses if we've enabled backpressuring.
   std::string task_name = task.get_task_name();
-  Processor::Kind proc_kind  = task.orig_proc.kind();
-  assert(tree_result.query_max_instance(task_name, proc_kind) > 0);
+  // Processor::Kind proc_kind  = task.orig_proc.kind();
+  // assert(tree_result.query_max_instance(task_name, proc_kind) > 0);
+  assert(tree_result.query_max_instance(task_name, Processor::NO_KIND) > 0);
   bool is_index_launch = task.is_index_space;// && task.get_slice_domain().get_volume() > 1;
   // taco_iassert(this->enableBackpressure);
   // We should only get profiling responses for tasks that are supposed to be backpressured.
@@ -991,8 +992,9 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
       bool schedule = true;
       std::string task_name = task->get_task_name();
       bool is_index_launch = task->is_index_space; // && task->get_slice_domain().get_volume() > 1;
-      Processor::Kind proc_kind = task->orig_proc.kind();
-      int max_num = tree_result.query_max_instance(task_name, proc_kind);
+      // Processor::Kind proc_kind = task->orig_proc.kind();
+      // int max_num = tree_result.query_max_instance(task_name, proc_kind);
+      int max_num = tree_result.query_max_instance(task_name, Processor::NO_KIND);
       if (max_num > 0)
       {
         // See how many tasks we have in flight. Again, we use the orig_proc here
@@ -1304,6 +1306,34 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
   {
     std::string policy_file = get_policy_file();
     parse_policy_file(policy_file);
+  }
+  /*
+    case Memory::SYSTEM_MEM: return "SYSMEM";
+    case Memory::GPU_FB_MEM: return "FBMEM";
+    case Memory::REGDMA_MEM: return "RDMEM";
+    case Memory::Z_COPY_MEM: return "ZCMEM";
+    case Memory::SOCKET_MEM: return "SOCKETMEM";
+  */
+  for (int i = 0; i < this->local_gpus.size(); i++)
+  {
+    query_best_memory_for_proc(this->local_gpus[i], Memory::GPU_FB_MEM);
+    query_best_memory_for_proc(this->local_gpus[i], Memory::Z_COPY_MEM);
+    query_best_memory_for_proc(this->local_gpus[i], Memory::SOCKET_MEM);
+    query_best_memory_for_proc(this->local_gpus[i], Memory::REGDMA_MEM);
+  }
+  for (int i = 0; i < this->local_cpus.size(); i++)
+  {
+    query_best_memory_for_proc(this->local_cpus[i], Memory::SYSTEM_MEM);
+    query_best_memory_for_proc(this->local_cpus[i], Memory::Z_COPY_MEM);
+    query_best_memory_for_proc(this->local_cpus[i], Memory::SOCKET_MEM);
+    query_best_memory_for_proc(this->local_cpus[i], Memory::REGDMA_MEM);
+  }
+  for (int i = 0; i < this->local_omps.size(); i++)
+  {
+    query_best_memory_for_proc(this->local_omps[i], Memory::SYSTEM_MEM);
+    query_best_memory_for_proc(this->local_omps[i], Memory::Z_COPY_MEM);
+    query_best_memory_for_proc(this->local_omps[i], Memory::SOCKET_MEM);
+    query_best_memory_for_proc(this->local_omps[i], Memory::REGDMA_MEM);
   }
 }
 
