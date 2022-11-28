@@ -1318,8 +1318,8 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
   {
     query_best_memory_for_proc(this->local_gpus[i], Memory::GPU_FB_MEM);
     query_best_memory_for_proc(this->local_gpus[i], Memory::Z_COPY_MEM);
-    query_best_memory_for_proc(this->local_gpus[i], Memory::SOCKET_MEM);
-    query_best_memory_for_proc(this->local_gpus[i], Memory::REGDMA_MEM);
+    // query_best_memory_for_proc(this->local_gpus[i], Memory::SOCKET_MEM);
+    // query_best_memory_for_proc(this->local_gpus[i], Memory::REGDMA_MEM);
   }
   for (int i = 0; i < this->local_cpus.size(); i++)
   {
