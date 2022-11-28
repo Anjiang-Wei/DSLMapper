@@ -908,7 +908,9 @@ void NSMapper::report_profiling(const MapperContext ctx,
   std::string task_name = task.get_task_name();
   // Processor::Kind proc_kind  = task.orig_proc.kind();
   // assert(tree_result.query_max_instance(task_name, proc_kind) > 0);
-  assert(tree_result.query_max_instance(task_name, Processor::NO_KIND) > 0);
+  // Todo: revert this ad-hoc change later
+  // assert(tree_result.query_max_instance(task_name, Processor::NO_KIND) > 0);
+  assert((task.tag & BACKPRESSURE_TASK) != 0);
   bool is_index_launch = task.is_index_space;// && task.get_slice_domain().get_volume() > 1;
   // taco_iassert(this->enableBackpressure);
   // We should only get profiling responses for tasks that are supposed to be backpressured.
