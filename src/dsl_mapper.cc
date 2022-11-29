@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+//todo: remove these
 #define alignTo128Bytes false
 #define SPARSE_INSTANCE false
+const int BACKPRESSURE_TASK = (1 << 8);
 
 // #define USE_LOGGING_MAPPER
 
@@ -607,7 +610,7 @@ void NSMapper::map_task_post_function(const MapperContext   &ctx,
   }
   // todo: remove boolean in the final version
   // (task->tag & BACKPRESSURE_TASK) != 0
-  if (NSMapper::backpressure && (task->tag & BACKPRESSURE_TASK) != 0)
+  if (NSMapper::backpressure && (task.tag & BACKPRESSURE_TASK) != 0)
   // if (NSMapper::backpressure && tree_result.query_max_instance(task_name, proc_kind) > 0)
   {
     output.task_prof_requests.add_measurement<ProfilingMeasurements::OperationStatus>();
