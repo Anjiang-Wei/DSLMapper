@@ -606,7 +606,9 @@ void NSMapper::map_task_post_function(const MapperContext   &ctx,
     }
   }
   // todo: remove boolean in the final version
-  if (NSMapper::backpressure && tree_result.query_max_instance(task_name, proc_kind) > 0)
+  // (task->tag & BACKPRESSURE_TASK) != 0
+  if (NSMapper::backpressure && (task->tag & BACKPRESSURE_TASK) != 0)
+  // if (NSMapper::backpressure && tree_result.query_max_instance(task_name, proc_kind) > 0)
   {
     output.task_prof_requests.add_measurement<ProfilingMeasurements::OperationStatus>();
   }
@@ -996,7 +998,9 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
       bool is_index_launch = task->is_index_space; // && task->get_slice_domain().get_volume() > 1;
       // Processor::Kind proc_kind = task->orig_proc.kind();
       // int max_num = tree_result.query_max_instance(task_name, proc_kind);
-      int max_num = tree_result.query_max_instance(task_name, Processor::NO_KIND);
+      // todo: do not use this ad-hoc solution
+      int max_num = ((task->tag & BACKPRESSURE_TASK) != 0) ? 1 : 0;
+      // int max_num = tree_result.query_max_instance(task_name, Processor::NO_KIND);
       if (max_num > 0)
       {
         // See how many tasks we have in flight. Again, we use the orig_proc here
