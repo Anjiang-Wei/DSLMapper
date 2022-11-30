@@ -100,6 +100,7 @@ private:
   // backPressureQueue maintains state for each processor about how many
   // tasks that are marked to be backpressured are executing on the processor.
   std::map<Legion::Processor, std::deque<InFlightTask>> backPressureQueue;
+  std::map<Legion::LogicalRegion, std::vector<std::string>> Region2Names;
 
 public:
   virtual Processor default_policy_select_initial_processor(MapperContext ctx,
@@ -544,6 +545,10 @@ void NSMapper::get_handle_names(const MapperContext ctx,
                                 const RegionRequirement &req,
                                 std::vector<std::string> &names)
 {
+  if (Region2Names.count(req.region) > 0)
+  {
+    names = Region2Names.at(req.region);
+  }
   maybe_append_handle_name(ctx, req.region, names);
 
   if (runtime->has_parent_logical_partition(ctx, req.region))
@@ -554,6 +559,8 @@ void NSMapper::get_handle_names(const MapperContext ctx,
 
   if (req.region != req.parent)
     maybe_append_handle_name(ctx, req.parent, names);
+  
+  Region2Names.insert({req.region, names});
 }
 
 Memory NSMapper::query_best_memory_for_proc(const Processor& proc, const Memory::Kind& mem_target_kind)
@@ -704,20 +711,76 @@ void NSMapper::map_task(const MapperContext      ctx,
   Processor::Kind target_proc_kind = task.target_proc.kind();
   std::string task_name = task.get_task_name();
 
-  VariantInfo chosen = default_find_preferred_variant(task, ctx,
+  VariantInfo chosen = DefaultMapper::default_find_preferred_variant(task, ctx,
                     true/*needs tight bound*/, true/*cache*/, target_proc_kind);
   output.chosen_variant = chosen.variant;
   output.task_priority = 0; //default_policy_select_task_priority(ctx, task);
   output.postmap_task = false;
 
+  
+  // //  11/30 todo: need to get this piece of code to work
+  // //  todo: test circuit's virtual mapping
+  
+
+  // // See if we have an inner variant, if we do virtually map all the regions
+  // // We don't even both caching these since they are so simple
   // if (chosen.is_inner)
   // {
-  //   // log_mapper.debug(
-  //     "is_inner = true, falling back to the default policy",
-  //     task_name.c_str());
-  //   DefaultMapper::map_task(ctx, task, input, output);
-  //   map_task_post_function(ctx, task, task_name, target_proc_kind, output);
-  //   return;
+  //   // Check to see if we have any relaxed coherence modes in which
+  //   // case we can no longer do virtual mappings so we'll fall through
+  //   bool has_relaxed_coherence = false;
+  //   for (unsigned idx = 0; idx < task.regions.size(); idx++)
+  //   {
+  //     if (task.regions[idx].prop != LEGION_EXCLUSIVE)
+  //     {
+  //       has_relaxed_coherence = true;
+  //       break;
+  //     }
+  //   }
+  //   if (!has_relaxed_coherence)
+  //   {
+  //     std::vector<unsigned> reduction_indexes;
+  //     for (unsigned idx = 0; idx < task.regions.size(); idx++)
+  //     {
+  //       // As long as this isn't a reduction-only region requirement
+  //       // we will do a virtual mapping, for reduction-only instances
+  //       // we will actually make a physical instance because the runtime
+  //       // doesn't allow virtual mappings for reduction-only privileges
+  //       if (task.regions[idx].privilege == LEGION_REDUCE)
+  //         reduction_indexes.push_back(idx);
+  //       else
+  //         output.chosen_instances[idx].push_back(
+  //             PhysicalInstance::get_virtual_instance());
+  //     }
+  //     if (!reduction_indexes.empty())
+  //     {
+  //       const TaskLayoutConstraintSet &layout_constraints =
+  //           runtime->find_task_layout_constraints(ctx,
+  //                                 task.task_id, output.chosen_variant);
+  //       for (std::vector<unsigned>::const_iterator it =
+  //             reduction_indexes.begin(); it !=
+  //             reduction_indexes.end(); it++)
+  //       {
+  //         MemoryConstraint mem_constraint =
+  //           find_memory_constraint(ctx, task, output.chosen_variant, *it);
+  //         Memory target_memory = default_policy_select_target_memory(ctx,
+  //                                                     target_proc,
+  //                                                     task.regions[*it],
+  //                                                     mem_constraint);
+  //         std::set<FieldID> copy = task.regions[*it].privilege_fields;
+  //         size_t footprint;
+  //         if (!default_create_custom_instances(ctx, target_proc,
+  //             target_memory, task.regions[*it], *it, copy,
+  //             layout_constraints, false/*needs constraint check*/,
+  //             output.chosen_instances[*it], &footprint))
+  //         {
+  //           default_report_failed_instance_creation(task, *it,
+  //                 target_proc, target_memory, footprint);
+  //         }
+  //       }
+  //     }
+  //     return;
+  //   }
   // }
 
   default_policy_select_target_processors(ctx, task, output.target_procs);
