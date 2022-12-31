@@ -156,7 +156,6 @@ protected:
   void map_task_post_function(const MapperContext   &ctx,
                               const Task            &task,
                               const std::string     &task_name,
-                              const Processor::Kind &proc_kind,
                               MapTaskOutput         &output);
   Memory query_best_memory_for_proc(const Processor& proc,
                                     const Memory::Kind& mem_target_kind);
@@ -596,7 +595,6 @@ Memory NSMapper::query_best_memory_for_proc(const Processor& proc, const Memory:
 void NSMapper::map_task_post_function(const MapperContext   &ctx,
                                       const Task            &task,
                                       const std::string     &task_name,
-                                      const Processor::Kind &proc_kind,
                                       MapTaskOutput         &output)
 {
   if (tree_result.memory_collect.size() > 0)
@@ -615,10 +613,8 @@ void NSMapper::map_task_post_function(const MapperContext   &ctx,
       }
     }
   }
-  // todo: remove boolean in the final version
-  // (task->tag & BACKPRESSURE_TASK) != 0
-  if (NSMapper::backpressure && (task.tag & BACKPRESSURE_TASK) != 0)
-  // if (NSMapper::backpressure && tree_result.query_max_instance(task_name, proc_kind) > 0)
+
+  if (NSMapper::backpressure && tree_result.query_max_instance(task_name) > 0)
   {
     output.task_prof_requests.add_measurement<ProfilingMeasurements::OperationStatus>();
   }
@@ -829,7 +825,7 @@ void NSMapper::map_task(const MapperContext      ctx,
       if (runtime->acquire_and_filter_instances(ctx,
                                                   output.chosen_instances))
       {
-        map_task_post_function(ctx, task, task_name, target_proc_kind, output);
+        map_task_post_function(ctx, task, task_name, output);
         return;
       }
       // We need to check the constraints here because we had a
@@ -967,7 +963,7 @@ void NSMapper::map_task(const MapperContext      ctx,
     // cached_result.output_constraints = output.output_constraints;
   }
 
-  map_task_post_function(ctx, task, task_name, target_proc_kind, output);
+  map_task_post_function(ctx, task, task_name, output);
 }
 
 void NSMapper::report_profiling(const MapperContext ctx,
@@ -975,11 +971,7 @@ void NSMapper::report_profiling(const MapperContext ctx,
                                   const TaskProfilingInfo& input) {
   // We should only get profiling responses if we've enabled backpressuring.
   std::string task_name = task.get_task_name();
-  // Processor::Kind proc_kind  = task.orig_proc.kind();
-  // assert(tree_result.query_max_instance(task_name, proc_kind) > 0);
-  // Todo: revert this ad-hoc change later
-  // assert(tree_result.query_max_instance(task_name, Processor::NO_KIND) > 0);
-  assert((task.tag & BACKPRESSURE_TASK) != 0);
+  assert(tree_result.query_max_instance(task_name) > 0);
   bool is_index_launch = task.is_index_space;// && task.get_slice_domain().get_volume() > 1;
   // taco_iassert(this->enableBackpressure);
   // We should only get profiling responses for tasks that are supposed to be backpressured.
@@ -1063,11 +1055,7 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
       bool schedule = true;
       std::string task_name = task->get_task_name();
       bool is_index_launch = task->is_index_space; // && task->get_slice_domain().get_volume() > 1;
-      // Processor::Kind proc_kind = task->orig_proc.kind();
-      // int max_num = tree_result.query_max_instance(task_name, proc_kind);
-      // todo: do not use this ad-hoc solution
-      int max_num = ((task->tag & BACKPRESSURE_TASK) != 0) ? 1 : 0;
-      // int max_num = tree_result.query_max_instance(task_name, Processor::NO_KIND);
+      int max_num = tree_result.query_max_instance(task_name);
       if (max_num > 0)
       {
         // See how many tasks we have in flight. Again, we use the orig_proc here

@@ -209,19 +209,7 @@ Node* InstanceLimitNode::run(std::stack<std::unordered_map<std::string, Node*>>&
 {
   assert(local_symbol.size() == 0);
   // only hit this line when building the AST
-  Processor::Kind proc_kind = MyProc2LegionProc(proc_type);
-  if (Tree2Legion::task2limit.count(task_name) > 0)
-  {
-    Tree2Legion::task2limit.at(task_name).insert({proc_kind, num});
-  }
-  else
-  {
-    std::unordered_map<Processor::Kind, int> kind_int;
-    kind_int.insert({proc_kind, num});
-    // in select_tasks_to_map, we don't know the type of processors yet
-    kind_int.insert({Processor::NO_KIND, num});
-    Tree2Legion::task2limit.insert({task_name, kind_int});
-  }
+  Tree2Legion::task2limit.insert({task_name, num});
   return NULL;
 }
 
