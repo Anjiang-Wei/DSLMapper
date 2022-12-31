@@ -1200,153 +1200,32 @@ public:
     // static std::unordered_map<std::string, MSpace*> task2mspace;
     static std::unordered_map<std::string, FuncDefNode*> task2func;
 
-    bool should_fall_back(std::string task_name)
-    {
-        if (task2func.count(task_name) > 0)
-        {
-            return false;
-        }
-        if (task2func.count("*") > 0)
-        {
-            return false;
-        }
-        // std::cout << task_name << " will fallback for sharding/slicing, warning!" << std::endl;
-        return true;
-    }
+    void print();
 
-    bool should_collect_memory(std::string task_name, std::vector<std::string> region_name)
-    {
-        if (memory_collect.size() == 0)
-        {
-            return false;
-        }
-        if (memory_collect.count({"*", "*"}) > 0)
-        {
-            return true;
-        }
-        if (memory_collect.count({task_name, "*"}) > 0)
-        {
-            return true;
-        }
-        for (auto &str: region_name)
-        {
-            if (memory_collect.count({task_name, str}) > 0)
-                return true;
-            if (memory_collect.count({"*", str}) > 0)
-                return true;
-        }
-        return false;
-    }
-    
-    void print()
-    {
-        std::cout << "I am invoked!" << std::endl;
-    }
+    bool should_fall_back(std::string task_name);
 
-    std::vector<std::vector<int>> runsingle(const Task* task, const NSMapper* mapper);
+    bool should_collect_memory(std::string task_name, std::vector<std::string> region_name);
+
+    std::vector<std::vector<int>> runsingle(const Task* task,
+                                            const NSMapper* mapper);
     std::vector<std::vector<int>> runindex(const Task* task);
-    std::vector<std::vector<int>> runindex(std::string task, const std::vector<int>& x,
-                         const std::vector<int>& point_space, Processor::Kind proc_kind = Processor::NO_KIND);
-    std::vector<Memory::Kind> query_memory_policy(std::string task_name, std::string region_name, Processor::Kind proc_kind)
-    {
-        std::pair<std::string, std::string> key = {task_name, region_name};
-        if (region_policies.count(key) > 0)
-        {
-            std::unordered_map<Processor::Kind, std::vector<Memory::Kind> > value = region_policies.at(key);
-            if (value.count(proc_kind) > 0)
-            {
-                return value.at(proc_kind);
-            }
-            if (value.count(Processor::NO_KIND) > 0)
-            {
-                return value.at(Processor::NO_KIND);
-            }
-        }
-        return {};
-    }
-    std::vector<Memory::Kind> query_memory_list(std::string task_name, std::vector<std::string> region_names, Processor::Kind proc_kind)
-    {
-        // region_names: no "*" included; will need to consider "*"
-        std::vector<Memory::Kind> res;
-        // exact match first
-        for (auto &region_name : region_names)
-        {
-            std::vector<Memory::Kind> to_append = query_memory_policy(task_name, region_name, proc_kind);
-            res.insert(res.end(), to_append.begin(), to_append.end());
-        }
-        // task_name *
-        std::vector<Memory::Kind> to_append2 = query_memory_policy(task_name, "*", proc_kind);
-        res.insert(res.end(), to_append2.begin(), to_append2.end());
-        // * region_name
-        for (auto &region_name : region_names)
-        {
-            std::vector<Memory::Kind> to_append3 = query_memory_policy("*", region_name, proc_kind);
-            res.insert(res.end(), to_append3.begin(), to_append3.end());
-        }
-        // * *
-        std::vector<Memory::Kind> to_append4 = query_memory_policy("*", "*", proc_kind);
-        res.insert(res.end(), to_append4.begin(), to_append4.end());
-        return res;
-    }
-    ConstraintsNode* query_constraint_one_region(const std::string &task_name, const std::string &region_name,
-                                                 const Memory::Kind &mem_kind)
-    {
-        std::pair<std::string, std::string> key = {task_name, region_name};
-        if (layout_constraints.count(key) > 0)
-        {
-            std::unordered_map<Memory::Kind, ConstraintsNode*> value = layout_constraints.at(key);
-            if (value.count(mem_kind) > 0)
-            {
-                return value.at(mem_kind);
-            }
-            if (value.count(Memory::NO_MEMKIND) > 0)
-            {
-                return value.at(Memory::NO_MEMKIND);
-            }
-        }
-        return NULL;
-    }
-    ConstraintsNode* query_constraint(const std::string &task_name, const std::vector<std::string> &region_names,
-                                      const Memory::Kind &mem_kind)
-    {
-        // exact match first
-        for (auto &region_name : region_names)
-        {
-            ConstraintsNode* res1 = query_constraint_one_region(task_name, region_name, mem_kind);
-            if (res1 != NULL)
-            {
-                return res1;
-            }
-        }
-        ConstraintsNode* res2 = query_constraint_one_region(task_name, "*", mem_kind);
-        if (res2 != NULL)
-        {
-            return res2;
-        }
-        for (auto &region_name : region_names)
-        {
-            ConstraintsNode* res3 = query_constraint_one_region("*", region_name, mem_kind);
-            if (res3 != NULL)
-            {
-                return res3;
-            }
-        }
-        ConstraintsNode* res4 = query_constraint_one_region("*", "*", mem_kind);
-        if (res4 != NULL)
-        {
-            return res4;
-        }
-        return NULL;
-    }
-    int query_max_instance(std::string task_name)
-    {
-        if (task2limit.count(task_name) > 0)
-        {
-            int res = task2limit.at(task_name);
-            return res;
-        }
-        return 0;
-    }
+    std::vector<std::vector<int>> runindex(std::string task,
+                                           const std::vector<int>& x,
+                                           const std::vector<int>& point_space,
+                                           Processor::Kind proc_kind = Processor::NO_KIND);
+    std::vector<Memory::Kind> query_memory_policy(std::string task_name,
+                                                  std::string region_name,
+                                                  Processor::Kind proc_kind);
+    std::vector<Memory::Kind> query_memory_list(std::string task_name,
+                                                std::vector<std::string> region_names,
+                                                Processor::Kind proc_kind);
+    ConstraintsNode* query_constraint_one_region(const std::string &task_name,
+                                                 const std::string &region_name,
+                                                 const Memory::Kind &mem_kind);
+    ConstraintsNode* query_constraint(const std::string &task_name,
+                                      const std::vector<std::string> &region_names,
+                                      const Memory::Kind &mem_kind);
+    int query_max_instance(std::string task_name);
 };
 
 std::unordered_map<std::string, std::vector<Processor::Kind>> Tree2Legion::task_policies;
@@ -1359,7 +1238,6 @@ std::unordered_map<std::pair<std::string, std::string>,
     std::unordered_map<Memory::Kind, ConstraintsNode*>, HashFn1>
     Tree2Legion::layout_constraints;
 std::unordered_map<std::string, int> Tree2Legion::task2limit;
-// std::unordered_map<std::string, MSpace*> Tree2Legion::task2mspace;
 std::unordered_map<std::string, FuncDefNode*> Tree2Legion::task2func;
 std::unordered_set<std::pair<std::string, std::string>, HashFn1> Tree2Legion::memory_collect;
 #endif
