@@ -487,7 +487,7 @@ void NSMapper::default_policy_select_target_processors(MapperContext ctx,
                                                        const Task &task,
                                                        std::vector<Processor> &target_procs)
 {
-    if (tree_result.should_fall_back(task.get_task_name()) == false)
+    if (tree_result.should_fall_back(task.get_task_name(), task.target_proc.kind()) == false)
     {
         std::vector<std::vector<int>> res;
         if (!task.is_index_space)
@@ -1152,7 +1152,7 @@ void NSMapper::select_sharding_functor(
   }
   else
   {
-    assert(tree_result.should_fall_back(task.get_task_name()) == true);
+    assert(tree_result.should_fall_back(task.get_task_name(), task.target_proc.kind()) == true);
     // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
     output.chosen_functor = 0; // default functor
   }
@@ -1305,7 +1305,7 @@ void NSMapper::slice_task(const MapperContext      ctx,
                           const SliceTaskInput&    input,
                           SliceTaskOutput&   output)
 {
-  if (tree_result.should_fall_back(std::string(task.get_task_name())))
+  if (tree_result.should_fall_back(std::string(task.get_task_name()), task.target_proc.kind()))
   {
     // log_mapper.debug("Use default slice_task for %s", task.get_task_name());
     DefaultMapper::slice_task(ctx, task, input, output);

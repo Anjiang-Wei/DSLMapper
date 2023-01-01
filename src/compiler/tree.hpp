@@ -1202,9 +1202,11 @@ public:
 
     void print();
 
-    bool should_fall_back(std::string task_name);
+    bool should_fall_back(std::string task_name,
+                          Processor::Kind proc_kind);
 
-    bool should_collect_memory(std::string task_name, std::vector<std::string> region_name);
+    bool should_collect_memory(std::string task_name,
+                               std::vector<std::string> region_name);
 
     std::vector<std::vector<int>> runsingle(const Task* task,
                                             const NSMapper* mapper);

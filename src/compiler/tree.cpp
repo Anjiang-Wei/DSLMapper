@@ -270,82 +270,90 @@ std::vector<int> TaskNode::get_proc_coordinate_from_Legion()
 
 std::vector<std::vector<int>> Tree2Legion::runsingle(const Task* task, const NSMapper* mapper)
 {
-  std::string task_name = task->get_task_name();
-  Processor::Kind proc_kind = task->target_proc.kind();
-  #ifdef DEBUG_TREE
-      std::cout << "in Tree2Legion::runsingle" << vec2str(x) << std::endl;
-  #endif
-  FuncDefNode* func_node;
-  if (task2func.count(task_name) > 0)
-  {
-    func_node = task2func.at(task_name);
-  }
-  else if (task2func.count("*") > 0)
-  {
-    func_node = task2func.at("*");
-  }
-  else
-  {
-    std::cout << "Fail in Tree2Legion::run when searching task names" << std::endl;
-    assert(false);
-  }
-
-  std::unordered_map<std::string, Node*> func_symbols;
-  TaskNode* task_node = new TaskNode(task, mapper);
-  func_symbols.insert({func_node->func_args->arg_lst[0]->argname, task_node});
-
-  std::stack<std::unordered_map<std::string, Node*>> local_symbol;
-  std::vector<Node*> local_temps;
-  local_symbol.push(func_symbols);
-  // local_temps.push(std::vector<Node*>());
-  // todo: stateless
-  Node* res = func_node->invoked(local_symbol, local_temps);
-  local_symbol.pop();
-
-  delete task_node;
-
-  if (res->type == TupleIntType)
-  {
-    TupleIntNode* res2 = (TupleIntNode*) res;
-    if (proc_kind != Processor::NO_KIND)
+    std::string task_name = task->get_task_name();
+    Processor::Kind proc_kind = task->target_proc.kind();
+    #ifdef DEBUG_TREE
+        std::cout << "in Tree2Legion::runsingle" << vec2str(x) << std::endl;
+    #endif
+    FuncDefNode* func_node;
+    if (task2func.count(task_name) > 0)
     {
-      if (MyProc2LegionProc(res2->final_proc) != proc_kind)
-      {
-        printf("%s is actually mapped to %s, but machine model is for %s", 
-                task_name.c_str(),
-                processor_kind_to_string(proc_kind).c_str(),
-                ProcessorEnumName[res2->final_proc]);
-        assert(false);
-      }
+        func_node = task2func.at(task_name);
     }
-    auto res = std::vector<std::vector<int>>({res2->tupleint});
-    local_temps_pop(local_temps);
-    return res;
-  }
-  else if (res->type == SetTupleIntType)
-  {
-    SetTupleIntNode* res2 = (SetTupleIntNode*) res;
-    if (proc_kind != Processor::NO_KIND)
+    else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
     {
-      if (MyProc2LegionProc(res2->final_proc) != proc_kind)
-      {
-        printf("%s is actually mapped to %s, but machine model is for %s", 
-                task_name.c_str(),
-                processor_kind_to_string(proc_kind).c_str(),
-                ProcessorEnumName[res2->final_proc]);
-        assert(false);
-      }
+        func_node = task2func.at("CPU");
     }
-    auto res = res2->tupletupleint;
-    local_temps_pop(local_temps);
-    return res;
-  }
-  else
-  {
-    printf("Must return TupleIntType or SetTupleIntType after invoking mapping function\n");
-    assert(false);
-  }
-  return {};
+    else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
+    {
+        func_node = task2func.at("GPU");
+    }
+    else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
+    {
+        func_node = task2func.at("OMP");
+    }
+    else
+    {
+        std::cout << "Fail in Tree2Legion::run when searching task names" << std::endl;
+        assert(false);
+    }
+
+    std::unordered_map<std::string, Node*> func_symbols;
+    TaskNode* task_node = new TaskNode(task, mapper);
+    func_symbols.insert({func_node->func_args->arg_lst[0]->argname, task_node});
+
+    std::stack<std::unordered_map<std::string, Node*>> local_symbol;
+    std::vector<Node*> local_temps;
+    local_symbol.push(func_symbols);
+    // local_temps.push(std::vector<Node*>());
+    // todo: stateless
+    Node* res = func_node->invoked(local_symbol, local_temps);
+    local_symbol.pop();
+
+    delete task_node;
+
+    if (res->type == TupleIntType)
+    {
+        TupleIntNode* res2 = (TupleIntNode*) res;
+        if (proc_kind != Processor::NO_KIND)
+        {
+        if (MyProc2LegionProc(res2->final_proc) != proc_kind)
+        {
+            printf("%s is actually mapped to %s, but machine model is for %s", 
+                    task_name.c_str(),
+                    processor_kind_to_string(proc_kind).c_str(),
+                    ProcessorEnumName[res2->final_proc]);
+            assert(false);
+        }
+        }
+        auto res = std::vector<std::vector<int>>({res2->tupleint});
+        local_temps_pop(local_temps);
+        return res;
+    }
+    else if (res->type == SetTupleIntType)
+    {
+        SetTupleIntNode* res2 = (SetTupleIntNode*) res;
+        if (proc_kind != Processor::NO_KIND)
+        {
+        if (MyProc2LegionProc(res2->final_proc) != proc_kind)
+        {
+            printf("%s is actually mapped to %s, but machine model is for %s", 
+                    task_name.c_str(),
+                    processor_kind_to_string(proc_kind).c_str(),
+                    ProcessorEnumName[res2->final_proc]);
+            assert(false);
+        }
+        }
+        auto res = res2->tupletupleint;
+        local_temps_pop(local_temps);
+        return res;
+    }
+    else
+    {
+        printf("Must return TupleIntType or SetTupleIntType after invoking mapping function\n");
+        assert(false);
+    }
+    return {};
 }
 
 std::vector<std::vector<int>> Tree2Legion::runindex(const Task* task)
@@ -378,85 +386,95 @@ std::vector<std::vector<int>> Tree2Legion::runindex(const Task* task)
     return {};
 }
 
-std::vector<std::vector<int>> Tree2Legion::runindex(std::string task, const std::vector<int>& x,
-            const std::vector<int>& point_space, Processor::Kind proc_kind)
+std::vector<std::vector<int>> Tree2Legion::runindex(std::string task_name,
+                                                    const std::vector<int>& x,
+                                                    const std::vector<int>& point_space,
+                                                    Processor::Kind proc_kind)
 {
-  // todo: redesign when necessary, we need Task object for hierarchical index launch
-  #ifdef DEBUG_TREE
-      std::cout << "in Tree2Legion::runindex " << vec2str(x) << std::endl;
-  #endif
-  FuncDefNode* func_node;
-  if (task2func.count(task) > 0)
-  {
-    func_node = task2func.at(task);
-  }
-  else if (task2func.count("*") > 0)
-  {
-    func_node = task2func.at("*");
-  }
-  else 
-  {
-    std::cout << "Fail in Tree2Legion::run when searching task names" << std::endl;
-    assert(false);
-  }
-
-  std::stack<std::unordered_map<std::string, Node*>> local_symbol;
-  std::vector<Node*> local_temps;
-
-  std::unordered_map<std::string, Node*> func_symbols;
-  TaskNode* task_node = new TaskNode(task, x, point_space, local_temps);
-  func_symbols.insert({func_node->func_args->arg_lst[0]->argname, task_node});
-
-  local_symbol.push(func_symbols);
-  // local_temps.push(std::vector<Node*>());
-  // todo: stateless
-  Node* res = func_node->invoked(local_symbol, local_temps);
-  local_symbol.pop();
-
-  delete task_node;
-
-  if (res->type == TupleIntType)
-  {
-    TupleIntNode* res2 = (TupleIntNode*) res;
-    if (proc_kind != Processor::NO_KIND)
+    // todo: redesign when necessary, we need Task object for hierarchical index launch
+    #ifdef DEBUG_TREE
+        std::cout << "in Tree2Legion::runindex " << vec2str(x) << std::endl;
+    #endif
+    FuncDefNode* func_node;
+    if (task2func.count(task_name) > 0)
     {
-      if (MyProc2LegionProc(res2->final_proc) != proc_kind)
-      {
-        printf("%s is actually mapped to %s, but machine model is for %s", 
-                task.c_str(),
-                processor_kind_to_string(proc_kind).c_str(),
-                ProcessorEnumName[res2->final_proc]);
-        assert(false);
-      }
+        func_node = task2func.at(task_name);
     }
-    auto res = std::vector<std::vector<int>>({res2->tupleint});
-    local_temps_pop(local_temps);
-    return res;
-  }
-  else if (res->type == SetTupleIntType)
-  {
-    SetTupleIntNode* res2 = (SetTupleIntNode*) res;
-    if (proc_kind != Processor::NO_KIND)
+    else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
     {
-      if (MyProc2LegionProc(res2->final_proc) != proc_kind)
-      {
-        printf("%s is actually mapped to %s, but machine model is for %s", 
-                task.c_str(),
-                processor_kind_to_string(proc_kind).c_str(),
-                ProcessorEnumName[res2->final_proc]);
-        assert(false);
-      }
+        func_node = task2func.at("CPU");
     }
-    auto res = res2->tupletupleint;
-    local_temps_pop(local_temps);
-    return res;
-  }
-  else
-  {
-    printf("Must return TupleIntType or SetTupleIntType after invoking mapping function\n");
-    assert(false);
-  }
-  return {};
+    else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
+    {
+        func_node = task2func.at("GPU");
+    }
+    else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
+    {
+        func_node = task2func.at("OMP");
+    }
+    else 
+    {
+        std::cout << "Fail in Tree2Legion::run when searching task names" << std::endl;
+        assert(false);
+    }
+
+    std::stack<std::unordered_map<std::string, Node*>> local_symbol;
+    std::vector<Node*> local_temps;
+
+    std::unordered_map<std::string, Node*> func_symbols;
+    TaskNode* task_node = new TaskNode(task_name, x, point_space, local_temps);
+    func_symbols.insert({func_node->func_args->arg_lst[0]->argname, task_node});
+
+    local_symbol.push(func_symbols);
+    // local_temps.push(std::vector<Node*>());
+    // todo: stateless
+    Node* res = func_node->invoked(local_symbol, local_temps);
+    local_symbol.pop();
+
+    delete task_node;
+
+    if (res->type == TupleIntType)
+    {
+        TupleIntNode* res2 = (TupleIntNode*) res;
+        if (proc_kind != Processor::NO_KIND)
+        {
+        if (MyProc2LegionProc(res2->final_proc) != proc_kind)
+        {
+            printf("%s is actually mapped to %s, but machine model is for %s", 
+                    task_name.c_str(),
+                    processor_kind_to_string(proc_kind).c_str(),
+                    ProcessorEnumName[res2->final_proc]);
+            assert(false);
+        }
+        }
+        auto res = std::vector<std::vector<int>>({res2->tupleint});
+        local_temps_pop(local_temps);
+        return res;
+    }
+    else if (res->type == SetTupleIntType)
+    {
+        SetTupleIntNode* res2 = (SetTupleIntNode*) res;
+        if (proc_kind != Processor::NO_KIND)
+        {
+        if (MyProc2LegionProc(res2->final_proc) != proc_kind)
+        {
+            printf("%s is actually mapped to %s, but machine model is for %s", 
+                    task_name.c_str(),
+                    processor_kind_to_string(proc_kind).c_str(),
+                    ProcessorEnumName[res2->final_proc]);
+            assert(false);
+        }
+        }
+        auto res = res2->tupletupleint;
+        local_temps_pop(local_temps);
+        return res;
+    }
+    else
+    {
+        printf("Must return TupleIntType or SetTupleIntType after invoking mapping function\n");
+        assert(false);
+    }
+    return {};
 }
 
 Node* SingleTaskMapNode::run(std::stack<std::unordered_map<std::string, Node*>>& local_symbol, std::vector<Node*>& local_temps)
@@ -1566,13 +1584,21 @@ int Tree2Legion::query_max_instance(std::string task_name)
     return 0;
 }
 
-bool Tree2Legion::should_fall_back(std::string task_name)
+bool Tree2Legion::should_fall_back(std::string task_name, Processor::Kind proc_kind)
 {
     if (task2func.count(task_name) > 0)
     {
         return false;
     }
-    if (task2func.count("*") > 0)
+    else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
+    {
+        return false;
+    }
+    else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
+    {
+        return false;
+    }
+    else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
     {
         return false;
     }
