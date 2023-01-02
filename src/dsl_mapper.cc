@@ -847,7 +847,7 @@ void NSMapper::map_task(const MapperContext ctx,
       // If some of them were deleted, go back and remove this entry
       // Have to renew our iterators since they might have been
       // invalidated during the 'acquire_and_filter_instances' call
-      default_remove_cached_task(ctx, output.chosen_variant,
+      dsl_default_remove_cached_task(ctx, output.chosen_variant,
                                  task_hash, cache_key, output.chosen_instances);
     }
   }
