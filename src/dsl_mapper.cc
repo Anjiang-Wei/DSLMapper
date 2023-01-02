@@ -809,12 +809,12 @@ void NSMapper::map_task(const MapperContext ctx,
   std::pair<TaskID, Processor> cache_key(task.task_id, target_proc);
   std::map<std::pair<TaskID, Processor>,
            std::list<CachedTaskMapping>>::const_iterator
-      finder = cached_task_mappings.find(cache_key);
+      finder = dsl_cached_task_mappings.find(cache_key);
   // This flag says whether we need to recheck the field constraints,
   // possibly because a new field was allocated in a region, so our old
   // cached physical instance(s) is(are) no longer valid
   bool needs_field_constraint_check = false;
-  if (cache_policy == DEFAULT_CACHE_POLICY_ENABLE && finder != cached_task_mappings.end())
+  if (cache_policy == DEFAULT_CACHE_POLICY_ENABLE && finder != dsl_cached_task_mappings.end())
   {
     bool found = false;
     // Iterate through and see if we can find one with our variant and hash
@@ -963,7 +963,7 @@ void NSMapper::map_task(const MapperContext ctx,
   if (cache_policy == DEFAULT_CACHE_POLICY_ENABLE)
   {
     // Now that we are done, let's cache the result so we can use it later
-    std::list<CachedTaskMapping> &map_list = cached_task_mappings[cache_key];
+    std::list<CachedTaskMapping> &map_list = dsl_cached_task_mappings[cache_key];
     map_list.push_back(CachedTaskMapping());
     CachedTaskMapping &cached_result = map_list.back();
     cached_result.task_hash = task_hash;
