@@ -728,25 +728,18 @@ void NSMapper::map_task(const MapperContext ctx,
                         const MapTaskInput &input,
                         MapTaskOutput &output)
 {
-  // DefaultMapper::map_task(ctx, task, input, output);
-  // return;
-  Processor::Kind target_proc_kind = task.target_proc.kind();
-  std::string task_name = task.get_task_name();
-
-  VariantInfo chosen = DefaultMapper::default_find_preferred_variant(task, ctx,
-                                                                     true /*needs tight bound*/, true /*cache*/, target_proc_kind);
+  Processor::Kind target_kind = task.target_proc.kind();
+  // Get the variant that we are going to use to map this task
+  VariantInfo chosen = default_find_preferred_variant(task, ctx,
+                                                      true /*needs tight bound*/, true /*cache*/, target_kind);
   output.chosen_variant = chosen.variant;
-  output.task_priority = 0; // default_policy_select_task_priority(ctx, task);
+  output.task_priority = default_policy_select_task_priority(ctx, task);
   output.postmap_task = false;
-
+  // Figure out our target processors
   default_policy_select_target_processors(ctx, task, output.target_procs);
-  Processor target_processor = output.target_procs[0];
-
-  // //  11/30 todo: need to get this piece of code to work
-  // //  todo: test circuit's virtual mapping
-
-  // // See if we have an inner variant, if we do virtually map all the regions
-  // // We don't even both caching these since they are so simple
+  Processor target_proc = output.target_procs[0];
+  // See if we have an inner variant, if we do virtually map all the regions
+  // We don't even both caching these since they are so simple
   if (chosen.is_inner)
   {
     // Check to see if we have any relaxed coherence modes in which
@@ -789,44 +782,39 @@ void NSMapper::map_task(const MapperContext ctx,
           MemoryConstraint mem_constraint =
               find_memory_constraint(ctx, task, output.chosen_variant, *it);
           Memory target_memory = default_policy_select_target_memory(ctx,
-                                                                     target_processor,
+                                                                     target_proc,
                                                                      task.regions[*it],
                                                                      mem_constraint);
           std::set<FieldID> copy = task.regions[*it].privilege_fields;
           size_t footprint;
-          if (!default_create_custom_instances(ctx, target_processor,
+          if (!default_create_custom_instances(ctx, target_proc,
                                                target_memory, task.regions[*it], *it, copy,
                                                layout_constraints, false /*needs constraint check*/,
                                                output.chosen_instances[*it], &footprint))
           {
             default_report_failed_instance_creation(task, *it,
-                                                    target_processor, target_memory, footprint);
+                                                    target_proc, target_memory, footprint);
           }
         }
       }
       return;
     }
   }
-
-  // log_mapper.debug("%s map_task for selecting memory will use %s as processor",
-  // task_name.c_str(), processor_kind_to_string(target_processor.kind()).c_str());
-
-  // const TaskLayoutConstraintSet &layout_constraints =
-  //   runtime->find_task_layout_constraints(ctx, task.task_id, output.chosen_variant);
-
-  // caching mechanism modified from default_mapper.cc
+  // Should we cache this task?
+  CachedMappingPolicy cache_policy =
+      default_policy_select_task_cache_policy(ctx, task);
 
   // First, let's see if we've cached a result of this task mapping
   const unsigned long long task_hash = compute_task_hash(task);
-  std::pair<TaskID, Processor> cache_key(task.task_id, target_processor);
+  std::pair<TaskID, Processor> cache_key(task.task_id, target_proc);
   std::map<std::pair<TaskID, Processor>,
            std::list<CachedTaskMapping>>::const_iterator
-      finder = dsl_cached_task_mappings.find(cache_key);
+      finder = cached_task_mappings.find(cache_key);
   // This flag says whether we need to recheck the field constraints,
   // possibly because a new field was allocated in a region, so our old
   // cached physical instance(s) is(are) no longer valid
-  // bool needs_field_constraint_check = false;
-  if (finder != dsl_cached_task_mappings.end())
+  bool needs_field_constraint_check = false;
+  if (cache_policy == DEFAULT_CACHE_POLICY_ENABLE && finder != cached_task_mappings.end())
   {
     bool found = false;
     // Iterate through and see if we can find one with our variant and hash
@@ -851,149 +839,139 @@ void NSMapper::map_task(const MapperContext ctx,
       // See if we can acquire these instances still
       if (runtime->acquire_and_filter_instances(ctx,
                                                 output.chosen_instances))
-      {
-        map_task_post_function(ctx, task, task_name, output);
         return;
-      }
       // We need to check the constraints here because we had a
       // prior mapping and it failed, which may be the result
       // of a change in the allocated fields of a field space
-      // needs_field_constraint_check = true;
+      needs_field_constraint_check = true;
       // If some of them were deleted, go back and remove this entry
       // Have to renew our iterators since they might have been
       // invalidated during the 'acquire_and_filter_instances' call
-      dsl_default_remove_cached_task(ctx, output.chosen_variant,
-                                     task_hash, cache_key, output.chosen_instances);
+      default_remove_cached_task(ctx, output.chosen_variant,
+                                 task_hash, cache_key, output.chosen_instances);
     }
   }
-
-  for (uint32_t idx = 0; idx < task.regions.size(); ++idx)
+  // We didn't find a cached version of the mapping so we need to
+  // do a full mapping, we already know what variant we want to use
+  // so let's use one of the acceleration functions to figure out
+  // which instances still need to be mapped.
+  std::vector<std::set<FieldID>> missing_fields(task.regions.size());
+  runtime->filter_instances(ctx, task, output.chosen_variant,
+                            output.chosen_instances, missing_fields);
+  // Track which regions have already been mapped
+  std::vector<bool> done_regions(task.regions.size(), false);
+  if (!input.premapped_regions.empty())
   {
-    auto &req = task.regions[idx];
-    if (req.privilege == LEGION_NO_ACCESS || req.privilege_fields.empty())
+    for (std::vector<unsigned>::const_iterator it = input.premapped_regions.begin();
+         it != input.premapped_regions.end(); it++)
+        {
+          done_regions[*it] = true;
+        }
+  }
+  const TaskLayoutConstraintSet &layout_constraints =
+      runtime->find_task_layout_constraints(ctx,
+                                            task.task_id, output.chosen_variant);
+  // Now we need to go through and make instances for any of our
+  // regions which do not have space for certain fields
+  for (unsigned idx = 0; idx < task.regions.size(); idx++)
+  {
+    if (done_regions[idx])
       continue;
-    if ((req.tag & DefaultMapper::VIRTUAL_MAP) != 0 && req.privilege != LEGION_REDUCE)
+    // Skip any empty regions
+    if ((task.regions[idx].privilege == LEGION_NO_ACCESS) ||
+        (task.regions[idx].privilege_fields.empty()) ||
+        missing_fields[idx].empty())
+      continue;
+    // See if this is a reduction
+    MemoryConstraint mem_constraint =
+        find_memory_constraint(ctx, task, output.chosen_variant, idx);
+    Memory target_memory = default_policy_select_target_memory(ctx,
+                                                               target_proc,
+                                                               task.regions[idx],
+                                                               mem_constraint);
+    if (task.regions[idx].privilege == LEGION_REDUCE)
+    {
+      size_t footprint;
+      if (!default_create_custom_instances(ctx, target_proc,
+                                           target_memory, task.regions[idx], idx, missing_fields[idx],
+                                           layout_constraints, needs_field_constraint_check,
+                                           output.chosen_instances[idx], &footprint))
+      {
+        default_report_failed_instance_creation(task, idx,
+                                                target_proc, target_memory, footprint);
+      }
+      continue;
+    }
+    // Did the application request a virtual mapping for this requirement?
+    if ((task.regions[idx].tag & DefaultMapper::VIRTUAL_MAP) != 0)
     {
       PhysicalInstance virt_inst = PhysicalInstance::get_virtual_instance();
       output.chosen_instances[idx].push_back(virt_inst);
       continue;
     }
-
-    bool found_policy = false;
-    Memory::Kind target_kind = Memory::NO_MEMKIND;
-    Memory target_memory = Memory::NO_MEMORY;
-    std::string region_name;
-    LayoutConstraintSet layout_constraints;
-
-    auto cache_key = std::make_pair(task.task_id, idx);
-    auto finder = cached_region_policies.find(cache_key);
-    if (finder != cached_region_policies.end())
+    // Check to see if any of the valid instances satisfy this requirement
     {
-      found_policy = true;
-      target_kind = finder->second;
-      region_name = cached_region_names.find(cache_key)->second;
-      layout_constraints = cached_region_layout.find(cache_key)->second;
-      target_memory = query_best_memory_for_proc(target_processor, target_kind);
-      assert(target_memory.exists());
-      // log_mapper.debug() << "cached_region_policies: " << memory_kind_to_string(target_kind);
-    }
+      std::vector<PhysicalInstance> valid_instances;
 
-    if (!found_policy)
-    {
-      std::vector<std::string> path;
-      get_handle_names(ctx, req, path);
-      // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
-      std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, path, target_proc_kind);
-      for (auto &mem_kind : memory_list)
+      for (std::vector<PhysicalInstance>::const_iterator
+               it = input.valid_instances[idx].begin(),
+               ie = input.valid_instances[idx].end();
+           it != ie; ++it)
       {
-        // log_mapper.debug() << "querying " << target_processor.id <<
-        // " for memory " << memory_kind_to_string(mem_kind);
-        Memory target_memory_try = query_best_memory_for_proc(target_processor, mem_kind);
-        if (target_memory_try.exists())
-        {
-          // log_mapper.debug() << target_memory_try.id << " best affinity to "
-          // << task.target_proc.id << " in task " << task.task_id;
-          target_kind = mem_kind;
-          target_memory = target_memory_try;
-          found_policy = true;
-          custom_policy_select_constraints(task, path, ctx, layout_constraints, target_memory, req);
-          auto key = std::make_pair(task.task_id, idx);
-          region_name = task_name + "_region_" + std::to_string(idx);
-          cached_region_policies[key] = target_kind;
-          cached_region_names[key] = region_name;
-          cached_region_layout[key] = layout_constraints;
-          break;
-        }
+        if (it->get_location() == target_memory)
+          valid_instances.push_back(*it);
       }
-    }
 
-    if (!found_policy)
-    {
-      // log_mapper.debug(
-      // "Cannot find a policy for memory: region %u of task %s cannot be mapped, falling back to the default policy",
-      // idx, task.get_task_name());
-      auto mem_constraint =
-          find_memory_constraint(ctx, task, output.chosen_variant, idx);
-      target_memory =
-          default_policy_select_target_memory(ctx, task.target_proc, req, mem_constraint);
-    }
-    // target memories need to have affinity to all processors; otherwise error
-    // I only need to create one instance
-    // std::vector<Processor>                      target_procs
-    // chosen_instances is still one
+      std::set<FieldID> valid_missing_fields;
+      runtime->filter_instances(ctx, task, idx, output.chosen_variant,
+                                valid_instances, valid_missing_fields);
 
-    std::set<FieldID> missing_fields = req.privilege_fields;
-    if (req.privilege == LEGION_REDUCE)
-    {
-      // log_mapper.debug() << "privilege = LEGION_REDUCE";
-      std::vector<PhysicalInstance> valid_instances_reduce;
-      valid_instances_reduce.resize(missing_fields.size());
-      size_t footprint;
-      size_t instance_idx = 0;
-      for (std::set<FieldID>::const_iterator it =
-               missing_fields.begin();
-           it !=
-           missing_fields.end();
-           it++, instance_idx++)
-      {
-        layout_constraints.field_constraint.field_set.clear();
-        layout_constraints.field_constraint.field_set.push_back(*it);
-        if (!default_make_instance(ctx, target_memory, layout_constraints,
-                                   valid_instances_reduce[instance_idx], TASK_MAPPING, true /*force_new_instances*/,
-                                   true /*meets*/, req, &footprint))
-        {
-          default_report_failed_instance_creation(task, idx,
-                                                  target_processor, target_memory, footprint);
-        }
-      }
-      output.chosen_instances[idx] = valid_instances_reduce;
-      continue;
+#ifndef NDEBUG
+      bool check =
+#endif
+          runtime->acquire_and_filter_instances(ctx, valid_instances);
+      assert(check);
+
+      output.chosen_instances[idx] = valid_instances;
+      missing_fields[idx] = valid_missing_fields;
+
+      if (missing_fields[idx].empty())
+        continue;
     }
+    // Otherwise make normal instances for the given region
     size_t footprint;
-    PhysicalInstance valid_instance;
-    if (!default_make_instance(ctx, target_memory, layout_constraints,
-                               valid_instance, TASK_MAPPING, req.privilege == LEGION_REDUCE /*force_new*/,
-                               true, req, &footprint))
+    if (!default_create_custom_instances(ctx, target_proc,
+                                         target_memory, task.regions[idx], idx, missing_fields[idx],
+                                         layout_constraints, needs_field_constraint_check,
+                                         output.chosen_instances[idx], &footprint))
     {
       default_report_failed_instance_creation(task, idx,
-                                              target_processor, target_memory, footprint);
+                                              target_proc, target_memory, footprint);
     }
-    output.chosen_instances[idx].push_back(valid_instance);
   }
 
+  // Finally we set a target memory for output instances
+  Memory target_memory =
+      default_policy_select_output_target(ctx, task.target_proc);
+  for (unsigned i = 0; i < task.output_regions.size(); ++i)
+  {
+    output.output_targets[i] = target_memory;
+    default_policy_select_output_constraints(
+        task, output.output_constraints[i], task.output_regions[i]);
+  }
+
+  if (cache_policy == DEFAULT_CACHE_POLICY_ENABLE)
   {
     // Now that we are done, let's cache the result so we can use it later
-    std::list<CachedTaskMapping> &map_list = dsl_cached_task_mappings[cache_key];
+    std::list<CachedTaskMapping> &map_list = cached_task_mappings[cache_key];
     map_list.push_back(CachedTaskMapping());
     CachedTaskMapping &cached_result = map_list.back();
     cached_result.task_hash = task_hash;
     cached_result.variant = output.chosen_variant;
     cached_result.mapping = output.chosen_instances;
-    // cached_result.output_targets = output.output_targets;
-    // cached_result.output_constraints = output.output_constraints;
+    cached_result.output_targets = output.output_targets;
+    cached_result.output_constraints = output.output_constraints;
   }
-
-  map_task_post_function(ctx, task, task_name, output);
 }
 
 void NSMapper::report_profiling(const MapperContext ctx,
