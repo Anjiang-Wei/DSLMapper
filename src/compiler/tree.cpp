@@ -561,10 +561,10 @@ Node *FuncDefNode::invoked(std::stack<std::unordered_map<std::string, Node *>> &
 
 void local_temps_pop(std::vector<Node *> &local_temps) // free all the nodes in local_temps
 {
-  // for (auto& obj: local_temps)
-  // {
-  //   delete obj;
-  // }
+  for (auto& obj: local_temps)
+  {
+    delete obj;
+  }
 }
 
 Node *FuncInvokeNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
