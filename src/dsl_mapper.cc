@@ -126,8 +126,8 @@ public:
   virtual void dsl_default_policy_select_constraints(MapperContext ctx,
                                                      LayoutConstraintSet &constraints, Memory target_memory,
                                                      const RegionRequirement &req);
-  virtual Processor default_policy_select_initial_processor(MapperContext ctx,
-                                                            const Task &task);
+  // virtual Processor default_policy_select_initial_processor(MapperContext ctx,
+  //                                                           const Task &task);
   virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
                                                            std::vector<Processor> &target_procs);
@@ -196,9 +196,9 @@ protected:
       std::vector<TaskSlice> &slices, std::string taskname);
 
 private:
-  std::unordered_map<TaskID, Processor::Kind> cached_task_policies;
+  // std::unordered_map<TaskID, Processor::Kind> cached_task_policies;
 
-  std::unordered_set<std::string> has_region_policy;
+  // std::unordered_set<std::string> has_region_policy;
   using HashFn2 = PairHash<TaskID, uint32_t>;
   std::unordered_map<std::pair<TaskID, uint32_t>, Memory::Kind, HashFn2> cached_region_policies;
   std::unordered_map<std::pair<TaskID, uint32_t>, std::string, HashFn2> cached_region_names;
@@ -466,57 +466,57 @@ bool NSMapper::validate_processor_mapping(MapperContext ctx, const Task &task, P
   return true;
 }
 
-Processor NSMapper::default_policy_select_initial_processor(MapperContext ctx, const Task &task)
-{
-  // todo: add support for selecting another node designated by DSL policy
-  {
-    auto finder = cached_task_policies.find(task.task_id);
-    if (finder != cached_task_policies.end())
-    {
-      auto result = select_initial_processor_by_kind(task, finder->second);
-      validate_processor_mapping(ctx, task, result);
-      // log_mapper.debug() << task.get_task_name() << " mapped by cache: " << processor_kind_to_string(result.kind()).c_str();
-      return result;
-    }
-  }
-  std::string task_name = task.get_task_name();
-  {
-    std::vector<Processor::Kind> proc_kind_vec;
-    if (tree_result.task_policies.count(task_name) > 0)
-    {
-      proc_kind_vec = tree_result.task_policies.at(task_name);
-    }
-    else if (tree_result.task_policies.count("*") > 0)
-    {
-      proc_kind_vec = tree_result.task_policies.at("*");
-    }
-    for (size_t i = 0; i < proc_kind_vec.size(); i++)
-    {
-      auto result = select_initial_processor_by_kind(task, proc_kind_vec[i]);
-      if (result.kind() != proc_kind_vec[i])
-      {
-        // log_mapper.debug("Mapping %s onto %s cannot satisfy, try next",
-        // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
-        continue;
-      }
-      // default policy validation should not be strict, allowing fallback
-      bool success = validate_processor_mapping(ctx, task, result, false);
-      if (success)
-      {
-        // log_mapper.debug() << task_name << " mapped to " << processor_kind_to_string(result.kind()).c_str();
-        cached_task_policies[task.task_id] = result.kind();
-        return result;
-      }
-      else
-      {
-        // log_mapper.debug("Mapping %s onto %s cannot satisfy with validation, try next",
-        // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
-      }
-    }
-  }
-  // log_mapper.debug("%s falls back to the default policy", task_name.c_str());
-  return DefaultMapper::default_policy_select_initial_processor(ctx, task);
-}
+// Processor NSMapper::default_policy_select_initial_processor(MapperContext ctx, const Task &task)
+// {
+//   // todo: add support for selecting another node designated by DSL policy
+//   {
+//     auto finder = cached_task_policies.find(task.task_id);
+//     if (finder != cached_task_policies.end())
+//     {
+//       auto result = select_initial_processor_by_kind(task, finder->second);
+//       validate_processor_mapping(ctx, task, result);
+//       // log_mapper.debug() << task.get_task_name() << " mapped by cache: " << processor_kind_to_string(result.kind()).c_str();
+//       return result;
+//     }
+//   }
+//   std::string task_name = task.get_task_name();
+//   {
+//     std::vector<Processor::Kind> proc_kind_vec;
+//     if (tree_result.task_policies.count(task_name) > 0)
+//     {
+//       proc_kind_vec = tree_result.task_policies.at(task_name);
+//     }
+//     else if (tree_result.task_policies.count("*") > 0)
+//     {
+//       proc_kind_vec = tree_result.task_policies.at("*");
+//     }
+//     for (size_t i = 0; i < proc_kind_vec.size(); i++)
+//     {
+//       auto result = select_initial_processor_by_kind(task, proc_kind_vec[i]);
+//       if (result.kind() != proc_kind_vec[i])
+//       {
+//         // log_mapper.debug("Mapping %s onto %s cannot satisfy, try next",
+//         // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
+//         continue;
+//       }
+//       // default policy validation should not be strict, allowing fallback
+//       bool success = validate_processor_mapping(ctx, task, result, false);
+//       if (success)
+//       {
+//         // log_mapper.debug() << task_name << " mapped to " << processor_kind_to_string(result.kind()).c_str();
+//         cached_task_policies[task.task_id] = result.kind();
+//         return result;
+//       }
+//       else
+//       {
+//         // log_mapper.debug("Mapping %s onto %s cannot satisfy with validation, try next",
+//         // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
+//       }
+//     }
+//   }
+//   // log_mapper.debug("%s falls back to the default policy", task_name.c_str());
+//   return DefaultMapper::default_policy_select_initial_processor(ctx, task);
+// }
 
 void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
@@ -1437,7 +1437,7 @@ void NSMapper::select_task_options(const MapperContext ctx,
 //--------------------------------------------------------------------------
 {
   // log_mapper.debug("NSMapper select_task_options in %s", get_mapper_name());
-  output.initial_proc = default_policy_select_initial_processor(ctx, task);
+  output.initial_proc = DefaultMapper::default_policy_select_initial_processor(ctx, task);
   output.inline_task = false;
   output.stealable = stealing_enabled;
   // This is the best choice for the default mapper assuming
