@@ -13,10 +13,8 @@
  * limitations under the License.
  */
 
-// todo: remove these
-#define alignTo128Bytes false
-#define SPARSE_INSTANCE false
-const int BACKPRESSURE_TASK = (1 << 8);
+/* use get_handle_names() for region naming or use number-based region naming */
+// #define USE_SEMANTIC_NAME
 
 // #define USE_LOGGING_MAPPER
 
@@ -112,6 +110,7 @@ private:
 
 public:
   virtual bool dsl_default_create_custom_instances(MapperContext ctx,
+                                                   std::string task_name,
                                                    Processor target_proc, Memory target_memory,
                                                    const RegionRequirement &req, unsigned index,
                                                    std::set<FieldID> &needed_fields,
@@ -124,9 +123,12 @@ public:
                                          PhysicalInstance &result, MappingKind kind, bool force_new, bool meets,
                                          const RegionRequirement &req, size_t *footprint);
   virtual void dsl_default_policy_select_constraints(MapperContext ctx,
+                                                     std::string taskname, unsigned idx,
                                                      LayoutConstraintSet &constraints, Memory target_memory,
                                                      const RegionRequirement &req);
   LayoutConstraintID dsl_default_policy_select_layout_constraints(MapperContext ctx,
+                                                                  std::string task_name,
+                                                                  unsigned idx,
                                                                   Memory target_memory,
                                                                   const RegionRequirement &req,
                                                                   MappingKind mapping_kind,
@@ -140,6 +142,7 @@ public:
   Memory dsl_default_policy_select_target_memory(MapperContext ctx,
                                                  std::string task_name,
                                                  Processor target_proc,
+                                                 unsigned idx,
                                                  const RegionRequirement &req,
                                                  MemoryConstraint mc);
   // virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
@@ -164,12 +167,6 @@ public:
   virtual void select_task_options(const MapperContext ctx,
                                    const Task &task,
                                    TaskOptions &output);
-  void custom_policy_select_constraints(const Task &task,
-                                        const std::vector<std::string> &region_names,
-                                        const Legion::Mapping::MapperContext ctx,
-                                        Legion::LayoutConstraintSet &constraints,
-                                        const Legion::Memory &target_memory,
-                                        const Legion::RegionRequirement &req);
   void dsl_default_remove_cached_task(MapperContext ctx,
                                       VariantID chosen_variant,
                                       unsigned long long task_hash,
@@ -650,12 +647,19 @@ void NSMapper::map_task_post_function(const MapperContext &ctx,
       auto &rg = task.regions[i];
       if (rg.privilege == READ_ONLY)
       {
+#ifdef USE_SEMANTIC_NAME
         std::vector<std::string> path;
         get_handle_names(ctx, rg, path);
         if (tree_result.should_collect_memory(task_name, path))
         {
           output.untracked_valid_regions.insert(i);
         }
+#else
+        if (tree_result.should_collect_memory(task_name, {std::to_string(i)}))
+        {
+          output.untracked_valid_regions.insert(i);
+        }
+#endif
       }
     }
   }
@@ -754,6 +758,7 @@ void NSMapper::map_task(const MapperContext ctx,
                         const MapTaskInput &input,
                         MapTaskOutput &output)
 {
+  std::string task_name = task.get_task_name();
   Processor::Kind target_kind = task.target_proc.kind();
   // Get the variant that we are going to use to map this task
   VariantInfo chosen = DefaultMapper::default_find_preferred_variant(task, ctx,
@@ -808,13 +813,14 @@ void NSMapper::map_task(const MapperContext ctx,
           MemoryConstraint mem_constraint =
               DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, *it);
           Memory target_memory = dsl_default_policy_select_target_memory(ctx,
-                                                                         task.get_task_name(),
+                                                                         task_name,
                                                                          target_proc,
+                                                                         *it,
                                                                          task.regions[*it],
                                                                          mem_constraint);
           std::set<FieldID> copy = task.regions[*it].privilege_fields;
           size_t footprint;
-          if (!dsl_default_create_custom_instances(ctx, target_proc,
+          if (!dsl_default_create_custom_instances(ctx, task_name, target_proc,
                                                    target_memory, task.regions[*it], *it, copy,
                                                    layout_constraints, false /*needs constraint check*/,
                                                    output.chosen_instances[*it], &footprint))
@@ -915,12 +921,13 @@ void NSMapper::map_task(const MapperContext ctx,
     Memory target_memory = dsl_default_policy_select_target_memory(ctx,
                                                                    task.get_task_name(),
                                                                    target_proc,
+                                                                   idx,
                                                                    task.regions[idx],
                                                                    mem_constraint);
     if (task.regions[idx].privilege == LEGION_REDUCE)
     {
       size_t footprint;
-      if (!dsl_default_create_custom_instances(ctx, target_proc,
+      if (!dsl_default_create_custom_instances(ctx, task_name, target_proc,
                                                target_memory, task.regions[idx], idx, missing_fields[idx],
                                                layout_constraints, needs_field_constraint_check,
                                                output.chosen_instances[idx], &footprint))
@@ -968,7 +975,7 @@ void NSMapper::map_task(const MapperContext ctx,
     }
     // Otherwise make normal instances for the given region
     size_t footprint;
-    if (!dsl_default_create_custom_instances(ctx, target_proc,
+    if (!dsl_default_create_custom_instances(ctx, task_name, target_proc,
                                              target_memory, task.regions[idx], idx, missing_fields[idx],
                                              layout_constraints, needs_field_constraint_check,
                                              output.chosen_instances[idx], &footprint))
@@ -1005,13 +1012,18 @@ void NSMapper::map_task(const MapperContext ctx,
 Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
                                                          std::string task_name,
                                                          Processor target_proc,
+                                                         unsigned idx,
                                                          const RegionRequirement &req,
                                                          MemoryConstraint mc)
 {
+#ifdef USE_SEMANTIC_NAME
   std::vector<std::string> path;
   get_handle_names(ctx, req, path);
   // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
   std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
+#else
+  std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
+#endif
   for (auto &mem_kind : memory_list)
   {
     // log_mapper.debug() << "querying " << target_processor.id <<
@@ -1029,6 +1041,7 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
 }
 
 bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
+                                                   std::string task_name,
                                                    Processor target_proc, Memory target_memory,
                                                    const RegionRequirement &req, unsigned index,
                                                    std::set<FieldID> &needed_fields,
@@ -1047,7 +1060,7 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
     // out how to deal with reduction instances that contain
     bool force_new_instances = true; // always have to force new instances
     LayoutConstraintID our_layout_id =
-        dsl_default_policy_select_layout_constraints(ctx, target_memory, req,
+        dsl_default_policy_select_layout_constraints(ctx, task_name, index, target_memory, req,
                                                      TASK_MAPPING, needs_field_constraint_check, force_new_instances);
     LayoutConstraintSet our_constraints =
         runtime->find_layout_constraints(ctx, our_layout_id);
@@ -1074,7 +1087,7 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
   // any of the other constraints
   bool force_new_instances = false;
   LayoutConstraintID our_layout_id =
-      dsl_default_policy_select_layout_constraints(ctx, target_memory, req,
+      dsl_default_policy_select_layout_constraints(ctx, task_name, index, target_memory, req,
                                                    TASK_MAPPING, needs_field_constraint_check, force_new_instances);
   const LayoutConstraintSet &our_constraints =
       runtime->find_layout_constraints(ctx, our_layout_id);
@@ -1125,7 +1138,7 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
       if (constraint_fields.empty())
       {
         LayoutConstraintSet creation_constraints = index_constraints;
-        dsl_default_policy_select_constraints(ctx, creation_constraints,
+        dsl_default_policy_select_constraints(ctx, task_name, index, creation_constraints,
                                               target_memory, req);
         creation_constraints.add_constraint(
             FieldConstraint(overlapping_fields,
@@ -1146,7 +1159,7 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
       // These constraints don't do as much as we want but don't
       // conflict so make an instance with them and our constraints
       LayoutConstraintSet creation_constraints = index_constraints;
-      dsl_default_policy_select_constraints(ctx, creation_constraints,
+      dsl_default_policy_select_constraints(ctx, task_name, index, creation_constraints,
                                             target_memory, req);
       creation_constraints.add_constraint(
           FieldConstraint(overlapping_fields,
@@ -1219,7 +1232,10 @@ bool NSMapper::dsl_default_make_instance(MapperContext ctx,
 }
 
 LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
-    MapperContext ctx, Memory target_memory,
+    MapperContext ctx,
+    std::string task_name,
+    unsigned idx,
+    Memory target_memory,
     const RegionRequirement &req,
     MappingKind mapping_kind,
     bool needs_field_constraint_check,
@@ -1242,7 +1258,7 @@ LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
     if (finder != reduction_constraint_cache.end())
       return finder->second;
     LayoutConstraintSet constraints;
-    dsl_default_policy_select_constraints(ctx, constraints, target_memory, req);
+    dsl_default_policy_select_constraints(ctx, task_name, idx, constraints, target_memory, req);
     LayoutConstraintID result =
         runtime->register_layout(ctx, constraints);
     // Save the result
@@ -1294,7 +1310,7 @@ LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
   }
   // Fill in the constraints
   LayoutConstraintSet constraints;
-  dsl_default_policy_select_constraints(ctx, constraints, target_memory, req);
+  dsl_default_policy_select_constraints(ctx, task_name, idx, constraints, target_memory, req);
   // Do the registration
   LayoutConstraintID result =
       runtime->register_layout(ctx, constraints);
@@ -1307,6 +1323,7 @@ LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
 }
 
 void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
+                                                     std::string task_name, unsigned idx,
                                                      LayoutConstraintSet &constraints, Memory target_memory,
                                                      const RegionRequirement &req)
 //--------------------------------------------------------------------------
@@ -1314,139 +1331,102 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
   Memory::Kind target_memory_kind = target_memory.kind();
 
   ConstraintsNode dsl_constraint;
-
-  // todo: support finer-grained specialization for each task name / region name
-  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint_one_region("*", "*", target_memory_kind);
+#ifdef USE_SEMANTIC_NAME
+  std::vector<std::string> path;
+  get_handle_names(ctx, req, path);
+  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint(task_name, "*", target_memory_kind);
+#else
+  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint(task_name, {std::to_string(idx)}, target_memory_kind);
+#endif
   if (dsl_constraint_pt != NULL)
   {
     dsl_constraint = *dsl_constraint_pt;
     // log_mapper.debug() << "dsl_constraint specified by the user";
-  }
 
-  Legion::IndexSpace is = req.region.get_index_space();
-  Legion::Domain domain = runtime->get_index_space_domain(ctx, is);
-  int dim = domain.get_dim();
-  std::vector<Legion::DimensionKind> dimension_ordering(dim + 1);
+    Legion::IndexSpace is = req.region.get_index_space();
+    Legion::Domain domain = runtime->get_index_space_domain(ctx, is);
+    int dim = domain.get_dim();
+    std::vector<Legion::DimensionKind> dimension_ordering(dim + 1);
 
-  if (dsl_constraint.reverse)
-  {
-    // log_mapper.debug() << "dsl_constraint.reverse = true";
-    if (dsl_constraint.aos)
+    if (dsl_constraint.reverse)
     {
-      // log_mapper.debug() << "dsl_constraint.aos = true";
-      for (int i = 0; i < dim; ++i)
+      // log_mapper.debug() << "dsl_constraint.reverse = true";
+      if (dsl_constraint.aos)
       {
-        dimension_ordering[dim - i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        // log_mapper.debug() << "dsl_constraint.aos = true";
+        for (int i = 0; i < dim; ++i)
+        {
+          dimension_ordering[dim - i] =
+              static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        }
+        dimension_ordering[0] = LEGION_DIM_F;
       }
-      dimension_ordering[0] = LEGION_DIM_F;
+      else
+      {
+        // log_mapper.debug() << "dsl_constraint.aos = false";
+        for (int i = 0; i < dim; ++i)
+        {
+          dimension_ordering[dim - i - 1] =
+              static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        }
+        dimension_ordering[dim] = LEGION_DIM_F; // soa
+      }
     }
     else
     {
-      // log_mapper.debug() << "dsl_constraint.aos = false";
-      for (int i = 0; i < dim; ++i)
+      // log_mapper.debug() << "dsl_constraint.reverse = false";
+      if (dsl_constraint.aos)
       {
-        dimension_ordering[dim - i - 1] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        // log_mapper.debug() << "dsl_constraint.aos = true";
+        for (int i = 1; i < dim + 1; ++i)
+        {
+          dimension_ordering[i] =
+              static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        }
+        dimension_ordering[0] = LEGION_DIM_F; // aos
       }
-      dimension_ordering[dim] = LEGION_DIM_F; // soa
-    }
-  }
-  else
-  {
-    // log_mapper.debug() << "dsl_constraint.reverse = false";
-    if (dsl_constraint.aos)
-    {
-      // log_mapper.debug() << "dsl_constraint.aos = true";
-      for (int i = 1; i < dim + 1; ++i)
+      else
       {
-        dimension_ordering[i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        // log_mapper.debug() << "dsl_constraint.aos = false";
+        // DefaultMapper's choice
+        for (int i = 0; i < dim; ++i)
+        {
+          dimension_ordering[i] =
+              static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        }
+        dimension_ordering[dim] = LEGION_DIM_F; // soa
       }
-      dimension_ordering[0] = LEGION_DIM_F; // aos
     }
-    else
+    constraints.add_constraint(Legion::OrderingConstraint(dimension_ordering, false /*contiguous*/));
+    // If we were requested to have an alignment, add the constraint.
+    if (dsl_constraint.align)
     {
-      // log_mapper.debug() << "dsl_constraint.aos = false";
-      // DefaultMapper's choice
-      for (int i = 0; i < dim; ++i)
+      // log_mapper.debug() << "dsl_constraint.align = true";
+      for (auto it : req.privilege_fields)
       {
-        dimension_ordering[i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+        constraints.add_constraint(Legion::AlignmentConstraint(it,
+                                                               myop2legion(dsl_constraint.align_op), dsl_constraint.align_int));
       }
-      dimension_ordering[dim] = LEGION_DIM_F; // soa
     }
-  }
-  constraints.add_constraint(Legion::OrderingConstraint(dimension_ordering, false /*contiguous*/));
-  // If we were requested to have an alignment, add the constraint.
-  if (dsl_constraint.align)
-  {
-    // log_mapper.debug() << "dsl_constraint.align = true";
-    for (auto it : req.privilege_fields)
+
+    // Exact Region Constraint
+    bool special_exact = dsl_constraint.exact;
+    /*
+       SpecializedConstraint(SpecializedKind kind = LEGION_AFFINE_SPECIALIZE
+                             ReductionOpID redop = 0,
+                             bool no_access = false,
+                             bool exact = false
+    */
+    if (dsl_constraint.compact)
     {
-      constraints.add_constraint(Legion::AlignmentConstraint(it,
-                                                             myop2legion(dsl_constraint.align_op), dsl_constraint.align_int));
+      // sparse instance; we use SpecializedConstraint, which unfortunately has to override the default mapper
+      // log_mapper.debug() << "dsl_constraint.compact = true";
+      assert(req.privilege != LEGION_REDUCE);
+      constraints.add_constraint(SpecializedConstraint(LEGION_COMPACT_SPECIALIZE, 0, false,
+                                                       special_exact));
     }
   }
-
-  // Exact Region Constraint
-  bool special_exact = dsl_constraint.exact;
-  /*
-     SpecializedConstraint(SpecializedKind kind = LEGION_AFFINE_SPECIALIZE
-                           ReductionOpID redop = 0,
-                           bool no_access = false,
-                           bool exact = false
-  */
-  if (dsl_constraint.compact)
-  {
-    // sparse instance; we use SpecializedConstraint, which unfortunately has to override the default mapper
-    // log_mapper.debug() << "dsl_constraint.compact = true";
-    assert(req.privilege != LEGION_REDUCE);
-    constraints.add_constraint(SpecializedConstraint(LEGION_COMPACT_SPECIALIZE, 0, false,
-                                                     special_exact));
-  }
-  // See if we are doing a reduction instance
-  else if (req.privilege == LEGION_REDUCE)
-  {
-    // Make reduction fold instances
-    constraints.add_constraint(SpecializedConstraint(LEGION_AFFINE_REDUCTION_SPECIALIZE, req.redop, false,
-                                                     special_exact));
-    if (not constraints.memory_constraint.has_kind)
-      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
-  }
-  else
-  {
-    // Our base default mapper will try to make instances of containing
-    // all fields (in any order) laid out in SOA format to encourage
-    // maximum re-use by any tasks which use subsets of the fields
-    if (constraints.specialized_constraint.kind == LEGION_NO_SPECIALIZE)
-      constraints.add_constraint(SpecializedConstraint());
-
-    if (not constraints.memory_constraint.has_kind)
-      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
-
-    if (constraints.field_constraint.field_set.size() == 0)
-    {
-      // Normal instance creation
-      std::vector<FieldID> fields;
-      default_policy_select_constraint_fields(ctx, req, fields);
-      constraints.add_constraint(FieldConstraint(fields, false /*contiguous*/,
-                                                 false /*inorder*/));
-    }
-    // if (constraints.ordering_constraint.ordering.size() == 0)
-    // {
-    //   IndexSpace is = req.region.get_index_space();
-    //   Domain domain = runtime->get_index_space_domain(ctx, is);
-    //   int dim = domain.get_dim();
-    //   std::vector<DimensionKind> dimension_ordering(dim + 1);
-    //   for (int i = 0; i < dim; ++i)
-    //     dimension_ordering[i] =
-    //         static_cast<DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-    //   dimension_ordering[dim] = LEGION_DIM_F;
-    //   constraints.add_constraint(OrderingConstraint(dimension_ordering,
-    //                                                 false /*contigous*/));
-    // }
-  }
+  DefaultMapper::default_policy_select_constraints(ctx, constraints, target_memory, req);
 }
 
 void NSMapper::report_profiling(const MapperContext ctx,
@@ -2022,134 +2002,6 @@ namespace Legion
       // log_mapper.debug("shard: should never reach");
       assert(false);
       return 0;
-    }
-  }
-}
-
-void NSMapper::custom_policy_select_constraints(const Task &task,
-                                                const std::vector<std::string> &region_names,
-                                                const Legion::Mapping::MapperContext ctx,
-                                                Legion::LayoutConstraintSet &constraints,
-                                                const Legion::Memory &target_memory,
-                                                const Legion::RegionRequirement &req)
-{
-  Memory::Kind target_memory_kind = target_memory.kind();
-
-  ConstraintsNode dsl_constraint;
-
-  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint(task.get_task_name(), region_names, target_memory_kind);
-  if (dsl_constraint_pt != NULL)
-  {
-    dsl_constraint = *dsl_constraint_pt;
-    // log_mapper.debug() << "dsl_constraint specified by the user";
-  }
-
-  Legion::IndexSpace is = req.region.get_index_space();
-  Legion::Domain domain = runtime->get_index_space_domain(ctx, is);
-  int dim = domain.get_dim();
-  std::vector<Legion::DimensionKind> dimension_ordering(dim + 1);
-
-  if (dsl_constraint.reverse)
-  {
-    // log_mapper.debug() << "dsl_constraint.reverse = true";
-    if (dsl_constraint.aos)
-    {
-      // log_mapper.debug() << "dsl_constraint.aos = true";
-      for (int i = 0; i < dim; ++i)
-      {
-        dimension_ordering[dim - i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-      }
-      dimension_ordering[0] = LEGION_DIM_F;
-    }
-    else
-    {
-      // log_mapper.debug() << "dsl_constraint.aos = false";
-      for (int i = 0; i < dim; ++i)
-      {
-        dimension_ordering[dim - i - 1] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-      }
-      dimension_ordering[dim] = LEGION_DIM_F; // soa
-    }
-  }
-  else
-  {
-    // log_mapper.debug() << "dsl_constraint.reverse = false";
-    if (dsl_constraint.aos)
-    {
-      // log_mapper.debug() << "dsl_constraint.aos = true";
-      for (int i = 1; i < dim + 1; ++i)
-      {
-        dimension_ordering[i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-      }
-      dimension_ordering[0] = LEGION_DIM_F; // aos
-    }
-    else
-    {
-      // log_mapper.debug() << "dsl_constraint.aos = false";
-      // DefaultMapper's choice
-      for (int i = 0; i < dim; ++i)
-      {
-        dimension_ordering[i] =
-            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-      }
-      dimension_ordering[dim] = LEGION_DIM_F; // soa
-    }
-  }
-  constraints.add_constraint(Legion::OrderingConstraint(dimension_ordering, false /*contiguous*/));
-  // If we were requested to have an alignment, add the constraint.
-  if (dsl_constraint.align)
-  {
-    // log_mapper.debug() << "dsl_constraint.align = true";
-    for (auto it : req.privilege_fields)
-    {
-      constraints.add_constraint(Legion::AlignmentConstraint(it,
-                                                             myop2legion(dsl_constraint.align_op), dsl_constraint.align_int));
-    }
-  }
-
-  // Exact Region Constraint
-  bool special_exact = dsl_constraint.exact;
-  /*
-     SpecializedConstraint(SpecializedKind kind = LEGION_AFFINE_SPECIALIZE
-                           ReductionOpID redop = 0,
-                           bool no_access = false,
-                           bool exact = false
-  */
-  if (dsl_constraint.compact)
-  {
-    // sparse instance; we use SpecializedConstraint, which unfortunately has to override the default mapper
-    // log_mapper.debug() << "dsl_constraint.compact = true";
-    assert(req.privilege != LEGION_REDUCE);
-    constraints.add_constraint(SpecializedConstraint(LEGION_COMPACT_SPECIALIZE, 0, false,
-                                                     special_exact));
-  }
-  else if (req.privilege == LEGION_REDUCE)
-  {
-    // Make reduction fold instances.
-    constraints.add_constraint(SpecializedConstraint(LEGION_AFFINE_REDUCTION_SPECIALIZE, req.redop, false,
-                                                     special_exact));
-    if (not constraints.memory_constraint.has_kind)
-      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
-  }
-  else
-  {
-    // Our base default mapper will try to make instances of containing
-    // all fields (in any order) laid out in SOA format to encourage
-    // maximum re-use by any tasks which use subsets of the fields
-    if (constraints.specialized_constraint.kind == LEGION_NO_SPECIALIZE)
-      constraints.add_constraint(SpecializedConstraint());
-
-    if (not constraints.memory_constraint.has_kind)
-      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
-    if (constraints.field_constraint.field_set.size() == 0)
-    {
-      // Normal instance creation
-      std::vector<FieldID> fields;
-      default_policy_select_constraint_fields(ctx, req, fields);
-      constraints.add_constraint(FieldConstraint(fields, false /*contiguous*/, false /*inorder*/));
     }
   }
 }
