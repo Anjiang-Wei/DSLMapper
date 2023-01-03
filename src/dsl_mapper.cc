@@ -137,6 +137,11 @@ public:
   virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
                                                            std::vector<Processor> &target_procs);
+  Memory dsl_default_policy_select_target_memory(MapperContext ctx,
+                                                 std::string task_name,
+                                                 Processor target_proc,
+                                                 const RegionRequirement &req,
+                                                 MemoryConstraint mc);
   // virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
   //                                                             Memory target_memory,
   //                                                             const RegionRequirement &req,
@@ -802,10 +807,11 @@ void NSMapper::map_task(const MapperContext ctx,
         {
           MemoryConstraint mem_constraint =
               DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, *it);
-          Memory target_memory = DefaultMapper::default_policy_select_target_memory(ctx,
-                                                                                    target_proc,
-                                                                                    task.regions[*it],
-                                                                                    mem_constraint);
+          Memory target_memory = dsl_default_policy_select_target_memory(ctx,
+                                                                         task.get_task_name(),
+                                                                         target_proc,
+                                                                         task.regions[*it],
+                                                                         mem_constraint);
           std::set<FieldID> copy = task.regions[*it].privilege_fields;
           size_t footprint;
           if (!dsl_default_create_custom_instances(ctx, target_proc,
@@ -906,10 +912,11 @@ void NSMapper::map_task(const MapperContext ctx,
     // See if this is a reduction
     MemoryConstraint mem_constraint =
         DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, idx);
-    Memory target_memory = DefaultMapper::default_policy_select_target_memory(ctx,
-                                                                              target_proc,
-                                                                              task.regions[idx],
-                                                                              mem_constraint);
+    Memory target_memory = dsl_default_policy_select_target_memory(ctx,
+                                                                   task.get_task_name(),
+                                                                   target_proc,
+                                                                   task.regions[idx],
+                                                                   mem_constraint);
     if (task.regions[idx].privilege == LEGION_REDUCE)
     {
       size_t footprint;
@@ -993,6 +1000,32 @@ void NSMapper::map_task(const MapperContext ctx,
     cached_result.output_targets = output.output_targets;
     cached_result.output_constraints = output.output_constraints;
   }
+}
+
+Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
+                                                         std::string task_name,
+                                                         Processor target_proc,
+                                                         const RegionRequirement &req,
+                                                         MemoryConstraint mc)
+{
+  std::vector<std::string> path;
+  get_handle_names(ctx, req, path);
+  // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
+  std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
+  for (auto &mem_kind : memory_list)
+  {
+    // log_mapper.debug() << "querying " << target_processor.id <<
+    // " for memory " << memory_kind_to_string(mem_kind);
+    Memory target_memory_try = query_best_memory_for_proc(target_proc, mem_kind);
+    if (target_memory_try.exists())
+    {
+      return target_memory_try;
+    }
+  }
+  // log_mapper.debug(
+  // "Cannot find a policy for memory: region %u of task %s cannot be mapped, falling back to the default policy",
+  // idx, task.get_task_name());
+  return DefaultMapper::default_policy_select_target_memory(ctx, target_proc, req, mc);
 }
 
 bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
