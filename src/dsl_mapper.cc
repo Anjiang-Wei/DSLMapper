@@ -1278,12 +1278,106 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
                                                      const RegionRequirement &req)
 //--------------------------------------------------------------------------
 {
+  Memory::Kind target_memory_kind = target_memory.kind();
+
+  ConstraintsNode dsl_constraint;
+
+  // todo: support finer-grained specialization for each task name / region name
+  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint_one_region("*", "*", target_memory_kind);
+  if (dsl_constraint_pt != NULL)
+  {
+    dsl_constraint = *dsl_constraint_pt;
+    // log_mapper.debug() << "dsl_constraint specified by the user";
+  }
+
+  Legion::IndexSpace is = req.region.get_index_space();
+  Legion::Domain domain = runtime->get_index_space_domain(ctx, is);
+  int dim = domain.get_dim();
+  std::vector<Legion::DimensionKind> dimension_ordering(dim + 1);
+
+  if (dsl_constraint.reverse)
+  {
+    // log_mapper.debug() << "dsl_constraint.reverse = true";
+    if (dsl_constraint.aos)
+    {
+      // log_mapper.debug() << "dsl_constraint.aos = true";
+      for (int i = 0; i < dim; ++i)
+      {
+        dimension_ordering[dim - i] =
+            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+      }
+      dimension_ordering[0] = LEGION_DIM_F;
+    }
+    else
+    {
+      // log_mapper.debug() << "dsl_constraint.aos = false";
+      for (int i = 0; i < dim; ++i)
+      {
+        dimension_ordering[dim - i - 1] =
+            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+      }
+      dimension_ordering[dim] = LEGION_DIM_F; // soa
+    }
+  }
+  else
+  {
+    // log_mapper.debug() << "dsl_constraint.reverse = false";
+    if (dsl_constraint.aos)
+    {
+      // log_mapper.debug() << "dsl_constraint.aos = true";
+      for (int i = 1; i < dim + 1; ++i)
+      {
+        dimension_ordering[i] =
+            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+      }
+      dimension_ordering[0] = LEGION_DIM_F; // aos
+    }
+    else
+    {
+      // log_mapper.debug() << "dsl_constraint.aos = false";
+      // DefaultMapper's choice
+      for (int i = 0; i < dim; ++i)
+      {
+        dimension_ordering[i] =
+            static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+      }
+      dimension_ordering[dim] = LEGION_DIM_F; // soa
+    }
+  }
+  constraints.add_constraint(Legion::OrderingConstraint(dimension_ordering, false /*contiguous*/));
+  // If we were requested to have an alignment, add the constraint.
+  if (dsl_constraint.align)
+  {
+    // log_mapper.debug() << "dsl_constraint.align = true";
+    for (auto it : req.privilege_fields)
+    {
+      constraints.add_constraint(Legion::AlignmentConstraint(it,
+                                                             myop2legion(dsl_constraint.align_op), dsl_constraint.align_int));
+    }
+  }
+
+  // Exact Region Constraint
+  bool special_exact = dsl_constraint.exact;
+  /*
+     SpecializedConstraint(SpecializedKind kind = LEGION_AFFINE_SPECIALIZE
+                           ReductionOpID redop = 0,
+                           bool no_access = false,
+                           bool exact = false
+  */
+  if (dsl_constraint.compact)
+  {
+    // sparse instance; we use SpecializedConstraint, which unfortunately has to override the default mapper
+    // log_mapper.debug() << "dsl_constraint.compact = true";
+    assert(req.privilege != LEGION_REDUCE);
+    constraints.add_constraint(SpecializedConstraint(LEGION_COMPACT_SPECIALIZE, 0, false,
+                                                     special_exact));
+  }
   // See if we are doing a reduction instance
-  if (req.privilege == LEGION_REDUCE)
+  else if (req.privilege == LEGION_REDUCE)
   {
     // Make reduction fold instances
-    constraints.add_constraint(SpecializedConstraint(
-        LEGION_AFFINE_REDUCTION_SPECIALIZE, req.redop));
+    constraints.add_constraint(SpecializedConstraint(LEGION_AFFINE_REDUCTION_SPECIALIZE, req.redop, false,
+                                                     special_exact));
     if (not constraints.memory_constraint.has_kind)
       constraints.add_constraint(MemoryConstraint(target_memory.kind()));
   }
@@ -1306,19 +1400,19 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       constraints.add_constraint(FieldConstraint(fields, false /*contiguous*/,
                                                  false /*inorder*/));
     }
-    if (constraints.ordering_constraint.ordering.size() == 0)
-    {
-      IndexSpace is = req.region.get_index_space();
-      Domain domain = runtime->get_index_space_domain(ctx, is);
-      int dim = domain.get_dim();
-      std::vector<DimensionKind> dimension_ordering(dim + 1);
-      for (int i = 0; i < dim; ++i)
-        dimension_ordering[i] =
-            static_cast<DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
-      dimension_ordering[dim] = LEGION_DIM_F;
-      constraints.add_constraint(OrderingConstraint(dimension_ordering,
-                                                    false /*contigous*/));
-    }
+    // if (constraints.ordering_constraint.ordering.size() == 0)
+    // {
+    //   IndexSpace is = req.region.get_index_space();
+    //   Domain domain = runtime->get_index_space_domain(ctx, is);
+    //   int dim = domain.get_dim();
+    //   std::vector<DimensionKind> dimension_ordering(dim + 1);
+    //   for (int i = 0; i < dim; ++i)
+    //     dimension_ordering[i] =
+    //         static_cast<DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+    //   dimension_ordering[dim] = LEGION_DIM_F;
+    //   constraints.add_constraint(OrderingConstraint(dimension_ordering,
+    //                                                 false /*contigous*/));
+    // }
   }
 }
 
