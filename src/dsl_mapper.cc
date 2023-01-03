@@ -13,11 +13,6 @@
  * limitations under the License.
  */
 
-/* use get_handle_names() for region naming or use number-based region naming */
-// #define USE_SEMANTIC_NAME
-
-// #define USE_LOGGING_MAPPER
-
 #include "dsl_mapper.h"
 
 #include "mappers/logging_wrapper.h"
@@ -219,11 +214,15 @@ public:
   static Tree2Legion tree_result;
   static std::unordered_map<std::string, ShardingID> task2sid;
   static bool backpressure;
+  static bool untrackValidRegions;
+  static bool use_semantic_name;
 };
 
 Tree2Legion NSMapper::tree_result;
-bool NSMapper::backpressure;
 std::unordered_map<std::string, ShardingID> NSMapper::task2sid;
+bool NSMapper::backpressure;
+bool NSMapper::untrackValidRegions;
+bool NSMapper::use_semantic_name;
 
 std::string NSMapper::get_policy_file()
 {
@@ -640,26 +639,29 @@ void NSMapper::map_task_post_function(const MapperContext &ctx,
                                       const std::string &task_name,
                                       MapTaskOutput &output)
 {
-  if (tree_result.memory_collect.size() > 0)
+  if (NSMapper::untrackValidRegions && NSMapper::tree_result.memory_collect.size() > 0)
   {
     for (size_t i = 0; i < task.regions.size(); i++)
     {
       auto &rg = task.regions[i];
       if (rg.privilege == READ_ONLY)
       {
-#ifdef USE_SEMANTIC_NAME
-        std::vector<std::string> path;
-        get_handle_names(ctx, rg, path);
-        if (tree_result.should_collect_memory(task_name, path))
+        if (use_semantic_name)
         {
-          output.untracked_valid_regions.insert(i);
+          std::vector<std::string> path;
+          get_handle_names(ctx, rg, path);
+          if (tree_result.should_collect_memory(task_name, path))
+          {
+            output.untracked_valid_regions.insert(i);
+          }
         }
-#else
-        if (tree_result.should_collect_memory(task_name, {std::to_string(i)}))
+        else
         {
-          output.untracked_valid_regions.insert(i);
+          if (tree_result.should_collect_memory(task_name, {std::to_string(i)}))
+          {
+            output.untracked_valid_regions.insert(i);
+          }
         }
-#endif
       }
     }
   }
@@ -1016,14 +1018,18 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
                                                          const RegionRequirement &req,
                                                          MemoryConstraint mc)
 {
-#ifdef USE_SEMANTIC_NAME
-  std::vector<std::string> path;
-  get_handle_names(ctx, req, path);
-  // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
-  std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
-#else
-  std::vector<Memory::Kind> memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
-#endif
+  std::vector<Memory::Kind> memory_list;
+  if (use_semantic_name)
+  {
+    std::vector<std::string> path;
+    get_handle_names(ctx, req, path);
+    // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
+    memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
+  }
+  else
+  {
+    memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
+  }
   for (auto &mem_kind : memory_list)
   {
     // log_mapper.debug() << "querying " << target_processor.id <<
@@ -1331,13 +1337,17 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
   Memory::Kind target_memory_kind = target_memory.kind();
 
   ConstraintsNode dsl_constraint;
-#ifdef USE_SEMANTIC_NAME
-  std::vector<std::string> path;
-  get_handle_names(ctx, req, path);
-  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint(task_name, "*", target_memory_kind);
-#else
-  ConstraintsNode *dsl_constraint_pt = tree_result.query_constraint(task_name, {std::to_string(idx)}, target_memory_kind);
-#endif
+  ConstraintsNode *dsl_constraint_pt;
+  if (use_semantic_name)
+  {
+    std::vector<std::string> path;
+    get_handle_names(ctx, req, path);
+    dsl_constraint_pt = tree_result.query_constraint(task_name, path, target_memory_kind);
+  }
+  else
+  {
+    dsl_constraint_pt = tree_result.query_constraint(task_name, {std::to_string(idx)}, target_memory_kind);
+  }
   if (dsl_constraint_pt != NULL)
   {
     dsl_constraint = *dsl_constraint_pt;
@@ -1880,16 +1890,26 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
   bool use_logging_wrapper = false;
   auto args = Runtime::get_input_args();
   NSMapper::backpressure = false;
+  NSMapper::use_semantic_name = false;
+  NSMapper::untrackValidRegions = false;
   for (auto idx = 0; idx < args.argc; ++idx)
   {
     if (strcmp(args.argv[idx], "-wrapper") == 0)
     {
       use_logging_wrapper = true;
     }
-    // todo: in the final public-use version, remove this
+    // todo: in the final version, change tm to be the formal name of DSLMapper
     if (strcmp(args.argv[idx], "-tm:enable_backpressure") == 0)
     {
       NSMapper::backpressure = true;
+    }
+    if (strcmp(args.argv[idx], "-tm:untrack_valid_regions"))
+    {
+      NSMapper::untrackValidRegions = true;
+    }
+    if (strcmp(args.argv[idx], "-tm:use_semantic_name") == 0)
+    {
+      NSMapper::use_semantic_name = true;
     }
   }
   for (std::set<Processor>::const_iterator it = local_procs.begin();
