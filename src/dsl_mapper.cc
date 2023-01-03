@@ -111,6 +111,21 @@ private:
   std::map<Legion::LogicalRegion, std::vector<std::string>> Region2Names;
 
 public:
+  virtual bool dsl_default_create_custom_instances(MapperContext ctx,
+                                                   Processor target_proc, Memory target_memory,
+                                                   const RegionRequirement &req, unsigned index,
+                                                   std::set<FieldID> &needed_fields,
+                                                   const TaskLayoutConstraintSet &layout_constraints,
+                                                   bool needs_field_constraint_check,
+                                                   std::vector<PhysicalInstance> &instances,
+                                                   size_t *footprint /*= NULL*/);
+  virtual bool dsl_default_make_instance(MapperContext ctx,
+                                         Memory target_memory, const LayoutConstraintSet &constraints,
+                                         PhysicalInstance &result, MappingKind kind, bool force_new, bool meets,
+                                         const RegionRequirement &req, size_t *footprint);
+  virtual void dsl_default_policy_select_constraints(MapperContext ctx,
+                                                     LayoutConstraintSet &constraints, Memory target_memory,
+                                                     const RegionRequirement &req);
   virtual Processor default_policy_select_initial_processor(MapperContext ctx,
                                                             const Task &task);
   virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
@@ -787,10 +802,10 @@ void NSMapper::map_task(const MapperContext ctx,
                                                                                     mem_constraint);
           std::set<FieldID> copy = task.regions[*it].privilege_fields;
           size_t footprint;
-          if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
-                                                              target_memory, task.regions[*it], *it, copy,
-                                                              layout_constraints, false /*needs constraint check*/,
-                                                              output.chosen_instances[*it], &footprint))
+          if (!dsl_default_create_custom_instances(ctx, target_proc,
+                                                   target_memory, task.regions[*it], *it, copy,
+                                                   layout_constraints, false /*needs constraint check*/,
+                                                   output.chosen_instances[*it], &footprint))
           {
             DefaultMapper::default_report_failed_instance_creation(task, *it,
                                                                    target_proc, target_memory, footprint);
@@ -892,10 +907,10 @@ void NSMapper::map_task(const MapperContext ctx,
     if (task.regions[idx].privilege == LEGION_REDUCE)
     {
       size_t footprint;
-      if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
-                                                          target_memory, task.regions[idx], idx, missing_fields[idx],
-                                                          layout_constraints, needs_field_constraint_check,
-                                                          output.chosen_instances[idx], &footprint))
+      if (!dsl_default_create_custom_instances(ctx, target_proc,
+                                               target_memory, task.regions[idx], idx, missing_fields[idx],
+                                               layout_constraints, needs_field_constraint_check,
+                                               output.chosen_instances[idx], &footprint))
       {
         DefaultMapper::default_report_failed_instance_creation(task, idx,
                                                                target_proc, target_memory, footprint);
@@ -940,10 +955,10 @@ void NSMapper::map_task(const MapperContext ctx,
     }
     // Otherwise make normal instances for the given region
     size_t footprint;
-    if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
-                                                        target_memory, task.regions[idx], idx, missing_fields[idx],
-                                                        layout_constraints, needs_field_constraint_check,
-                                                        output.chosen_instances[idx], &footprint))
+    if (!dsl_default_create_custom_instances(ctx, target_proc,
+                                             target_memory, task.regions[idx], idx, missing_fields[idx],
+                                             layout_constraints, needs_field_constraint_check,
+                                             output.chosen_instances[idx], &footprint))
     {
       DefaultMapper::default_report_failed_instance_creation(task, idx,
                                                              target_proc, target_memory, footprint);
@@ -971,6 +986,245 @@ void NSMapper::map_task(const MapperContext ctx,
     cached_result.mapping = output.chosen_instances;
     cached_result.output_targets = output.output_targets;
     cached_result.output_constraints = output.output_constraints;
+  }
+}
+
+bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
+                                                   Processor target_proc, Memory target_memory,
+                                                   const RegionRequirement &req, unsigned index,
+                                                   std::set<FieldID> &needed_fields,
+                                                   const TaskLayoutConstraintSet &layout_constraints,
+                                                   bool needs_field_constraint_check,
+                                                   std::vector<PhysicalInstance> &instances,
+                                                   size_t *footprint /*= NULL*/)
+//--------------------------------------------------------------------------
+{
+  // Special case for reduction instances, no point in checking
+  // for existing ones and we also know that currently we can only
+  // make a single instance for each field of a reduction
+  if (req.privilege == LEGION_REDUCE)
+  {
+    // Iterate over the fields one by one for now, once Realm figures
+    // out how to deal with reduction instances that contain
+    bool force_new_instances = true; // always have to force new instances
+    LayoutConstraintID our_layout_id =
+        DefaultMapper::default_policy_select_layout_constraints(ctx, target_memory, req,
+                                                                TASK_MAPPING, needs_field_constraint_check, force_new_instances);
+    LayoutConstraintSet our_constraints =
+        runtime->find_layout_constraints(ctx, our_layout_id);
+    instances.resize(instances.size() + req.privilege_fields.size());
+    unsigned idx = 0;
+    for (std::set<FieldID>::const_iterator it =
+             req.privilege_fields.begin();
+         it !=
+         req.privilege_fields.end();
+         it++, idx++)
+    {
+      our_constraints.field_constraint.field_set.clear();
+      our_constraints.field_constraint.field_set.push_back(*it);
+      if (!dsl_default_make_instance(ctx, target_memory, our_constraints,
+                                     instances[idx], TASK_MAPPING, force_new_instances,
+                                     true /*meets*/, req, footprint))
+        return false;
+    }
+    return true;
+  }
+  // Before we do anything else figure out our
+  // constraints for any instances of this task, then we'll
+  // see if these constraints conflict with or are satisfied by
+  // any of the other constraints
+  bool force_new_instances = false;
+  LayoutConstraintID our_layout_id =
+      DefaultMapper::default_policy_select_layout_constraints(ctx, target_memory, req,
+                                                              TASK_MAPPING, needs_field_constraint_check, force_new_instances);
+  const LayoutConstraintSet &our_constraints =
+      runtime->find_layout_constraints(ctx, our_layout_id);
+  for (std::multimap<unsigned, LayoutConstraintID>::const_iterator lay_it =
+           layout_constraints.layouts.lower_bound(index);
+       lay_it !=
+       layout_constraints.layouts.upper_bound(index);
+       lay_it++)
+  {
+    // Get the constraints
+    const LayoutConstraintSet &index_constraints =
+        runtime->find_layout_constraints(ctx, lay_it->second);
+    std::vector<FieldID> overlapping_fields;
+    const std::vector<FieldID> &constraint_fields =
+        index_constraints.field_constraint.get_field_set();
+    if (!constraint_fields.empty())
+    {
+      for (unsigned idx = 0; idx < constraint_fields.size(); idx++)
+      {
+        FieldID fid = constraint_fields[idx];
+        std::set<FieldID>::iterator finder = needed_fields.find(fid);
+        if (finder != needed_fields.end())
+        {
+          overlapping_fields.push_back(fid);
+          // Remove from the needed fields since we're going to handle it
+          needed_fields.erase(finder);
+        }
+      }
+      // If we don't have any overlapping fields, then keep going
+      if (overlapping_fields.empty())
+        continue;
+    }
+    else // otherwise it applies to all the fields
+    {
+      overlapping_fields.insert(overlapping_fields.end(),
+                                needed_fields.begin(), needed_fields.end());
+      needed_fields.clear();
+    }
+    // Now figure out how to make an instance
+    instances.resize(instances.size() + 1);
+    // Check to see if these constraints conflict with our constraints
+    // or whether they entail our mapper preferred constraints
+    if (runtime->do_constraints_conflict(ctx, our_layout_id, lay_it->second) || runtime->do_constraints_entail(ctx, lay_it->second, our_layout_id))
+    {
+      // They conflict or they entail our constraints so we're just going
+      // to make an instance using these constraints
+      // Check to see if they have fields and if not constraints with fields
+      if (constraint_fields.empty())
+      {
+        LayoutConstraintSet creation_constraints = index_constraints;
+        dsl_default_policy_select_constraints(ctx, creation_constraints,
+                                              target_memory, req);
+        creation_constraints.add_constraint(
+            FieldConstraint(overlapping_fields,
+                            index_constraints.field_constraint.contiguous,
+                            index_constraints.field_constraint.inorder));
+        if (!dsl_default_make_instance(ctx, target_memory, creation_constraints,
+                                       instances.back(), TASK_MAPPING, force_new_instances,
+                                       true /*meets*/, req, footprint))
+          return false;
+      }
+      else if (!dsl_default_make_instance(ctx, target_memory, index_constraints,
+                                          instances.back(), TASK_MAPPING, force_new_instances,
+                                          false /*meets*/, req, footprint))
+        return false;
+    }
+    else
+    {
+      // These constraints don't do as much as we want but don't
+      // conflict so make an instance with them and our constraints
+      LayoutConstraintSet creation_constraints = index_constraints;
+      dsl_default_policy_select_constraints(ctx, creation_constraints,
+                                            target_memory, req);
+      creation_constraints.add_constraint(
+          FieldConstraint(overlapping_fields,
+                          creation_constraints.field_constraint.contiguous ||
+                              index_constraints.field_constraint.contiguous,
+                          creation_constraints.field_constraint.inorder ||
+                              index_constraints.field_constraint.inorder));
+      if (!dsl_default_make_instance(ctx, target_memory, creation_constraints,
+                                     instances.back(), TASK_MAPPING, force_new_instances,
+                                     true /*meets*/, req, footprint))
+        return false;
+    }
+  }
+  // If we don't have anymore needed fields, we are done
+  if (needed_fields.empty())
+    return true;
+  // There are no constraints for these fields so we get to do what we want
+  instances.resize(instances.size() + 1);
+  LayoutConstraintSet creation_constraints = our_constraints;
+  std::vector<FieldID> creation_fields;
+  DefaultMapper::default_policy_select_instance_fields(ctx, req, needed_fields,
+                                                       creation_fields);
+  creation_constraints.add_constraint(
+      FieldConstraint(creation_fields, false /*contig*/, false /*inorder*/));
+  if (!dsl_default_make_instance(ctx, target_memory, creation_constraints,
+                                 instances.back(), TASK_MAPPING, force_new_instances,
+                                 true /*meets*/, req, footprint))
+    return false;
+  return true;
+}
+
+bool NSMapper::dsl_default_make_instance(MapperContext ctx,
+                                         Memory target_memory, const LayoutConstraintSet &constraints,
+                                         PhysicalInstance &result, MappingKind kind, bool force_new, bool meets,
+                                         const RegionRequirement &req, size_t *footprint)
+//--------------------------------------------------------------------------
+{
+  bool created = true;
+  LogicalRegion target_region =
+      DefaultMapper::default_policy_select_instance_region(ctx, target_memory, req,
+                                                           constraints, force_new, meets);
+  bool tight_region_bounds = constraints.specialized_constraint.is_exact() || ((req.tag & DefaultMapper::EXACT_REGION) != 0);
+
+  // TODO: deal with task layout constraints that require multiple
+  // region requirements to be mapped to the same instance
+  std::vector<LogicalRegion> target_regions(1, target_region);
+  if (force_new ||
+      ((req.privilege == LEGION_REDUCE) && (kind != COPY_MAPPING)))
+  {
+    if (!runtime->create_physical_instance(ctx, target_memory,
+                                           constraints, target_regions, result, true /*acquire*/,
+                                           0 /*priority*/, tight_region_bounds, footprint))
+      return false;
+  }
+  else
+  {
+    if (!runtime->find_or_create_physical_instance(ctx,
+                                                   target_memory, constraints, target_regions, result, created,
+                                                   true /*acquire*/, 0 /*priority*/, tight_region_bounds, footprint))
+      return false;
+  }
+  if (created)
+  {
+    int priority = DefaultMapper::default_policy_select_garbage_collection_priority(ctx,
+                                                                                    kind, target_memory, result, meets, (req.privilege == LEGION_REDUCE));
+    if ((priority != 0) && !result.is_external_instance())
+      runtime->set_garbage_collection_priority(ctx, result, priority);
+  }
+  return true;
+}
+
+void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
+                                                     LayoutConstraintSet &constraints, Memory target_memory,
+                                                     const RegionRequirement &req)
+//--------------------------------------------------------------------------
+{
+  // See if we are doing a reduction instance
+  if (req.privilege == LEGION_REDUCE)
+  {
+    // Make reduction fold instances
+    constraints.add_constraint(SpecializedConstraint(
+        LEGION_AFFINE_REDUCTION_SPECIALIZE, req.redop));
+    if (not constraints.memory_constraint.has_kind)
+      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
+  }
+  else
+  {
+    // Our base default mapper will try to make instances of containing
+    // all fields (in any order) laid out in SOA format to encourage
+    // maximum re-use by any tasks which use subsets of the fields
+    if (constraints.specialized_constraint.kind == LEGION_NO_SPECIALIZE)
+      constraints.add_constraint(SpecializedConstraint());
+
+    if (not constraints.memory_constraint.has_kind)
+      constraints.add_constraint(MemoryConstraint(target_memory.kind()));
+
+    if (constraints.field_constraint.field_set.size() == 0)
+    {
+      // Normal instance creation
+      std::vector<FieldID> fields;
+      default_policy_select_constraint_fields(ctx, req, fields);
+      constraints.add_constraint(FieldConstraint(fields, false /*contiguous*/,
+                                                 false /*inorder*/));
+    }
+    if (constraints.ordering_constraint.ordering.size() == 0)
+    {
+      IndexSpace is = req.region.get_index_space();
+      Domain domain = runtime->get_index_space_domain(ctx, is);
+      int dim = domain.get_dim();
+      std::vector<DimensionKind> dimension_ordering(dim + 1);
+      for (int i = 0; i < dim; ++i)
+        dimension_ordering[i] =
+            static_cast<DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
+      dimension_ordering[dim] = LEGION_DIM_F;
+      constraints.add_constraint(OrderingConstraint(dimension_ordering,
+                                                    false /*contigous*/));
+    }
   }
 }
 
