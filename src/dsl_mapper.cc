@@ -78,6 +78,7 @@ public:
   static void register_user_sharding_functors(Runtime *runtime);
 
 private:
+  void build_proc_idx_cache() const;
   Processor select_initial_processor_by_kind(const Task &task, Processor::Kind kind);
   bool validate_processor_mapping(MapperContext ctx, const Task &task, Processor proc, bool strict = true);
   template <typename Handle>
@@ -175,7 +176,6 @@ public:
   void select_tasks_to_map(const Legion::Mapping::MapperContext ctx,
                            const SelectMappingInput &input,
                            SelectMappingOutput &output) override;
-  int get_proc_idx(const Processor proc) const;
   Processor idx_to_proc(int proc_idx, const Processor::Kind proc_kind) const;
 
 protected:
@@ -216,6 +216,7 @@ public:
   static bool backpressure;
   static bool untrackValidRegions;
   static bool use_semantic_name;
+  static std::map<Legion::Processor, int> proc_idx_cache;
 };
 
 Tree2Legion NSMapper::tree_result;
@@ -223,6 +224,7 @@ std::unordered_map<std::string, ShardingID> NSMapper::task2sid;
 bool NSMapper::backpressure;
 bool NSMapper::untrackValidRegions;
 bool NSMapper::use_semantic_name;
+std::map<Legion::Processor, int> NSMapper::proc_idx_cache;
 
 std::string NSMapper::get_policy_file()
 {
@@ -348,49 +350,32 @@ inline Processor NSMapper::idx_to_proc(int proc_idx, const Processor::Kind proc_
   return this->local_cpus[0];
 }
 
-int NSMapper::get_proc_idx(const Processor proc) const
+void NSMapper::build_proc_idx_cache() const
 {
-  int proc_idx = 0;
-  switch (proc.kind())
+  for (int i = 0; i < this->local_cpus.size(); i++)
   {
-  case Processor::LOC_PROC:
+    this->proc_idx_cache.insert({this->local_cpus[i], i});
+  }
+  for (int i = 0; i < this->local_gpus.size(); i++)
   {
-    proc_idx = std::find(this->local_cpus.begin(), this->local_cpus.end(), proc) - this->local_cpus.begin();
-    assert(proc_idx < this->local_cpus.size()); // it must find
-    break;
+    this->proc_idx_cache.insert({this->local_gpus[i], i});
   }
-  case Processor::TOC_PROC:
+  for (int i = 0; i < this->local_omps.size(); i++)
   {
-    proc_idx = std::find(this->local_gpus.begin(), this->local_gpus.end(), proc) - this->local_gpus.begin();
-    assert(proc_idx < this->local_gpus.size()); // it must find
-    break;
+    this->proc_idx_cache.insert({this->local_omps[i], i});
   }
-  case Processor::IO_PROC:
-  {
-    proc_idx = std::find(this->local_ios.begin(), this->local_ios.end(), proc) - this->local_ios.begin();
-    break;
-  }
-  case Processor::PY_PROC:
-  {
-    proc_idx = std::find(this->local_pys.begin(), this->local_pys.end(), proc) - this->local_pys.begin();
-    break;
-  }
-  case Processor::PROC_SET:
-  {
-    proc_idx = std::find(this->local_procsets.begin(), this->local_procsets.end(), proc) - this->local_procsets.begin();
-    break;
-  }
-  case Processor::OMP_PROC:
-  {
-    proc_idx = std::find(this->local_omps.begin(), this->local_omps.end(), proc) - this->local_omps.begin();
-    break;
-  }
-  default:
-  {
-    assert(false);
-  }
-  }
-  return proc_idx;
+  // for (int i = 0; i < this->local_ios.size(); i++)
+  // {
+  //   this->proc_idx_cache.insert({this->local_ios[i], i});
+  // }
+  // for (int i = 0; i < this->local_pys.size(); i++)
+  // {
+  //   this->proc_idx_cache.insert({this->local_pys[i], i});
+  // }
+  // for (int i = 0; i < this->local_procsets.size(); i++)
+  // {
+  //   this->proc_idx_cache.insert({this->local_procsets[i], i})
+  // }
 }
 
 Processor NSMapper::select_initial_processor_by_kind(const Task &task, Processor::Kind kind)
@@ -534,9 +519,9 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
     std::vector<std::vector<int>> res;
     if (!task.is_index_space)
     {
-      // res = tree_result.runsingle(&task, this);
-      target_procs.push_back(task.orig_proc);
-      return;
+      res = tree_result.runsingle(&task, this);
+      // target_procs.push_back(task.orig_proc);
+      // return;
     }
     else
     {
@@ -547,16 +532,15 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
     for (int i = 0; i < res.size(); i++)
     {
       assert(res[i][0] == node_idx); // must be on the same node
+      // Todo: for round-robin semantic
+      // We also need to create physical instance for all the returned processors
+      // Currently not implemented due to performance concerns and lack of motivating examples
       target_procs.push_back(idx_to_proc(res[i][1], task.target_proc.kind()));
     }
   }
-
-  // if (!task.is_index_space && task.target_proc.kind() == task.orig_proc.kind()) {
-  // target_procs.push_back(task.orig_proc);
-  // }
   else
   {
-    target_procs.push_back(task.target_proc);
+    DefaultMapper::default_policy_select_target_processors(ctx, task, target_procs);
   }
 }
 
@@ -1445,7 +1429,7 @@ void NSMapper::report_profiling(const MapperContext ctx,
 {
   // We should only get profiling responses if we've enabled backpressuring.
   std::string task_name = task.get_task_name();
-  assert(tree_result.query_max_instance(task_name) > 0);
+  assert(NSMapper::backpressure && tree_result.query_max_instance(task_name) > 0);
   bool is_index_launch = task.is_index_space; // && task.get_slice_domain().get_volume() > 1;
   // taco_iassert(this->enableBackpressure);
   // We should only get profiling responses for tasks that are supposed to be backpressured.
@@ -1882,6 +1866,7 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     query_best_memory_for_proc(this->local_omps[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::REGDMA_MEM);
   }
+  build_proc_idx_cache();
 }
 
 static void create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs)

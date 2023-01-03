@@ -260,7 +260,7 @@ std::vector<int> TaskNode::get_proc_coordinate_from_Legion()
   {
     Processor proc = task_obj->current_proc;
     int node_idx = proc.address_space();
-    int proc_idx = mapper->get_proc_idx(proc);
+    int proc_idx = mapper->proc_idx_cache.at(proc);
     return std::vector<int>{node_idx, proc_idx};
   }
   printf("Warning: index launch task does not support getting node index or processor index for now\n");
