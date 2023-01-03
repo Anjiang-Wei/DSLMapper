@@ -126,6 +126,12 @@ public:
   virtual void dsl_default_policy_select_constraints(MapperContext ctx,
                                                      LayoutConstraintSet &constraints, Memory target_memory,
                                                      const RegionRequirement &req);
+  LayoutConstraintID dsl_default_policy_select_layout_constraints(MapperContext ctx,
+                                                                  Memory target_memory,
+                                                                  const RegionRequirement &req,
+                                                                  MappingKind mapping_kind,
+                                                                  bool needs_field_constraint_check,
+                                                                  bool &force_new_instances);
   // virtual Processor default_policy_select_initial_processor(MapperContext ctx,
   //                                                           const Task &task);
   virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
@@ -1008,8 +1014,8 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
     // out how to deal with reduction instances that contain
     bool force_new_instances = true; // always have to force new instances
     LayoutConstraintID our_layout_id =
-        DefaultMapper::default_policy_select_layout_constraints(ctx, target_memory, req,
-                                                                TASK_MAPPING, needs_field_constraint_check, force_new_instances);
+        dsl_default_policy_select_layout_constraints(ctx, target_memory, req,
+                                                     TASK_MAPPING, needs_field_constraint_check, force_new_instances);
     LayoutConstraintSet our_constraints =
         runtime->find_layout_constraints(ctx, our_layout_id);
     instances.resize(instances.size() + req.privilege_fields.size());
@@ -1035,8 +1041,8 @@ bool NSMapper::dsl_default_create_custom_instances(MapperContext ctx,
   // any of the other constraints
   bool force_new_instances = false;
   LayoutConstraintID our_layout_id =
-      DefaultMapper::default_policy_select_layout_constraints(ctx, target_memory, req,
-                                                              TASK_MAPPING, needs_field_constraint_check, force_new_instances);
+      dsl_default_policy_select_layout_constraints(ctx, target_memory, req,
+                                                   TASK_MAPPING, needs_field_constraint_check, force_new_instances);
   const LayoutConstraintSet &our_constraints =
       runtime->find_layout_constraints(ctx, our_layout_id);
   for (std::multimap<unsigned, LayoutConstraintID>::const_iterator lay_it =
@@ -1177,6 +1183,94 @@ bool NSMapper::dsl_default_make_instance(MapperContext ctx,
       runtime->set_garbage_collection_priority(ctx, result, priority);
   }
   return true;
+}
+
+LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
+    MapperContext ctx, Memory target_memory,
+    const RegionRequirement &req,
+    MappingKind mapping_kind,
+    bool needs_field_constraint_check,
+    bool &force_new_instances)
+//--------------------------------------------------------------------------
+{
+  // Do something special for reductions and
+  // it is not an explicit region-to-region copy
+  if ((req.privilege == LEGION_REDUCE) && (mapping_kind != COPY_MAPPING))
+  {
+    // Always make new reduction instances
+    force_new_instances = true;
+    std::pair<Memory::Kind, ReductionOpID> constraint_key(
+        target_memory.kind(), req.redop);
+    std::map<std::pair<Memory::Kind, ReductionOpID>, LayoutConstraintID>::
+        const_iterator finder = reduction_constraint_cache.find(
+            constraint_key);
+    // No need to worry about field constraint checks here
+    // since we don't actually have any field constraints
+    if (finder != reduction_constraint_cache.end())
+      return finder->second;
+    LayoutConstraintSet constraints;
+    dsl_default_policy_select_constraints(ctx, constraints, target_memory, req);
+    LayoutConstraintID result =
+        runtime->register_layout(ctx, constraints);
+    // Save the result
+    reduction_constraint_cache[constraint_key] = result;
+    return result;
+  }
+  // We always set force_new_instances to false since we are
+  // deciding to optimize for minimizing memory usage instead
+  // of avoiding Write-After-Read (WAR) dependences
+  force_new_instances = false;
+  // See if we've already made a constraint set for this layout
+  std::pair<Memory::Kind, FieldSpace> constraint_key(target_memory.kind(),
+                                                     req.region.get_field_space());
+  std::map<std::pair<Memory::Kind, FieldSpace>, LayoutConstraintID>::
+      const_iterator finder = layout_constraint_cache.find(constraint_key);
+  if (finder != layout_constraint_cache.end())
+  {
+    // If we don't need a constraint check we are already good
+    if (!needs_field_constraint_check)
+      return finder->second;
+    // Check that the fields still are the same, if not, fall through
+    // so that we make a new set of constraints
+    const LayoutConstraintSet &old_constraints =
+        runtime->find_layout_constraints(ctx, finder->second);
+    // Should be only one unless things have changed
+    const std::vector<FieldID> &old_set =
+        old_constraints.field_constraint.get_field_set();
+    // Check to make sure the field sets are still the same
+    std::vector<FieldID> new_fields;
+    runtime->get_field_space_fields(ctx,
+                                    constraint_key.second, new_fields);
+    if (new_fields.size() == old_set.size())
+    {
+      std::set<FieldID> old_fields(old_set.begin(), old_set.end());
+      bool still_equal = true;
+      for (unsigned idx = 0; idx < new_fields.size(); idx++)
+      {
+        if (old_fields.find(new_fields[idx]) == old_fields.end())
+        {
+          still_equal = false;
+          break;
+        }
+      }
+      if (still_equal)
+        return finder->second;
+    }
+    // Otherwise we fall through and make a new constraint which
+    // will also update the cache
+  }
+  // Fill in the constraints
+  LayoutConstraintSet constraints;
+  dsl_default_policy_select_constraints(ctx, constraints, target_memory, req);
+  // Do the registration
+  LayoutConstraintID result =
+      runtime->register_layout(ctx, constraints);
+  // Record our results, there is a benign race here as another mapper
+  // call could have registered the exact same registration constraints
+  // here if we were preempted during the registration call. The
+  // constraint sets are identical though so it's all good.
+  layout_constraint_cache[constraint_key] = result;
+  return result;
 }
 
 void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
