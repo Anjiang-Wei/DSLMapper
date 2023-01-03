@@ -113,9 +113,9 @@ private:
 public:
   virtual Processor default_policy_select_initial_processor(MapperContext ctx,
                                                             const Task &task);
-  virtual void default_policy_select_target_processors(MapperContext ctx,
-                                                       const Task &task,
-                                                       std::vector<Processor> &target_procs);
+  virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
+                                                           const Task &task,
+                                                           std::vector<Processor> &target_procs);
   // virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
   //                                                             Memory target_memory,
   //                                                             const RegionRequirement &req,
@@ -503,9 +503,9 @@ Processor NSMapper::default_policy_select_initial_processor(MapperContext ctx, c
   return DefaultMapper::default_policy_select_initial_processor(ctx, task);
 }
 
-void NSMapper::default_policy_select_target_processors(MapperContext ctx,
-                                                       const Task &task,
-                                                       std::vector<Processor> &target_procs)
+void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
+                                                           const Task &task,
+                                                           std::vector<Processor> &target_procs)
 {
   if (tree_result.should_fall_back(task.get_task_name(), task.target_proc.kind()) == false)
   {
@@ -730,13 +730,13 @@ void NSMapper::map_task(const MapperContext ctx,
 {
   Processor::Kind target_kind = task.target_proc.kind();
   // Get the variant that we are going to use to map this task
-  VariantInfo chosen = default_find_preferred_variant(task, ctx,
-                                                      true /*needs tight bound*/, true /*cache*/, target_kind);
+  VariantInfo chosen = DefaultMapper::default_find_preferred_variant(task, ctx,
+                                                                     true /*needs tight bound*/, true /*cache*/, target_kind);
   output.chosen_variant = chosen.variant;
-  output.task_priority = default_policy_select_task_priority(ctx, task);
+  output.task_priority = DefaultMapper::default_policy_select_task_priority(ctx, task);
   output.postmap_task = false;
   // Figure out our target processors
-  default_policy_select_target_processors(ctx, task, output.target_procs);
+  dsl_default_policy_select_target_processors(ctx, task, output.target_procs);
   Processor target_proc = output.target_procs[0];
   // See if we have an inner variant, if we do virtually map all the regions
   // We don't even both caching these since they are so simple
@@ -780,20 +780,20 @@ void NSMapper::map_task(const MapperContext ctx,
              it++)
         {
           MemoryConstraint mem_constraint =
-              find_memory_constraint(ctx, task, output.chosen_variant, *it);
-          Memory target_memory = default_policy_select_target_memory(ctx,
-                                                                     target_proc,
-                                                                     task.regions[*it],
-                                                                     mem_constraint);
+              DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, *it);
+          Memory target_memory = DefaultMapper::default_policy_select_target_memory(ctx,
+                                                                                    target_proc,
+                                                                                    task.regions[*it],
+                                                                                    mem_constraint);
           std::set<FieldID> copy = task.regions[*it].privilege_fields;
           size_t footprint;
-          if (!default_create_custom_instances(ctx, target_proc,
-                                               target_memory, task.regions[*it], *it, copy,
-                                               layout_constraints, false /*needs constraint check*/,
-                                               output.chosen_instances[*it], &footprint))
+          if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
+                                                              target_memory, task.regions[*it], *it, copy,
+                                                              layout_constraints, false /*needs constraint check*/,
+                                                              output.chosen_instances[*it], &footprint))
           {
-            default_report_failed_instance_creation(task, *it,
-                                                    target_proc, target_memory, footprint);
+            DefaultMapper::default_report_failed_instance_creation(task, *it,
+                                                                   target_proc, target_memory, footprint);
           }
         }
       }
@@ -802,10 +802,10 @@ void NSMapper::map_task(const MapperContext ctx,
   }
   // Should we cache this task?
   CachedMappingPolicy cache_policy =
-      default_policy_select_task_cache_policy(ctx, task);
+      DefaultMapper::default_policy_select_task_cache_policy(ctx, task);
 
   // First, let's see if we've cached a result of this task mapping
-  const unsigned long long task_hash = compute_task_hash(task);
+  const unsigned long long task_hash = DefaultMapper::compute_task_hash(task);
   std::pair<TaskID, Processor> cache_key(task.task_id, target_proc);
   std::map<std::pair<TaskID, Processor>,
            std::list<CachedTaskMapping>>::const_iterator
@@ -848,7 +848,7 @@ void NSMapper::map_task(const MapperContext ctx,
       // Have to renew our iterators since they might have been
       // invalidated during the 'acquire_and_filter_instances' call
       dsl_default_remove_cached_task(ctx, output.chosen_variant,
-                                 task_hash, cache_key, output.chosen_instances);
+                                     task_hash, cache_key, output.chosen_instances);
     }
   }
   // We didn't find a cached version of the mapping so we need to
@@ -864,9 +864,9 @@ void NSMapper::map_task(const MapperContext ctx,
   {
     for (std::vector<unsigned>::const_iterator it = input.premapped_regions.begin();
          it != input.premapped_regions.end(); it++)
-        {
-          done_regions[*it] = true;
-        }
+    {
+      done_regions[*it] = true;
+    }
   }
   const TaskLayoutConstraintSet &layout_constraints =
       runtime->find_task_layout_constraints(ctx,
@@ -884,21 +884,21 @@ void NSMapper::map_task(const MapperContext ctx,
       continue;
     // See if this is a reduction
     MemoryConstraint mem_constraint =
-        find_memory_constraint(ctx, task, output.chosen_variant, idx);
-    Memory target_memory = default_policy_select_target_memory(ctx,
-                                                               target_proc,
-                                                               task.regions[idx],
-                                                               mem_constraint);
+        DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, idx);
+    Memory target_memory = DefaultMapper::default_policy_select_target_memory(ctx,
+                                                                              target_proc,
+                                                                              task.regions[idx],
+                                                                              mem_constraint);
     if (task.regions[idx].privilege == LEGION_REDUCE)
     {
       size_t footprint;
-      if (!default_create_custom_instances(ctx, target_proc,
-                                           target_memory, task.regions[idx], idx, missing_fields[idx],
-                                           layout_constraints, needs_field_constraint_check,
-                                           output.chosen_instances[idx], &footprint))
+      if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
+                                                          target_memory, task.regions[idx], idx, missing_fields[idx],
+                                                          layout_constraints, needs_field_constraint_check,
+                                                          output.chosen_instances[idx], &footprint))
       {
-        default_report_failed_instance_creation(task, idx,
-                                                target_proc, target_memory, footprint);
+        DefaultMapper::default_report_failed_instance_creation(task, idx,
+                                                               target_proc, target_memory, footprint);
       }
       continue;
     }
@@ -940,23 +940,23 @@ void NSMapper::map_task(const MapperContext ctx,
     }
     // Otherwise make normal instances for the given region
     size_t footprint;
-    if (!default_create_custom_instances(ctx, target_proc,
-                                         target_memory, task.regions[idx], idx, missing_fields[idx],
-                                         layout_constraints, needs_field_constraint_check,
-                                         output.chosen_instances[idx], &footprint))
+    if (!DefaultMapper::default_create_custom_instances(ctx, target_proc,
+                                                        target_memory, task.regions[idx], idx, missing_fields[idx],
+                                                        layout_constraints, needs_field_constraint_check,
+                                                        output.chosen_instances[idx], &footprint))
     {
-      default_report_failed_instance_creation(task, idx,
-                                              target_proc, target_memory, footprint);
+      DefaultMapper::default_report_failed_instance_creation(task, idx,
+                                                             target_proc, target_memory, footprint);
     }
   }
 
   // Finally we set a target memory for output instances
   Memory target_memory =
-      default_policy_select_output_target(ctx, task.target_proc);
+      DefaultMapper::default_policy_select_output_target(ctx, task.target_proc);
   for (unsigned i = 0; i < task.output_regions.size(); ++i)
   {
     output.output_targets[i] = target_memory;
-    default_policy_select_output_constraints(
+    DefaultMapper::default_policy_select_output_constraints(
         task, output.output_constraints[i], task.output_regions[i]);
   }
 
