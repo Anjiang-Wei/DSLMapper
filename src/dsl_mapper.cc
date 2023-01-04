@@ -76,9 +76,9 @@ public:
   static std::string get_policy_file();
   static void parse_policy_file(const std::string &policy_file);
   static void register_user_sharding_functors(Runtime *runtime);
+  void build_proc_idx_cache();
 
 private:
-  void build_proc_idx_cache() const;
   Processor select_initial_processor_by_kind(const Task &task, Processor::Kind kind);
   bool validate_processor_mapping(MapperContext ctx, const Task &task, Processor proc, bool strict = true);
   template <typename Handle>
@@ -215,12 +215,13 @@ private:
   std::map<std::pair<TaskID, Processor>, std::list<CachedTaskMapping>> dsl_cached_task_mappings;
 
 public:
+  std::map<Processor, int> proc_idx_cache;
   static Tree2Legion tree_result;
   static std::unordered_map<std::string, ShardingID> task2sid;
   static bool backpressure;
   static bool untrackValidRegions;
   static bool use_semantic_name;
-  static std::map<Legion::Processor, int> proc_idx_cache;
+  static bool select_source_by_bandwidth;
 };
 
 Tree2Legion NSMapper::tree_result;
@@ -228,7 +229,7 @@ std::unordered_map<std::string, ShardingID> NSMapper::task2sid;
 bool NSMapper::backpressure;
 bool NSMapper::untrackValidRegions;
 bool NSMapper::use_semantic_name;
-std::map<Legion::Processor, int> NSMapper::proc_idx_cache;
+bool NSMapper::select_source_by_bandwidth;
 
 std::string NSMapper::get_policy_file()
 {
@@ -354,7 +355,7 @@ inline Processor NSMapper::idx_to_proc(int proc_idx, const Processor::Kind proc_
   return this->local_cpus[0];
 }
 
-void NSMapper::build_proc_idx_cache() const
+void NSMapper::build_proc_idx_cache()
 {
   for (int i = 0; i < this->local_cpus.size(); i++)
   {
@@ -1631,12 +1632,17 @@ void NSMapper::select_sharding_functor(
 }
 
 void NSMapper::default_policy_select_sources(MapperContext ctx,
-                                   const PhysicalInstance &target,
-                                   const std::vector<PhysicalInstance> &sources,
-                                   std::deque<PhysicalInstance> &ranking)
+                                             const PhysicalInstance &target,
+                                             const std::vector<PhysicalInstance> &sources,
+                                             std::deque<PhysicalInstance> &ranking)
 {
   // Let the default mapper sort the sources by bandwidth
   DefaultMapper::default_policy_select_sources(ctx, target, sources, ranking);
+
+  if (this->select_source_by_bandwidth)
+  {
+    return;
+  }
 
   // Give priority to those with better overlapping
   std::vector<std::pair<PhysicalInstance, unsigned /*size of intersection*/>>
@@ -1902,7 +1908,6 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     query_best_memory_for_proc(this->local_omps[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::REGDMA_MEM);
   }
-  build_proc_idx_cache();
 }
 
 static void create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs)
@@ -1913,6 +1918,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
   NSMapper::backpressure = false;
   NSMapper::use_semantic_name = false;
   NSMapper::untrackValidRegions = false;
+  NSMapper::select_source_by_bandwidth = false;
   for (auto idx = 0; idx < args.argc; ++idx)
   {
     if (strcmp(args.argv[idx], "-wrapper") == 0)
@@ -1932,6 +1938,10 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     {
       NSMapper::use_semantic_name = true;
     }
+    if (strcmp(args.argv[idx], "-tm:select_source_by_bandwidth") == 0)
+    {
+      NSMapper::select_source_by_bandwidth = true;
+    }
   }
   for (std::set<Processor>::const_iterator it = local_procs.begin();
        it != local_procs.end(); it++)
@@ -1941,12 +1951,12 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     {
       mapper = new NSMapper(runtime->get_mapper_runtime(), machine, *it, "ns_mapper", true);
       mapper->register_user_sharding_functors(runtime);
-      // todo: change back to this in final version
-      // backpressure = (mapper->tree_result.task2limit.size() > 0);
+      mapper->build_proc_idx_cache();
     }
     else
     {
       mapper = new NSMapper(runtime->get_mapper_runtime(), machine, *it, "ns_mapper", false);
+      mapper->build_proc_idx_cache();
     }
     if (use_logging_wrapper)
     {
