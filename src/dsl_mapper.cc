@@ -160,6 +160,10 @@ public:
                           const Task &task,
                           const SliceTaskInput &input,
                           SliceTaskOutput &output) override;
+  virtual void default_policy_select_sources(MapperContext ctx,
+                                             const PhysicalInstance &target,
+                                             const std::vector<PhysicalInstance> &sources,
+                                             std::deque<PhysicalInstance> &ranking) override;
   virtual void select_task_options(const MapperContext ctx,
                                    const Task &task,
                                    TaskOptions &output);
@@ -1626,6 +1630,42 @@ void NSMapper::select_sharding_functor(
   }
 }
 
+void NSMapper::default_policy_select_sources(MapperContext ctx,
+                                   const PhysicalInstance &target,
+                                   const std::vector<PhysicalInstance> &sources,
+                                   std::deque<PhysicalInstance> &ranking)
+{
+  // Let the default mapper sort the sources by bandwidth
+  DefaultMapper::default_policy_select_sources(ctx, target, sources, ranking);
+
+  // Give priority to those with better overlapping
+  std::vector<std::pair<PhysicalInstance, unsigned /*size of intersection*/>>
+      cover_ranking(sources.size());
+
+  Domain target_domain = target.get_instance_domain();
+  for (std::deque<PhysicalInstance>::const_reverse_iterator it = ranking.rbegin();
+       it != ranking.rend(); it++)
+  {
+    const unsigned idx = it - ranking.rbegin();
+    const PhysicalInstance &source = (*it);
+    Domain source_domain = source.get_instance_domain();
+    Domain intersection = source_domain.intersection(target_domain);
+    cover_ranking[idx] = std::pair<PhysicalInstance, unsigned>(source, intersection.get_volume());
+  }
+
+  // Sort them by the size of intersecting area
+  std::stable_sort(cover_ranking.begin(), cover_ranking.end(), physical_sort_func);
+
+  // Iterate from largest intersection, bandwidth to smallest
+  ranking.clear();
+  for (std::vector<std::pair<PhysicalInstance, unsigned>>::
+           const_reverse_iterator it = cover_ranking.rbegin();
+       it != cover_ranking.rend(); it++)
+  {
+    ranking.push_back(it->first);
+  }
+}
+
 void NSMapper::select_task_options(const MapperContext ctx,
                                    const Task &task,
                                    TaskOptions &output)
@@ -1681,11 +1721,7 @@ void NSMapper::custom_decompose_points(
       size_t slice_res =
           (size_t)tree_result.runindex(taskname, index_point, index_launch_space, targets[0].kind())[0][1];
       // log_mapper.debug("--> %ld", slice_res);
-      if (slice_res >= targets.size())
-      {
-        // log_mapper.error("%ld >= %ld, targets out of bound!", slice_res, targets.size());
-        assert(false);
-      }
+      assert(slice_res < targets.size());
       // Construct the output slice for Legion.
       Legion::DomainT<DIM, Legion::coord_t> slice;
       slice.bounds.lo = point;
