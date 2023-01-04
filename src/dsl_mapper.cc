@@ -1463,8 +1463,6 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
                                    const SelectMappingInput &input,
                                    SelectMappingOutput &output)
 {
-  // if (this->tree_result.task2limit.size() == 0)
-  //  todo: change this in final version
   if (NSMapper::backpressure == false)
   {
     DefaultMapper::select_tasks_to_map(ctx, input, output);
@@ -1501,7 +1499,7 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
       auto task = *it;
       bool schedule = true;
       std::string task_name = task->get_task_name();
-      bool is_index_launch = task->is_index_space; // && task->get_slice_domain().get_volume() > 1;
+      bool is_index_launch = task->is_index_space && task->get_slice_domain().get_volume() > 1;
       int max_num = tree_result.query_max_instance(task_name);
       if (max_num > 0)
       {
@@ -1527,17 +1525,14 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
         {
           // Otherwise, we can schedule the task. Create a new event
           // and queue it up on the processor.
-          is_index_launch = false;
-          // adhoc solution: task->get_slice_domain() is not supported on this specific commit of Legion
-          // todo: fix this problem
           if (is_index_launch)
           {
-            // this->backPressureQueue[task->orig_proc].push_back({
-            //   .id = std::make_pair(task->get_slice_domain(), task->get_context_index()),
-            //   // .id = task->get_unique_id(),
-            //   .event = this->runtime->create_mapper_event(ctx),
-            //   .schedTime = schedTime,
-            // });
+            this->backPressureQueue[task->orig_proc].push_back({
+              .id = std::make_pair(task->get_slice_domain(), task->get_context_index()),
+              // .id2 = task->get_unique_id(),
+              .event = this->runtime->create_mapper_event(ctx),
+              .schedTime = schedTime,
+            });
           }
           else
           {
@@ -1877,7 +1872,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
     {
       NSMapper::backpressure = true;
     }
-    if (strcmp(args.argv[idx], "-tm:untrack_valid_regions"))
+    if (strcmp(args.argv[idx], "-tm:untrack_valid_regions") == 0)
     {
       NSMapper::untrackValidRegions = true;
     }
