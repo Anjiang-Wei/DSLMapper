@@ -40,11 +40,6 @@ namespace Legion
 {
   namespace Internal
   {
-    /**
-     * \class UserShardingFunctor
-     * The cyclic sharding functor just round-robins the points
-     * onto the available set of shards
-     */
     class UserShardingFunctor : public ShardingFunctor
     {
     private:
@@ -88,6 +83,8 @@ private:
   void get_handle_names(const MapperContext ctx,
                         const RegionRequirement &req,
                         std::vector<std::string> &names);
+  std::map<Legion::LogicalRegion, std::vector<std::string>> Region2Names;
+  // Backpressure: https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc
   // InFlightTask represents a task currently being executed.
   struct InFlightTask
   {
@@ -102,7 +99,6 @@ private:
   // backPressureQueue maintains state for each processor about how many
   // tasks that are marked to be backpressured are executing on the processor.
   std::map<Legion::Processor, std::deque<InFlightTask>> backPressureQueue;
-  std::map<Legion::LogicalRegion, std::vector<std::string>> Region2Names;
 
 public:
   virtual bool dsl_default_create_custom_instances(MapperContext ctx,
@@ -130,8 +126,8 @@ public:
                                                                   MappingKind mapping_kind,
                                                                   bool needs_field_constraint_check,
                                                                   bool &force_new_instances);
-  // virtual Processor default_policy_select_initial_processor(MapperContext ctx,
-  //                                                           const Task &task);
+  virtual Processor dsl_default_policy_select_initial_processor(MapperContext ctx,
+                                                                const Task &task);
   virtual void dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
                                                            std::vector<Processor> &target_procs);
@@ -141,21 +137,20 @@ public:
                                                  unsigned idx,
                                                  const RegionRequirement &req,
                                                  MemoryConstraint mc);
-  // virtual LogicalRegion default_policy_select_instance_region(MapperContext ctx,
-  //                                                             Memory target_memory,
-  //                                                             const RegionRequirement &req,
-  //                                                             const LayoutConstraintSet &constraints,
-  //                                                             bool force_new_instances,
-  //                                                             bool meets_constraints);
+  virtual LogicalRegion dsl_default_policy_select_instance_region(MapperContext ctx,
+                                                                  Memory target_memory,
+                                                                  const RegionRequirement &req,
+                                                                  const LayoutConstraintSet &constraints,
+                                                                  bool force_new_instances,
+                                                                  bool meets_constraints);
   virtual void map_task(const MapperContext ctx,
                         const Task &task,
                         const MapTaskInput &input,
                         MapTaskOutput &output);
-  virtual void select_sharding_functor(
-      const MapperContext ctx,
-      const Task &task,
-      const SelectShardingFunctorInput &input,
-      SelectShardingFunctorOutput &output);
+  virtual void select_sharding_functor(const MapperContext ctx,
+                                       const Task &task,
+                                       const SelectShardingFunctorInput &input,
+                                       SelectShardingFunctorOutput &output);
   virtual void slice_task(const MapperContext ctx,
                           const Task &task,
                           const SliceTaskInput &input,
@@ -166,7 +161,7 @@ public:
                                              std::deque<PhysicalInstance> &ranking) override;
   virtual void select_task_options(const MapperContext ctx,
                                    const Task &task,
-                                   TaskOptions &output);
+                                   TaskOptions &output) override;
   void dsl_default_remove_cached_task(MapperContext ctx,
                                       VariantID chosen_variant,
                                       unsigned long long task_hash,
@@ -189,29 +184,20 @@ protected:
                               MapTaskOutput &output);
   Memory query_best_memory_for_proc(const Processor &proc,
                                     const Memory::Kind &mem_target_kind);
-  void custom_slice_task(const Task &task,
-                         const std::vector<Processor> &local_procs,
-                         const std::vector<Processor> &remote_procs,
-                         const SliceTaskInput &input,
-                         SliceTaskOutput &output);
+  void dsl_slice_task(const Task &task,
+                      const std::vector<Processor> &local_procs,
+                      const SliceTaskInput &input,
+                      SliceTaskOutput &output);
   template <int DIM>
-  void custom_decompose_points(
-      std::vector<int> &index_launch_space,
-      const DomainT<DIM, coord_t> &point_space,
-      const std::vector<Processor> &targets,
-      bool recurse, bool stealable,
-      std::vector<TaskSlice> &slices, std::string taskname);
+  void dsl_decompose_points(std::vector<int> &index_launch_space,
+                            const DomainT<DIM, coord_t> &point_space,
+                            const std::vector<Processor> &targets,
+                            bool recurse, bool stealable,
+                            std::vector<TaskSlice> &slices, std::string taskname);
 
 private:
-  // std::unordered_map<TaskID, Processor::Kind> cached_task_policies;
-
-  // std::unordered_set<std::string> has_region_policy;
-  using HashFn2 = PairHash<TaskID, uint32_t>;
-  std::unordered_map<std::pair<TaskID, uint32_t>, Memory::Kind, HashFn2> cached_region_policies;
-  std::unordered_map<std::pair<TaskID, uint32_t>, std::string, HashFn2> cached_region_names;
-  std::unordered_map<std::pair<TaskID, uint32_t>, LayoutConstraintSet, HashFn2> cached_region_layout;
+  std::unordered_map<TaskID, Processor::Kind> cached_task_policies;
   std::map<std::pair<Legion::Processor, Memory::Kind>, Legion::Memory> cached_affinity_proc2mem;
-
   std::map<std::pair<TaskID, Processor>, std::list<CachedTaskMapping>> dsl_cached_task_mappings;
 
 public:
@@ -243,7 +229,7 @@ std::string NSMapper::get_policy_file()
       return args.argv[idx + 1];
     }
   }
-  // log_mapper.error("Policy file is missing");
+  printf("Policy file is missing\n");
   exit(-1);
 }
 
@@ -385,7 +371,7 @@ void NSMapper::build_proc_idx_cache()
 
 Processor NSMapper::select_initial_processor_by_kind(const Task &task, Processor::Kind kind)
 {
-  Processor result;
+  Processor result = local_cpus.front();
   switch (kind)
   {
   case Processor::LOC_PROC:
@@ -450,9 +436,8 @@ bool NSMapper::validate_processor_mapping(MapperContext ctx, const Task &task, P
     if (strict)
     {
       auto kind_str = processor_kind_to_string(proc.kind());
-      // log_mapper.error(
-      //   "Invalid policy: task %s requested %s, but has no valid task variant for the kind",
-      //   task.get_task_name(), kind_str.c_str());
+      printf("Invalid policy: task %s requested %s, but has no valid task variant for the kind",
+             task.get_task_name(), kind_str.c_str());
       exit(-1);
     }
     else
@@ -463,57 +448,56 @@ bool NSMapper::validate_processor_mapping(MapperContext ctx, const Task &task, P
   return true;
 }
 
-// Processor NSMapper::default_policy_select_initial_processor(MapperContext ctx, const Task &task)
-// {
-//   // todo: add support for selecting another node designated by DSL policy
-//   {
-//     auto finder = cached_task_policies.find(task.task_id);
-//     if (finder != cached_task_policies.end())
-//     {
-//       auto result = select_initial_processor_by_kind(task, finder->second);
-//       validate_processor_mapping(ctx, task, result);
-//       // log_mapper.debug() << task.get_task_name() << " mapped by cache: " << processor_kind_to_string(result.kind()).c_str();
-//       return result;
-//     }
-//   }
-//   std::string task_name = task.get_task_name();
-//   {
-//     std::vector<Processor::Kind> proc_kind_vec;
-//     if (tree_result.task_policies.count(task_name) > 0)
-//     {
-//       proc_kind_vec = tree_result.task_policies.at(task_name);
-//     }
-//     else if (tree_result.task_policies.count("*") > 0)
-//     {
-//       proc_kind_vec = tree_result.task_policies.at("*");
-//     }
-//     for (size_t i = 0; i < proc_kind_vec.size(); i++)
-//     {
-//       auto result = select_initial_processor_by_kind(task, proc_kind_vec[i]);
-//       if (result.kind() != proc_kind_vec[i])
-//       {
-//         // log_mapper.debug("Mapping %s onto %s cannot satisfy, try next",
-//         // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
-//         continue;
-//       }
-//       // default policy validation should not be strict, allowing fallback
-//       bool success = validate_processor_mapping(ctx, task, result, false);
-//       if (success)
-//       {
-//         // log_mapper.debug() << task_name << " mapped to " << processor_kind_to_string(result.kind()).c_str();
-//         cached_task_policies[task.task_id] = result.kind();
-//         return result;
-//       }
-//       else
-//       {
-//         // log_mapper.debug("Mapping %s onto %s cannot satisfy with validation, try next",
-//         // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
-//       }
-//     }
-//   }
-//   // log_mapper.debug("%s falls back to the default policy", task_name.c_str());
-//   return DefaultMapper::default_policy_select_initial_processor(ctx, task);
-// }
+Processor NSMapper::dsl_default_policy_select_initial_processor(MapperContext ctx, const Task &task)
+{
+  {
+    auto finder = cached_task_policies.find(task.task_id);
+    if (finder != cached_task_policies.end())
+    {
+      auto result = select_initial_processor_by_kind(task, finder->second);
+      validate_processor_mapping(ctx, task, result);
+      // log_mapper.debug() << task.get_task_name() << " mapped by cache: " << processor_kind_to_string(result.kind()).c_str();
+      return result;
+    }
+  }
+  std::string task_name = task.get_task_name();
+  {
+    std::vector<Processor::Kind> proc_kind_vec;
+    if (tree_result.task_policies.count(task_name) > 0)
+    {
+      proc_kind_vec = tree_result.task_policies.at(task_name);
+    }
+    else if (tree_result.task_policies.count("*") > 0)
+    {
+      proc_kind_vec = tree_result.task_policies.at("*");
+    }
+    for (size_t i = 0; i < proc_kind_vec.size(); i++)
+    {
+      auto result = select_initial_processor_by_kind(task, proc_kind_vec[i]);
+      if (result.kind() != proc_kind_vec[i])
+      {
+        // log_mapper.debug("Mapping %s onto %s cannot satisfy, try next",
+        // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
+        continue;
+      }
+      // default policy validation should not be strict, allowing fallback
+      bool success = validate_processor_mapping(ctx, task, result, false);
+      if (success)
+      {
+        // log_mapper.debug() << task_name << " mapped to " << processor_kind_to_string(result.kind()).c_str();
+        cached_task_policies[task.task_id] = result.kind();
+        return result;
+      }
+      else
+      {
+        // log_mapper.debug("Mapping %s onto %s cannot satisfy with validation, try next",
+        // task_name.c_str(), processor_kind_to_string(proc_kind_vec[i]).c_str());
+      }
+    }
+  }
+  // log_mapper.debug("%s falls back to the default policy", task_name.c_str());
+  return DefaultMapper::default_policy_select_initial_processor(ctx, task);
+}
 
 void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
@@ -538,8 +522,8 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
     {
       assert(res[i][0] == node_idx); // must be on the same node
       // Todo: for round-robin semantic
-      // We also need to create physical instance for all the returned processors
-      // Currently not implemented due to performance concerns and lack of motivating examples
+      // We might also need to create physical instance for all the returned processors
+      // Currently not implemented due to lack of motivating examples
       target_procs.push_back(idx_to_proc(res[i][1], task.target_proc.kind()));
     }
   }
@@ -549,15 +533,16 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
   }
 }
 
-// LogicalRegion NSMapper::default_policy_select_instance_region(MapperContext ctx,
-//                                                               Memory target_memory,
-//                                                               const RegionRequirement &req,
-//                                                               const LayoutConstraintSet &constraints,
-//                                                               bool force_new_instances,
-//                                                               bool meets_constraints)
-// {
-//   return req.region;
-// }
+LogicalRegion NSMapper::dsl_default_policy_select_instance_region(MapperContext ctx,
+                                                                  Memory target_memory,
+                                                                  const RegionRequirement &req,
+                                                                  const LayoutConstraintSet &constraints,
+                                                                  bool force_new_instances,
+                                                                  bool meets_constraints)
+{
+  // Not invoked anywhere yet; can be used in map_task to replace default_policy_select_instance_region
+  return req.region;
+}
 
 template <typename Handle>
 void NSMapper::maybe_append_handle_name(const MapperContext ctx,
@@ -755,7 +740,7 @@ void NSMapper::map_task(const MapperContext ctx,
   VariantInfo chosen = DefaultMapper::default_find_preferred_variant(task, ctx,
                                                                      true /*needs tight bound*/, true /*cache*/, target_kind);
   output.chosen_variant = chosen.variant;
-  output.task_priority = DefaultMapper::default_policy_select_task_priority(ctx, task);
+  output.task_priority = 0;
   output.postmap_task = false;
   // Figure out our target processors
   dsl_default_policy_select_target_processors(ctx, task, output.target_procs);
@@ -1231,15 +1216,14 @@ bool NSMapper::dsl_default_make_instance(MapperContext ctx,
   return true;
 }
 
-LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(
-    MapperContext ctx,
-    std::string task_name,
-    unsigned idx,
-    Memory target_memory,
-    const RegionRequirement &req,
-    MappingKind mapping_kind,
-    bool needs_field_constraint_check,
-    bool &force_new_instances)
+LayoutConstraintID NSMapper::dsl_default_policy_select_layout_constraints(MapperContext ctx,
+                                                                          std::string task_name,
+                                                                          unsigned idx,
+                                                                          Memory target_memory,
+                                                                          const RegionRequirement &req,
+                                                                          MappingKind mapping_kind,
+                                                                          bool needs_field_constraint_check,
+                                                                          bool &force_new_instances)
 //--------------------------------------------------------------------------
 {
   // Do something special for reductions and
@@ -1415,12 +1399,6 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
 
     // Exact Region Constraint
     bool special_exact = dsl_constraint.exact;
-    /*
-       SpecializedConstraint(SpecializedKind kind = LEGION_AFFINE_SPECIALIZE
-                             ReductionOpID redop = 0,
-                             bool no_access = false,
-                             bool exact = false
-    */
     if (dsl_constraint.compact)
     {
       // sparse instance; we use SpecializedConstraint, which unfortunately has to override the default mapper
@@ -1440,10 +1418,7 @@ void NSMapper::report_profiling(const MapperContext ctx,
   // We should only get profiling responses if we've enabled backpressuring.
   std::string task_name = task.get_task_name();
   assert(NSMapper::backpressure && tree_result.query_max_instance(task_name) > 0);
-  bool is_index_launch = task.is_index_space; // && task.get_slice_domain().get_volume() > 1;
-  // taco_iassert(this->enableBackpressure);
-  // We should only get profiling responses for tasks that are supposed to be backpressured.
-  // taco_iassert((task.tag & BACKPRESSURE_TASK) != 0);
+  bool is_index_launch = task.is_index_space && task.get_slice_domain().get_volume() > 1;
   auto prof = input.profiling_responses.get_measurement<ProfilingMeasurements::OperationStatus>();
   // All our tasks should complete successfully.
   assert(prof->result == Realm::ProfilingMeasurements::OperationStatus::COMPLETED_SUCCESSFULLY);
@@ -1456,16 +1431,14 @@ void NSMapper::report_profiling(const MapperContext ctx,
   // Find this task in the queue.
   for (auto it = inflight.begin(); it != inflight.end(); it++)
   {
-    is_index_launch = false;
-    // adhoc solution: task.get_slice_domain() is not supported on this specific version of Legion
-    // todo: fix this adhoc solution
     if (is_index_launch)
-    { // if (it->id == task.get_unique_id()) {
-      // if (it->id == std::make_pair(task.get_slice_domain(), task.get_context_index())) {
-      //   event = it->event;
-      //   inflight.erase(it);
-      //   break;
-      // }
+    {
+      if (it->id == std::make_pair(task.get_slice_domain(), task.get_context_index()))
+      {
+        event = it->event;
+        inflight.erase(it);
+        break;
+      }
     }
     else
     {
@@ -1598,14 +1571,12 @@ Mapper::MapperSyncModel NSMapper::get_mapper_sync_model() const
 {
   // If we're going to attempt to backpressure tasks, then we need to use
   // a sync model with high gaurantees.
-  // todo: change this in the final version
-  // if (this->tree_result.task2limit.size() > 0) {
   if (NSMapper::backpressure == true)
   {
     return SERIALIZED_NON_REENTRANT_MAPPER_MODEL;
   }
   // Otherwise, we can do whatever the default mapper is doing.
-  return DefaultMapper::get_mapper_sync_model();
+  return SERIALIZED_REENTRANT_MAPPER_MODEL;
 }
 
 void NSMapper::select_sharding_functor(
@@ -1683,7 +1654,7 @@ void NSMapper::select_task_options(const MapperContext ctx,
 //--------------------------------------------------------------------------
 {
   // log_mapper.debug("NSMapper select_task_options in %s", get_mapper_name());
-  output.initial_proc = DefaultMapper::default_policy_select_initial_processor(ctx, task);
+  output.initial_proc = dsl_default_policy_select_initial_processor(ctx, task);
   output.inline_task = false;
   output.stealable = stealing_enabled;
   // This is the best choice for the default mapper assuming
@@ -1703,16 +1674,15 @@ void NSMapper::select_task_options(const MapperContext ctx,
 }
 
 template <int DIM>
-void NSMapper::custom_decompose_points(
-    std::vector<int> &index_launch_space,
-    const DomainT<DIM, coord_t> &point_space,
-    const std::vector<Processor> &targets,
-    bool recurse, bool stealable,
-    std::vector<TaskSlice> &slices,
-    std::string taskname)
+void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
+                                    const DomainT<DIM, coord_t> &point_space,
+                                    const std::vector<Processor> &targets,
+                                    bool recurse, bool stealable,
+                                    std::vector<TaskSlice> &slices,
+                                    std::string task_name)
 //--------------------------------------------------------------------------
 {
-  // log_mapper.debug() << "custom_decompose_points, dim=" << DIM
+  // log_mapper.debug() << "dsl_decompose_points, dim=" << DIM
   // << " point_space.volume()=" << point_space.volume()
   // << " point_space=[" << point_space.bounds.lo[0] << "," << point_space.bounds.hi[0] << "]";
   slices.reserve(point_space.volume());
@@ -1730,7 +1700,7 @@ void NSMapper::custom_decompose_points(
         // log_mapper.debug() << point[i] << " ,";
       }
       size_t slice_res =
-          (size_t)tree_result.runindex(taskname, index_point, index_launch_space, targets[0].kind())[0][1];
+          (size_t)tree_result.runindex(task_name, index_point, index_launch_space, targets[0].kind())[0][1];
       // log_mapper.debug("--> %ld", slice_res);
       assert(slice_res < targets.size());
       // Construct the output slice for Legion.
@@ -1755,31 +1725,13 @@ void NSMapper::custom_decompose_points(
   }
 }
 
-void NSMapper::custom_slice_task(const Task &task,
-                                 const std::vector<Processor> &local,
-                                 const std::vector<Processor> &remote,
-                                 const SliceTaskInput &input,
-                                 SliceTaskOutput &output)
+void NSMapper::dsl_slice_task(const Task &task,
+                              const std::vector<Processor> &local,
+                              const SliceTaskInput &input,
+                              SliceTaskOutput &output)
 //--------------------------------------------------------------------------
 {
-  // The two-level decomposition doesn't work so for now do a
-  // simple one-level decomposition across all the processors.
-  Machine::ProcessorQuery all_procs(machine);
-  all_procs.only_kind(local[0].kind());
-  all_procs.local_address_space();
-  size_t node_num = Machine::get_machine().get_address_space_count();
-  // log_mapper.debug("how many nodes? %ld", node_num);
-  // log_mapper.debug("how many processors? local=%ld, remote=%ld", local.size(), remote.size());
-  // log_mapper.debug("node_id = %d", node_id);
-  // if ((task.tag & SAME_ADDRESS_SPACE) != 0 || same_address_space)
-  // {
-  //   // log_mapper.debug("local_address_space executed");
-  //   all_procs.local_address_space();
-  // }
-  std::vector<Processor> procs(all_procs.begin(), all_procs.end());
-  // log_mapper.debug("Inside custom_slice_task for %s, procs=%ld, dim=%d",
-  // task.get_task_name(), procs.size(), input.domain.get_dim());
-
+  std::string task_name = task.get_task_name();
   std::vector<int> launch_space;
   Domain task_index_domain = task.index_domain;
   switch (task_index_domain.get_dim())
@@ -1802,13 +1754,13 @@ void NSMapper::custom_slice_task(const Task &task,
 
   switch (input.domain.get_dim())
   {
-#define BLOCK(DIM)                                                                                          \
-  case DIM:                                                                                                 \
-  {                                                                                                         \
-    DomainT<DIM, coord_t> partial_point_space = input.domain;                                               \
-    custom_decompose_points<DIM>(launch_space, partial_point_space, procs,                                  \
-                                 false /*recurse*/, stealing_enabled, output.slices, task.get_task_name()); \
-    break;                                                                                                  \
+#define BLOCK(DIM)                                                                            \
+  case DIM:                                                                                   \
+  {                                                                                           \
+    DomainT<DIM, coord_t> partial_point_space = input.domain;                                 \
+    dsl_decompose_points<DIM>(launch_space, partial_point_space, local,                       \
+                              false /*recurse*/, stealing_enabled, output.slices, task_name); \
+    break;                                                                                    \
   }
     LEGION_FOREACH_N(BLOCK)
 #undef BLOCK
@@ -1822,54 +1774,53 @@ void NSMapper::slice_task(const MapperContext ctx,
                           const SliceTaskInput &input,
                           SliceTaskOutput &output)
 {
-  if (tree_result.should_fall_back(std::string(task.get_task_name()), task.target_proc.kind()))
-  {
-    // log_mapper.debug("Use default slice_task for %s", task.get_task_name());
-    DefaultMapper::slice_task(ctx, task, input, output);
-    return;
-  }
-  // log_mapper.debug("Customize slice_task for %s", task.get_task_name());
   // Whatever kind of processor we are is the one this task should
   // be scheduled on as determined by select initial task
   Processor::Kind target_kind =
       task.must_epoch_task ? local_proc.kind() : task.target_proc.kind();
   // log_mapper.debug("%d,%d:%d", target_kind, local_proc.kind(), task.target_proc.kind());
+  if (tree_result.should_fall_back(std::string(task.get_task_name()), target_kind))
+  {
+    // log_mapper.debug("Use default slice_task for %s", task.get_task_name());
+    DefaultMapper::slice_task(ctx, task, input, output);
+    return;
+  }
   switch (target_kind)
   {
   case Processor::LOC_PROC:
   {
     // log_mapper.debug("%d: CPU here", target_kind);
-    custom_slice_task(task, local_cpus, remote_cpus, input, output);
+    dsl_slice_task(task, local_cpus, input, output);
     break;
   }
   case Processor::TOC_PROC:
   {
     // log_mapper.debug("%d: GPU here", target_kind);
-    custom_slice_task(task, local_gpus, remote_gpus, input, output);
+    dsl_slice_task(task, local_gpus, input, output);
     break;
   }
   case Processor::IO_PROC:
   {
     // log_mapper.debug("%d: IO here", target_kind);
-    custom_slice_task(task, local_ios, remote_ios, input, output);
+    dsl_slice_task(task, local_ios, input, output);
     break;
   }
   case Processor::PY_PROC:
   {
     // log_mapper.debug("%d: PY here", target_kind);
-    custom_slice_task(task, local_pys, remote_pys, input, output);
+    dsl_slice_task(task, local_pys, input, output);
     break;
   }
   case Processor::PROC_SET:
   {
     // log_mapper.debug("%d: PROC here", target_kind);
-    custom_slice_task(task, local_procsets, remote_procsets, input, output);
+    dsl_slice_task(task, local_procsets, input, output);
     break;
   }
   case Processor::OMP_PROC:
   {
     // log_mapper.debug("%d: OMP here", target_kind);
-    custom_slice_task(task, local_omps, remote_omps, input, output);
+    dsl_slice_task(task, local_omps, input, output);
     break;
   }
   default:
@@ -1885,19 +1836,10 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     std::string policy_file = get_policy_file();
     parse_policy_file(policy_file);
   }
-  /*
-    case Memory::SYSTEM_MEM: return "SYSMEM";
-    case Memory::GPU_FB_MEM: return "FBMEM";
-    case Memory::REGDMA_MEM: return "RDMEM";
-    case Memory::Z_COPY_MEM: return "ZCMEM";
-    case Memory::SOCKET_MEM: return "SOCKETMEM";
-  */
   for (int i = 0; i < this->local_gpus.size(); i++)
   {
     query_best_memory_for_proc(this->local_gpus[i], Memory::GPU_FB_MEM);
     query_best_memory_for_proc(this->local_gpus[i], Memory::Z_COPY_MEM);
-    // query_best_memory_for_proc(this->local_gpus[i], Memory::SOCKET_MEM);
-    // query_best_memory_for_proc(this->local_gpus[i], Memory::REGDMA_MEM);
   }
   for (int i = 0; i < this->local_cpus.size(); i++)
   {
