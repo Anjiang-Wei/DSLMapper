@@ -24,3 +24,9 @@
 ## Circuit Example
 
 ## Command Line Options
+
+## Debugging Support
+
+### Print
+
+### Logging Wrapper
