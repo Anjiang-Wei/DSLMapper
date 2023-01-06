@@ -1527,12 +1527,12 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
           // and queue it up on the processor.
           if (is_index_launch)
           {
-            this->backPressureQueue[task->orig_proc].push_back({
-              .id = std::make_pair(task->get_slice_domain(), task->get_context_index()),
-              // .id2 = task->get_unique_id(),
-              .event = this->runtime->create_mapper_event(ctx),
-              .schedTime = schedTime,
-            });
+            InFlightTask a;
+            a.id = std::make_pair(task->get_slice_domain(), task->get_context_index());
+            // a.id2 = task->get_unique_id();
+            a.event = this->runtime->create_mapper_event(ctx);
+            a.schedTime = schedTime;
+            this->backPressureQueue[task->orig_proc].push_back(a);
           }
           else
           {
