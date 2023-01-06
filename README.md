@@ -1,7 +1,9 @@
 # DSLMapper
-## Getting Started with DSLMapper
+## Getting Started
 
-## Mapper Registration
+### Downloading
+
+### Mapper Registration
 
 ## Language Design
 
@@ -27,7 +29,7 @@
 
 ## Debugging Support
 
-### Print
+### Printing
 
 ### Mapper Logging Wrapper
 
