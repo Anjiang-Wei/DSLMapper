@@ -30,3 +30,5 @@
 ### Print
 
 ### Mapper Logging Wrapper
+
+## Limitations
