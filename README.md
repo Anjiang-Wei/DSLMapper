@@ -15,11 +15,11 @@
 
 ### Memory Collection
 
-### Index Launch Placement
+### Index Task Launch Placement
 
-#### Machine Model
+### Machine Model Transformation
 
-### Single Launch Placement
+### Single Task Launch Placement
 
 ## Circuit Example
 
@@ -29,4 +29,4 @@
 
 ### Print
 
-### Logging Wrapper
+### Mapper Logging Wrapper
