@@ -275,21 +275,21 @@ std::vector<std::vector<int>> Tree2Legion::runsingle(const Task *task, const NSM
   std::cout << "in Tree2Legion::runsingle" << vec2str(x) << std::endl;
 #endif
   FuncDefNode *func_node;
-  if (task2func.count(task_name) > 0)
+  if (singletask2func.count(task_name) > 0)
   {
-    func_node = task2func.at(task_name);
+    func_node = singletask2func.at(task_name);
   }
-  else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
+  else if (proc_kind == Processor::Kind::LOC_PROC && singletask2func.count("CPU") > 0)
   {
-    func_node = task2func.at("CPU");
+    func_node = singletask2func.at("CPU");
   }
-  else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
+  else if (proc_kind == Processor::Kind::TOC_PROC && singletask2func.count("GPU") > 0)
   {
-    func_node = task2func.at("GPU");
+    func_node = singletask2func.at("GPU");
   }
-  else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
+  else if (proc_kind == Processor::Kind::OMP_PROC && singletask2func.count("OMP") > 0)
   {
-    func_node = task2func.at("OMP");
+    func_node = singletask2func.at("OMP");
   }
   else
   {
@@ -395,21 +395,21 @@ std::vector<std::vector<int>> Tree2Legion::runindex(std::string task_name,
   std::cout << "in Tree2Legion::runindex " << vec2str(x) << std::endl;
 #endif
   FuncDefNode *func_node;
-  if (task2func.count(task_name) > 0)
+  if (indextask2func.count(task_name) > 0)
   {
-    func_node = task2func.at(task_name);
+    func_node = indextask2func.at(task_name);
   }
-  else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
+  else if (proc_kind == Processor::Kind::LOC_PROC && indextask2func.count("CPU") > 0)
   {
-    func_node = task2func.at("CPU");
+    func_node = indextask2func.at("CPU");
   }
-  else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
+  else if (proc_kind == Processor::Kind::TOC_PROC && indextask2func.count("GPU") > 0)
   {
-    func_node = task2func.at("GPU");
+    func_node = indextask2func.at("GPU");
   }
-  else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
+  else if (proc_kind == Processor::Kind::OMP_PROC && indextask2func.count("OMP") > 0)
   {
-    func_node = task2func.at("OMP");
+    func_node = indextask2func.at("OMP");
   }
   else
   {
@@ -497,7 +497,7 @@ Node *SingleTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>>
 
   for (int i = 0; i < task_name.size(); i++)
   {
-    Tree2Legion::task2func.insert({task_name[i], func_node_c});
+    Tree2Legion::singletask2func.insert({task_name[i], func_node_c});
   }
   // function signature check
   if (!(params.size() == 1 && params[0]->argtype == TASK))
@@ -529,7 +529,7 @@ Node *IndexTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>> 
 
   for (int i = 0; i < task_name.size(); i++)
   {
-    Tree2Legion::task2func.insert({task_name[i], func_node_c});
+    Tree2Legion::indextask2func.insert({task_name[i], func_node_c});
   }
   // function signature check
   if (!(params.size() == 1 && params[0]->argtype == TASK))
@@ -561,7 +561,7 @@ Node *FuncDefNode::invoked(std::stack<std::unordered_map<std::string, Node *>> &
 
 void local_temps_pop(std::vector<Node *> &local_temps) // free all the nodes in local_temps
 {
-  for (auto& obj: local_temps)
+  for (auto &obj : local_temps)
   {
     delete obj;
   }
@@ -1582,23 +1582,47 @@ int Tree2Legion::query_max_instance(std::string task_name)
   return 0;
 }
 
-bool Tree2Legion::should_fall_back(std::string task_name, Processor::Kind proc_kind)
+bool Tree2Legion::should_fall_back(std::string task_name,
+                                   bool index_launch,
+                                   Processor::Kind proc_kind)
 {
-  if (task2func.count(task_name) > 0)
+  if (index_launch)
   {
-    return false;
+    if (indextask2func.count(task_name) > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::LOC_PROC && indextask2func.count("CPU") > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::TOC_PROC && indextask2func.count("GPU") > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::OMP_PROC && indextask2func.count("OMP") > 0)
+    {
+      return false;
+    }
   }
-  else if (proc_kind == Processor::Kind::LOC_PROC && task2func.count("CPU") > 0)
+  else
   {
-    return false;
-  }
-  else if (proc_kind == Processor::Kind::TOC_PROC && task2func.count("GPU") > 0)
-  {
-    return false;
-  }
-  else if (proc_kind == Processor::Kind::OMP_PROC && task2func.count("OMP") > 0)
-  {
-    return false;
+    if (singletask2func.count(task_name) > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::LOC_PROC && singletask2func.count("CPU") > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::TOC_PROC && singletask2func.count("GPU") > 0)
+    {
+      return false;
+    }
+    else if (proc_kind == Processor::Kind::OMP_PROC && singletask2func.count("OMP") > 0)
+    {
+      return false;
+    }
   }
   // std::cout << task_name << " will fallback for sharding/slicing, warning!" << std::endl;
   return true;

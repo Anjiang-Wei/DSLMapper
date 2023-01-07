@@ -1248,12 +1248,13 @@ public:
 
   static std::unordered_map<std::string, int> task2limit;
 
-  // static std::unordered_map<std::string, MSpace*> task2mspace;
-  static std::unordered_map<std::string, FuncDefNode *> task2func;
+  static std::unordered_map<std::string, FuncDefNode *> indextask2func;
+  static std::unordered_map<std::string, FuncDefNode *> singletask2func;
 
   void print();
 
   bool should_fall_back(std::string task_name,
+                        bool index_launch,
                         Processor::Kind proc_kind);
 
   bool should_collect_memory(std::string task_name,
@@ -1291,6 +1292,7 @@ std::unordered_map<std::pair<std::string, std::string>,
                    std::unordered_map<Memory::Kind, ConstraintsNode *>, HashFn1>
     Tree2Legion::layout_constraints;
 std::unordered_map<std::string, int> Tree2Legion::task2limit;
-std::unordered_map<std::string, FuncDefNode *> Tree2Legion::task2func;
+std::unordered_map<std::string, FuncDefNode *> Tree2Legion::indextask2func;
+std::unordered_map<std::string, FuncDefNode *> Tree2Legion::singletask2func;
 std::unordered_set<std::pair<std::string, std::string>, HashFn1> Tree2Legion::memory_collect;
 #endif

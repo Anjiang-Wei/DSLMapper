@@ -282,7 +282,7 @@ std::string memory_kind_to_string(Memory::Kind kind)
 void NSMapper::register_user_sharding_functors(Runtime *runtime)
 {
   int i = 1;
-  for (auto v : tree_result.task2func)
+  for (auto v : tree_result.indextask2func)
   {
     runtime->register_sharding_functor(i, new Legion::Internal::UserShardingFunctor(v.first, tree_result));
     task2sid.insert({v.first, i});
@@ -503,7 +503,7 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
                                                            const Task &task,
                                                            std::vector<Processor> &target_procs)
 {
-  if (tree_result.should_fall_back(task.get_task_name(), task.target_proc.kind()) == false)
+  if (tree_result.should_fall_back(task.get_task_name(), task.is_index_space, task.target_proc.kind()) == false)
   {
     std::vector<std::vector<int>> res;
     if (!task.is_index_space)
@@ -1596,7 +1596,7 @@ void NSMapper::select_sharding_functor(
   }
   else
   {
-    assert(tree_result.should_fall_back(task.get_task_name(), task.target_proc.kind()) == true);
+    assert(tree_result.should_fall_back(task.get_task_name(), task.is_index_space, task.target_proc.kind()) == true);
     // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
     output.chosen_functor = 0; // default functor
   }
@@ -1774,7 +1774,7 @@ void NSMapper::slice_task(const MapperContext ctx,
   Processor::Kind target_kind =
       task.must_epoch_task ? local_proc.kind() : task.target_proc.kind();
   // log_mapper.debug("%d,%d:%d", target_kind, local_proc.kind(), task.target_proc.kind());
-  if (tree_result.should_fall_back(std::string(task.get_task_name()), target_kind))
+  if (tree_result.should_fall_back(std::string(task.get_task_name()), task.is_index_space, target_kind))
   {
     // log_mapper.debug("Use default slice_task for %s", task.get_task_name());
     DefaultMapper::slice_task(ctx, task, input, output);
