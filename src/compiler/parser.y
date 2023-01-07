@@ -180,11 +180,17 @@ FuncDef:
 IndexTaskMap:
     T_IndexTaskMap Identifier_star T_Identifier ';' { $$ = new IndexTaskMapNode($2, $3); }
 |   T_IndexTaskMap Identifier_List T_Identifier ';' { $$ = new IndexTaskMapNode($2, $3); }
+|   T_IndexTaskMap T_CPU           T_Identifier ';' { $$ = new IndexTaskMapNode("CPU", $3); }
+|   T_IndexTaskMap T_GPU           T_Identifier ';' { $$ = new IndexTaskMapNode("GPU", $3); }
+|   T_IndexTaskMap T_OMP           T_Identifier ';' { $$ = new IndexTaskMapNode("OMP", $3); }
 ;
 
 SingleTaskMap:
     T_SingleTaskMap Identifier_star T_Identifier ';' { $$ = new SingleTaskMapNode($2, $3); }
 |   T_SingleTaskMap Identifier_List T_Identifier ';' { $$ = new SingleTaskMapNode($2, $3); }
+|   T_SingleTaskMap T_CPU           T_Identifier ';' { $$ = new SingleTaskMapNode("CPU", $3); }
+|   T_SingleTaskMap T_GPU           T_Identifier ';' { $$ = new SingleTaskMapNode("GPU", $3); }
+|   T_SingleTaskMap T_OMP           T_Identifier ';' { $$ = new SingleTaskMapNode("OMP", $3); }
 ;
 
 
