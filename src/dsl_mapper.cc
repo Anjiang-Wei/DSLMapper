@@ -35,6 +35,7 @@ using namespace Legion::Mapping;
 
 // static Logger log_mapper("nsmapper");
 legion_equality_kind_t myop2legion(BinOpEnum myop);
+std::string processor_kind_to_string(Processor::Kind kind);
 
 namespace Legion
 {
@@ -233,7 +234,7 @@ std::string NSMapper::get_policy_file()
   exit(-1);
 }
 
-std::string processor_kind_to_string(Processor::Kind kind)
+inline std::string processor_kind_to_string(Processor::Kind kind)
 {
   switch (kind)
   {
@@ -1581,19 +1582,21 @@ void NSMapper::select_sharding_functor(
     SelectShardingFunctorOutput &output)
 {
   std::string task_name = task.get_task_name();
-  auto finder1 = task2sid.find(task_name);
-  if (finder1 != task2sid.end())
+  if (task2sid.count(task_name) > 0)
   {
-    output.chosen_functor = finder1->second;
-    // log_mapper.debug("select_sharding_functor user-defined for task %s: %d",
-    // task.get_task_name(), output.chosen_functor);
+    output.chosen_functor = task2sid.at(task_name);
+    return;
   }
-  else
+  Processor::Kind proc_kind = task.current_proc.kind();
+  std::string proc_kind_string = processor_kind_to_string(proc_kind);
+  if (task2sid.count(proc_kind_string) > 0)
   {
-    assert(tree_result.should_fall_back(task_name, task.is_index_space, task.current_proc.kind()) == true);
-    // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
-    output.chosen_functor = 0; // default functor
+    output.chosen_functor = task2sid.at(proc_kind_string);
+    return;
   }
+  assert(tree_result.should_fall_back(task_name, task.is_index_space, proc_kind) == true);
+  // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
+  output.chosen_functor = 0; // default functor
 }
 
 void NSMapper::default_policy_select_sources(MapperContext ctx,
