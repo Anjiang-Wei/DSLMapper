@@ -1580,23 +1580,17 @@ void NSMapper::select_sharding_functor(
     const SelectShardingFunctorInput &input,
     SelectShardingFunctorOutput &output)
 {
-  auto finder1 = task2sid.find(task.get_task_name());
-  auto finder2 = task2sid.find("*");
+  std::string task_name = task.get_task_name();
+  auto finder1 = task2sid.find(task_name);
   if (finder1 != task2sid.end())
   {
     output.chosen_functor = finder1->second;
     // log_mapper.debug("select_sharding_functor user-defined for task %s: %d",
     // task.get_task_name(), output.chosen_functor);
   }
-  else if (finder2 != task2sid.end())
-  {
-    output.chosen_functor = finder2->second;
-    // log_mapper.debug("select_sharding_functor default user-defined for task %s: %d",
-    // task.get_task_name(), output.chosen_functor);
-  }
   else
   {
-    assert(tree_result.should_fall_back(task.get_task_name(), task.is_index_space, task.target_proc.kind()) == true);
+    assert(tree_result.should_fall_back(task_name, task.is_index_space, task.current_proc.kind()) == true);
     // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
     output.chosen_functor = 0; // default functor
   }
