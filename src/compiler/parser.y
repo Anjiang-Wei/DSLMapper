@@ -63,6 +63,7 @@ void yyerror(const char*);
 %token <intVal> T_IntConstant
 %type <instancelimit> InstanceLimit
 %type <string> Identifier_star
+%type <string> Identifier_star_num
 %type <stringlist> Identifier_List
 %type <program> Program
 %type <stmt> Stmt
@@ -130,6 +131,11 @@ Identifier_star:
 |   '*'             { $$ = "*"; }
 ;
 
+Identifier_star_num:
+    T_Identifier    { $$ = $1; }
+|   '*'             { $$ = "*"; }
+|   T_IntConstant   { char s[8]; sprintf(s,"%ld", $1); $$ = s;}
+
 Identifier_List:
     T_Identifier ','  T_Identifier   { $$ = new IdentifierLstNode($1, $3); }
 |   Identifier_List ',' T_Identifier { $1->append($3); }
@@ -148,8 +154,8 @@ ProcCustom:
 ;
 
 RegionCustom:
-    T_Region Identifier_star Identifier_star Proc MemLst ';' { $$ = new RegionCustomNode($2, $3, $4, $5); }
-|   T_Region Identifier_star Identifier_star Identifier_star MemLst ';'  { assert(strcmp($4, "*") == 0); $$ = new RegionCustomNode($2, $3, new ProcNode(ALLPROC), $5); }
+    T_Region Identifier_star Identifier_star_num Proc MemLst ';' { $$ = new RegionCustomNode($2, $3, $4, $5); }
+|   T_Region Identifier_star Identifier_star_num Identifier_star MemLst ';'  { assert(strcmp($4, "*") == 0); $$ = new RegionCustomNode($2, $3, new ProcNode(ALLPROC), $5); }
 ;
 
 LayoutCustom:
