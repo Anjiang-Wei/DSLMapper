@@ -33,9 +33,12 @@
 using namespace Legion;
 using namespace Legion::Mapping;
 
+// #define DEBUG_REGION_PLACEMENT
+
 // static Logger log_mapper("nsmapper");
 legion_equality_kind_t myop2legion(BinOpEnum myop);
 std::string processor_kind_to_string(Processor::Kind kind);
+std::string memory_kind_to_string(Memory::Kind kind);
 
 namespace Legion
 {
@@ -1001,15 +1004,34 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
   std::vector<Memory::Kind> memory_list;
   if (use_semantic_name)
   {
+#ifdef DEBUG_REGION_PLACEMENT
+    printf("use_semantic_name\n");
+#endif
     std::vector<std::string> path;
     get_handle_names(ctx, req, path);
     // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
     memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
+#ifdef DEBUG_REGION_PLACEMENT
+    for (int i = 0; i < path.size(); i++)
+    {
+      printf("----start get_handle_names------\n");
+      std::cout << path[i] << std::endl;
+      printf("----end get_handle_names-----\n");
+    }
+#endif
   }
   else
   {
     memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
   }
+#ifdef DEBUG_REGION_PLACEMENT
+  for (int i = 0; i < memory_list.size(); i++)
+  {
+    printf("-----start query_memory_list ---\n");
+    std::cout << memory_kind_to_string(memory_list[i]) << std::endl;
+    printf("-----end query_memory_list ---\n");
+  }
+#endif
   for (auto &mem_kind : memory_list)
   {
     // log_mapper.debug() << "querying " << target_processor.id <<
@@ -1017,6 +1039,9 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
     Memory target_memory_try = query_best_memory_for_proc(target_proc, mem_kind);
     if (target_memory_try.exists())
     {
+#ifdef DEBUG_REGION_PLACEMENT
+      std::cout << "Placement:" << memory_kind_to_string(target_memory_try.kind()) << std::endl;
+#endif
       return target_memory_try;
     }
   }
