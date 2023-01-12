@@ -34,6 +34,8 @@ using namespace Legion;
 using namespace Legion::Mapping;
 
 // #define DEBUG_REGION_PLACEMENT
+// #define DEBUG_MEMORY_COLLECT
+// #define DEBUG_COMMAND_LINE
 
 // static Logger log_mapper("nsmapper");
 legion_equality_kind_t myop2legion(BinOpEnum myop);
@@ -630,6 +632,9 @@ void NSMapper::map_task_post_function(const MapperContext &ctx,
           get_handle_names(ctx, rg, path);
           if (tree_result.should_collect_memory(task_name, path))
           {
+#ifdef DEBUG_MEMORY_COLLECT
+            std::cout << "task " << task_name << " region " << i << " will be collected" << std::endl;
+#endif
             output.untracked_valid_regions.insert(i);
           }
         }
@@ -637,6 +642,9 @@ void NSMapper::map_task_post_function(const MapperContext &ctx,
         {
           if (tree_result.should_collect_memory(task_name, {std::to_string(i)}))
           {
+#ifdef DEBUG_MEMORY_COLLECT
+            std::cout << "task " << task_name << " region " << i << " will be collected" << std::endl;
+#endif
             output.untracked_valid_regions.insert(i);
           }
         }
@@ -1907,6 +1915,13 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
       NSMapper::select_source_by_bandwidth = true;
     }
   }
+#ifdef DEBUG_COMMAND_LINE
+  printf("use_logging_wrapper = %s\n", use_logging_wrapper ? "true" : "false");
+  printf("backpressure = %s\n", NSMapper::backpressure ? "true" : "false");
+  printf("untrackValidRegions = %s\n", NSMapper::untrackValidRegions ? "true" : "false");
+  printf("use_semantic_name = %s\n", NSMapper::use_semantic_name ? "true" : "false");
+  printf("select_source_by_bandwidth = %s\n", NSMapper::select_source_by_bandwidth ? "true" : "false");
+#endif
   for (std::set<Processor>::const_iterator it = local_procs.begin();
        it != local_procs.end(); it++)
   {
