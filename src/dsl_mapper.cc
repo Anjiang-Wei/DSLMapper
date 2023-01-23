@@ -143,7 +143,7 @@ public:
                                                  unsigned idx,
                                                  const RegionRequirement &req,
                                                  MemoryConstraint mc);
-  virtual LogicalRegion dsl_default_policy_select_instance_region(MapperContext ctx,
+  virtual Legion::LogicalRegion dsl_default_policy_select_instance_region(MapperContext ctx,
                                                                   Memory target_memory,
                                                                   const RegionRequirement &req,
                                                                   const LayoutConstraintSet &constraints,
@@ -539,7 +539,7 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
   }
 }
 
-LogicalRegion NSMapper::dsl_default_policy_select_instance_region(MapperContext ctx,
+Legion::LogicalRegion NSMapper::dsl_default_policy_select_instance_region(MapperContext ctx,
                                                                   Memory target_memory,
                                                                   const RegionRequirement &req,
                                                                   const LayoutConstraintSet &constraints,
@@ -1217,14 +1217,14 @@ bool NSMapper::dsl_default_make_instance(MapperContext ctx,
 //--------------------------------------------------------------------------
 {
   bool created = true;
-  LogicalRegion target_region =
+  Legion::LogicalRegion target_region =
       DefaultMapper::default_policy_select_instance_region(ctx, target_memory, req,
                                                            constraints, force_new, meets);
   bool tight_region_bounds = constraints.specialized_constraint.is_exact() || ((req.tag & DefaultMapper::EXACT_REGION) != 0);
 
   // TODO: deal with task layout constraints that require multiple
   // region requirements to be mapped to the same instance
-  std::vector<LogicalRegion> target_regions(1, target_region);
+  std::vector<Legion::LogicalRegion> target_regions(1, target_region);
   if (force_new ||
       ((req.privilege == LEGION_REDUCE) && (kind != COPY_MAPPING)))
   {
