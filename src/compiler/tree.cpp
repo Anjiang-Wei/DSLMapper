@@ -358,16 +358,16 @@ std::vector<std::vector<int>> Tree2Legion::runsingle(const Task *task, const NSM
 std::vector<std::vector<int>> Tree2Legion::runindex(const Task *task)
 {
   std::string taskname = task->get_task_name();
-  DomainPoint point = task->index_point;
-  Domain full_space = task->index_domain;
+  Legion::DomainPoint point = task->index_point;
+  Legion::Domain full_space = task->index_domain;
   Processor::Kind proc_kind = task->target_proc.kind();
   switch (point.get_dim())
   {
 #define DIMFUNC(DIM)                                                              \
   case DIM:                                                                       \
   {                                                                               \
-    const DomainT<DIM, coord_t> is = full_space;                                  \
-    const Point<DIM, coord_t> p1 = point;                                         \
+    const Legion::DomainT<DIM, coord_t> is = full_space;                          \
+    const Legion::Point<DIM, coord_t> p1 = point;                                 \
     std::vector<int> index_point, launch_space;                                   \
     for (int i = 0; i < DIM; i++)                                                 \
     {                                                                             \
