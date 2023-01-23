@@ -30,8 +30,8 @@
 #include <chrono>
 // #include <mutex>
 
-using namespace Legion;
-using namespace Legion::Mapping;
+// using namespace Legion;
+// using namespace Legion::Mapping;
 
 // #define DEBUG_REGION_PLACEMENT
 // #define DEBUG_MEMORY_COLLECT
@@ -62,7 +62,7 @@ namespace Legion
 
     public:
       virtual ShardID shard(const DomainPoint &point,
-                            const Domain &full_space,
+                            const Legion::Domain &full_space,
                             const size_t total_shards);
     };
   }
@@ -1649,14 +1649,14 @@ void NSMapper::default_policy_select_sources(MapperContext ctx,
   std::vector<std::pair<PhysicalInstance, unsigned /*size of intersection*/>>
       cover_ranking(sources.size());
 
-  Domain target_domain = target.get_instance_domain();
+  Legion::Domain target_domain = target.get_instance_domain();
   for (std::deque<PhysicalInstance>::const_reverse_iterator it = ranking.rbegin();
        it != ranking.rend(); it++)
   {
     const unsigned idx = it - ranking.rbegin();
     const PhysicalInstance &source = (*it);
-    Domain source_domain = source.get_instance_domain();
-    Domain intersection = source_domain.intersection(target_domain);
+    Legion::Domain source_domain = source.get_instance_domain();
+    Legion::Domain intersection = source_domain.intersection(target_domain);
     cover_ranking[idx] = std::pair<PhysicalInstance, unsigned>(source, intersection.get_volume());
   }
 
@@ -1716,7 +1716,7 @@ void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
   {
     for (Legion::PointInRectIterator<DIM, coord_t> itr(it.rect); itr(); itr++)
     {
-      const Point<DIM, coord_t> point = *itr;
+      const Legion::Point<DIM, coord_t> point = *itr;
       std::vector<int> index_point;
       // log_mapper.debug("slice point: ");
       for (int i = 0; i < DIM; i++)
@@ -1758,7 +1758,7 @@ void NSMapper::dsl_slice_task(const Task &task,
 {
   std::string task_name = task.get_task_name();
   std::vector<int> launch_space;
-  Domain task_index_domain = task.index_domain;
+  Legion::Domain task_index_domain = task.index_domain;
   switch (task_index_domain.get_dim())
   {
 #define DIMFUNC(DIM)                                                 \
@@ -2000,7 +2000,7 @@ namespace Legion
 
     //--------------------------------------------------------------------------
     ShardID UserShardingFunctor::shard(const DomainPoint &point,
-                                       const Domain &full_space,
+                                       const Legion::Domain &full_space,
                                        const size_t total_shards)
     //--------------------------------------------------------------------------
     {
@@ -2015,7 +2015,7 @@ namespace Legion
   case DIM:                                                          \
   {                                                                  \
     const DomainT<DIM, coord_t> is = full_space;                     \
-    const Point<DIM, coord_t> p1 = point;                            \
+    const Legion::Point<DIM, coord_t> p1 = point;                    \
     std::vector<int> index_point, launch_space;                      \
     for (int i = 0; i < DIM; i++)                                    \
     {                                                                \
