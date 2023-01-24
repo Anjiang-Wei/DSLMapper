@@ -116,6 +116,13 @@ std::vector<Memory::Kind> MyMem2LegionMemList(std::vector<MemoryEnum> myprocs)
   return res;
 }
 
+ProcCustomNode::ProcCustomNode(IdentifierLstNode *x, const ProcLstNode *y)
+{
+  type = ProcCustomType;
+  task_names = x->idlst;
+  proc_types = y->proc_type_lst;
+}
+ 
 Node *ProcCustomNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
 {
   std::vector<Processor::Kind> res = MyProc2LegionProcList(this->proc_types);

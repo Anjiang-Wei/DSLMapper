@@ -388,6 +388,8 @@ public:
   void print();
 };
 
+class IdentifierLstNode;
+
 class ProcCustomNode : public StmtNode
 {
 public:
@@ -401,13 +403,8 @@ public:
     taskname = std::string(x);
     proc_types = y->proc_type_lst;
   }
-  ProcCustomNode(IdentifierLstNode *x, const ProcLstNode *y)
-  {
-    type = ProcCustomType;
-    task_names = x->idlst;
-    proc_types = y->proc_type_lst;
-  }
- 
+  ProcCustomNode(IdentifierLstNode *x, const ProcLstNode *y);
+
   void print() { printf("ProcCustomNode %s %s\n", taskname.c_str(), ProcessorEnumName[proc_types[0]]); }
   Node *run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps);
 };
