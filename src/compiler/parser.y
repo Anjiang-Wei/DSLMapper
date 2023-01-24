@@ -151,6 +151,7 @@ MemoryCollect:
 
 ProcCustom:
     T_Task Identifier_star ProcLst  ';'  { $$ = new ProcCustomNode($2, $3); }
+|   T_Task Identifier_List ProcLst  ';'  { $$ = new ProcCustomNode($2, $3); }
 ;
 
 RegionCustom:
@@ -182,7 +183,6 @@ Constraints:
 FuncDef:
     T_Def T_Identifier '(' ArgLst ')' '{' Func_Stmts '}' { $$ = new FuncDefNode($2, $4, $7); }
 ;
-
 IndexTaskMap:
     T_IndexTaskMap Identifier_star T_Identifier ';' { $$ = new IndexTaskMapNode($2, $3); }
 |   T_IndexTaskMap Identifier_List T_Identifier ';' { $$ = new IndexTaskMapNode($2, $3); }

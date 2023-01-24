@@ -121,7 +121,17 @@ Node *ProcCustomNode::run(std::stack<std::unordered_map<std::string, Node *>> &l
   std::vector<Processor::Kind> res = MyProc2LegionProcList(this->proc_types);
   assert(local_symbol.size() == 0);
   // only hit this line when building the AST
-  Tree2Legion::task_policies.insert({taskname, res});
+  if (task_names.size() == 0)
+  {
+    Tree2Legion::task_policies.insert({taskname, res});
+  }
+  else
+  {
+    for (int i = 0; i < task_names.size(); i++)
+    {
+      Tree2Legion::task_policies.insert({task_names[i], res});
+    }
+  }
   return NULL;
 }
 
