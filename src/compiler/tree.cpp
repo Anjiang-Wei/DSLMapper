@@ -9,8 +9,6 @@
 using namespace Legion;
 using namespace Legion::Mapping;
 
-Processor::Kind MyProc2LegionProc(ProcessorEnum);
-Memory::Kind MyMem2LegionMem(MemoryEnum);
 
 void handleError(int errorCode, const char *errorMessage)
 {

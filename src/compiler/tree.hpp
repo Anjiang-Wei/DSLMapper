@@ -68,6 +68,9 @@ const char *MemoryEnumName[] =
         "ALLMEM",
 };
 
+Processor::Kind MyProc2LegionProc(ProcessorEnum);
+Memory::Kind MyMem2LegionMem(MemoryEnum);
+
 enum ArgTypeEnum
 {
   TASK,

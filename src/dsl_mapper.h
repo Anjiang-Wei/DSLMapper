@@ -16,6 +16,8 @@
 #ifndef __DSL_MAPPER_H__
 #define __DSL_MAPPER_H__
 
+#include "compiler/tree.hpp"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
