@@ -179,6 +179,7 @@ enum NodeType
   AssignType,
   IndexTaskMapType,
   SingleTaskMapType,
+  ControlReplicateType,
   ArgType,
   ArgLstType,
   FuncDefType,
@@ -222,6 +223,7 @@ const char *NodeTypeName[] =
         "AssignType",
         "IndexTaskMapType",
         "SingleTaskMapType",
+        "ControlReplicateType",
         "ArgType",
         "ArgLstType",
         "FuncDefType",
@@ -686,6 +688,25 @@ public:
   }
   Node *run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps) { return this; }
   BoolValNode *binary_op(BoolValNode *rt, BinOpEnum op, std::vector<Node *> &local_temps);
+};
+
+class ControlReplicateNode : public StmtNode
+{
+  std::vector<std::string> task_name;
+
+public:
+  ControlReplicateNode(const char *x)
+  {
+    type = SingleTaskMapType;
+    task_name.push_back(std::string(x));
+  }
+  ControlReplicateNode(IdentifierLstNode *x)
+  {
+    type = SingleTaskMapType;
+    task_name = x->idlst;
+  }
+  void print() { printf("ControlReplicateNode, %s\n", task_name[0].c_str()); }
+  Node *run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps);
 };
 
 class SingleTaskMapNode : public StmtNode
@@ -1259,6 +1280,8 @@ public:
   static std::unordered_map<std::string, FuncDefNode *> indextask2func;
   static std::unordered_map<std::string, FuncDefNode *> singletask2func;
 
+  static std::unordered_set<std::string> control_replicate;
+
   void print();
 
   bool should_fall_back(std::string task_name,
@@ -1303,4 +1326,5 @@ std::unordered_map<std::string, int> Tree2Legion::task2limit;
 std::unordered_map<std::string, FuncDefNode *> Tree2Legion::indextask2func;
 std::unordered_map<std::string, FuncDefNode *> Tree2Legion::singletask2func;
 std::unordered_set<std::pair<std::string, std::string>, HashFn1> Tree2Legion::memory_collect;
+std::unordered_set<std::string> Tree2Legion::control_replicate;
 #endif

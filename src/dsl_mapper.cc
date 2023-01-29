@@ -1685,6 +1685,20 @@ void NSMapper::select_task_options(const MapperContext ctx,
   // This is the best choice for the default mapper assuming
   // there is locality in the remote mapped tasks
   output.map_locally = map_locally;
+  std::string task_name = task.get_task_name();
+  if (tree_result.control_replicate.size() > 0) // user specifies how to control-replicate tasks
+  {
+    if (tree_result.control_replicate.count(task_name) > 0)
+    {
+      output.replicate = true;
+    }
+    else
+    {
+      output.replicate = false;
+    }
+    return;
+  }
+  // If user does not specify, then fall back to default heuristics
   // Control replicate the top-level task in multi-node settings
   // otherwise we do no control replication
 #ifdef DEBUG_CTRL_REPL

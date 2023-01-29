@@ -18,7 +18,7 @@ void yyerror(const char*);
 %token T_CPU T_GPU T_IO T_PY T_PROC T_OMP
 %token T_SYSMEM T_FBMEM T_RDMEM T_ZCMEM T_SOCKMEM
 %token T_Int T_Bool T_IPoint T_ISpace T_MSpace T_Def T_Return T_True T_False
-%token T_Task T_Region T_Layout T_IndexTaskMap T_Print T_Instance T_Collect
+%token T_Task T_Region T_Layout T_IndexTaskMap T_Print T_Instance T_Collect T_ControlReplicate
 %token T_Le T_Ge T_Eq T_Ne
 %token T_And T_Or
 
@@ -43,6 +43,7 @@ void yyerror(const char*);
     class ExprNode* expr;
     class IndexTaskMapNode* indextaskmap;
     class SingleTaskMapNode* singletaskmap;
+    class ControlReplicateNode* controlreplicate;
     class FuncDefNode* funcdef;
     class ArgLstNode* args;
     class TupleExprNode* exprn;
@@ -81,6 +82,7 @@ void yyerror(const char*);
 %type <expr> Expr
 %type <indextaskmap> IndexTaskMap
 %type <singletaskmap> SingleTaskMap
+%type <controlreplicate> ControlReplicate
 %type <funcdef> FuncDef
 %type <args> ArgLst
 %type <args> ArgLst_
@@ -122,6 +124,7 @@ Stmt:
 |   FuncDef           { $$ = $1; }
 |   IndexTaskMap      { $$ = $1; }
 |   SingleTaskMap     { $$ = $1; }
+|   ControlReplicate  { $$ = $1; }
 |   Assign_Stmt       { $$ = $1; }
 |   Print_Stmt        { $$ = $1; }
 ;
@@ -199,6 +202,10 @@ SingleTaskMap:
 |   T_SingleTaskMap T_OMP           T_Identifier ';' { $$ = new SingleTaskMapNode("OMP", $3); }
 ;
 
+ControlReplicate:
+    T_ControlReplicate T_Identifier ';'    { $$ = new ControlReplicateNode($2); } // no star supported
+|   T_ControlReplicate Identifier_List ';' { $$ = new ControlReplicateNode($2); }
+;
 
 Assign_Stmt:
     T_Identifier '=' Expr ';'   { $$ = new AssignNode($1, $3); }

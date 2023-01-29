@@ -103,15 +103,16 @@ extern int yydebug;
     T_Print = 309,
     T_Instance = 310,
     T_Collect = 311,
-    T_Le = 312,
-    T_Ge = 313,
-    T_Eq = 314,
-    T_Ne = 315,
-    T_And = 316,
-    T_Or = 317,
-    T_Identifier = 318,
-    T_StringConstant = 319,
-    T_IntConstant = 320
+    T_ControlReplicate = 312,
+    T_Le = 313,
+    T_Ge = 314,
+    T_Eq = 315,
+    T_Ne = 316,
+    T_And = 317,
+    T_Or = 318,
+    T_Identifier = 319,
+    T_StringConstant = 320,
+    T_IntConstant = 321
   };
 #endif
 /* Tokens.  */
@@ -169,15 +170,16 @@ extern int yydebug;
 #define T_Print 309
 #define T_Instance 310
 #define T_Collect 311
-#define T_Le 312
-#define T_Ge 313
-#define T_Eq 314
-#define T_Ne 315
-#define T_And 316
-#define T_Or 317
-#define T_Identifier 318
-#define T_StringConstant 319
-#define T_IntConstant 320
+#define T_ControlReplicate 312
+#define T_Le 313
+#define T_Ge 314
+#define T_Eq 315
+#define T_Ne 316
+#define T_And 317
+#define T_Or 318
+#define T_Identifier 319
+#define T_StringConstant 320
+#define T_IntConstant 321
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -204,6 +206,7 @@ union YYSTYPE
     class ExprNode* expr;
     class IndexTaskMapNode* indextaskmap;
     class SingleTaskMapNode* singletaskmap;
+    class ControlReplicateNode* controlreplicate;
     class FuncDefNode* funcdef;
     class ArgLstNode* args;
     class TupleExprNode* exprn;
@@ -217,7 +220,7 @@ union YYSTYPE
     class InstanceLimitNode* instancelimit;
     class IdentifierLstNode* stringlist;
 
-#line 221 "y.tab.h"
+#line 224 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

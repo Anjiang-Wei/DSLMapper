@@ -491,6 +491,15 @@ std::vector<std::vector<int>> Tree2Legion::runindex(std::string task_name,
   return {};
 }
 
+Node *ControlReplicateNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
+{
+  for (int i = 0; i < task_name.size(); i++)
+  {
+    Tree2Legion::control_replicate.insert(task_name[i]);
+  }
+  return NULL;
+}
+
 Node *SingleTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
 {
   assert(local_symbol.size() == 0);
