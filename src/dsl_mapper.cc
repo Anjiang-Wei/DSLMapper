@@ -144,11 +144,11 @@ public:
                                                  const RegionRequirement &req,
                                                  MemoryConstraint mc);
   virtual Legion::LogicalRegion dsl_default_policy_select_instance_region(MapperContext ctx,
-                                                                  Memory target_memory,
-                                                                  const RegionRequirement &req,
-                                                                  const LayoutConstraintSet &constraints,
-                                                                  bool force_new_instances,
-                                                                  bool meets_constraints);
+                                                                          Memory target_memory,
+                                                                          const RegionRequirement &req,
+                                                                          const LayoutConstraintSet &constraints,
+                                                                          bool force_new_instances,
+                                                                          bool meets_constraints);
   virtual void map_task(const MapperContext ctx,
                         const Task &task,
                         const MapTaskInput &input,
@@ -540,11 +540,11 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
 }
 
 Legion::LogicalRegion NSMapper::dsl_default_policy_select_instance_region(MapperContext ctx,
-                                                                  Memory target_memory,
-                                                                  const RegionRequirement &req,
-                                                                  const LayoutConstraintSet &constraints,
-                                                                  bool force_new_instances,
-                                                                  bool meets_constraints)
+                                                                          Memory target_memory,
+                                                                          const RegionRequirement &req,
+                                                                          const LayoutConstraintSet &constraints,
+                                                                          bool force_new_instances,
+                                                                          bool meets_constraints)
 {
   // Not invoked anywhere yet; can be used in map_task to replace default_policy_select_instance_region
   return req.region;
@@ -911,7 +911,7 @@ void NSMapper::map_task(const MapperContext ctx,
     MemoryConstraint mem_constraint =
         DefaultMapper::find_memory_constraint(ctx, task, output.chosen_variant, idx);
     Memory target_memory = dsl_default_policy_select_target_memory(ctx,
-                                                                   task.get_task_name(),
+                                                                   task_name,
                                                                    target_proc,
                                                                    idx,
                                                                    task.regions[idx],
@@ -929,8 +929,9 @@ void NSMapper::map_task(const MapperContext ctx,
       }
       continue;
     }
-    // Did the application request a virtual mapping for this requirement?
-    if ((task.regions[idx].tag & DefaultMapper::VIRTUAL_MAP) != 0)
+    // Did the application request a virtual mapping for this requirement with task's tag?
+    // Did the user request a Virtual instance in the DSL?
+    if (((task.regions[idx].tag & DefaultMapper::VIRTUAL_MAP) != 0) || (target_memory == Memory::NO_MEMORY))
     {
       PhysicalInstance virt_inst = PhysicalInstance::get_virtual_instance();
       output.chosen_instances[idx].push_back(virt_inst);
@@ -1044,6 +1045,10 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
   {
     // log_mapper.debug() << "querying " << target_processor.id <<
     // " for memory " << memory_kind_to_string(mem_kind);
+    if (mem_kind == Memory::NO_MEMKIND) // user request Virtual Instance
+    {
+      return Memory::NO_MEMORY;
+    }
     Memory target_memory_try = query_best_memory_for_proc(target_proc, mem_kind);
     if (target_memory_try.exists())
     {

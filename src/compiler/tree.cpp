@@ -97,7 +97,9 @@ Memory::Kind MyMem2LegionMem(MemoryEnum mymem)
   case SOCKMEM:
     return Memory::SOCKET_MEM;
   case ALLMEM:
-    return Memory::NO_MEMKIND;
+    return Memory::NO_MEMKIND; // used in Layout Constraint
+  case VIRTUAL:
+    return Memory::NO_MEMKIND; // used in Region (select target memory in map_task)
   default:
     std::cout << "Reach undesired region in MyMem2LegionMem" << std::endl;
     assert(false);
@@ -105,7 +107,7 @@ Memory::Kind MyMem2LegionMem(MemoryEnum mymem)
   }
   std::cout << "Reach undesired region in MyMem2LegionMem" << std::endl;
   assert(false);
-  return Memory::Z_COPY_MEM;
+  return Memory::SYSTEM_MEM;
 }
 
 std::vector<Memory::Kind> MyMem2LegionMemList(std::vector<MemoryEnum> myprocs)

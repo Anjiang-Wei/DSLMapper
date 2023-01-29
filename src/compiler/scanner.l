@@ -75,6 +75,7 @@ STRING              (\042[^\042\n]*\042)
 "RDMEM"             { return T_RDMEM; }
 "ZCMEM"             { return T_ZCMEM; }
 "SOCKMEM"           { return T_SOCKMEM; }
+"VIRTUAL"           { return T_VIRTUAL; }
 
 
 "Machine"           { yylval.string = strdup("Machine"); return T_Identifier; }

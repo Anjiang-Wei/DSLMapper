@@ -87,32 +87,33 @@ extern int yydebug;
     T_RDMEM = 293,
     T_ZCMEM = 294,
     T_SOCKMEM = 295,
-    T_Int = 296,
-    T_Bool = 297,
-    T_IPoint = 298,
-    T_ISpace = 299,
-    T_MSpace = 300,
-    T_Def = 301,
-    T_Return = 302,
-    T_True = 303,
-    T_False = 304,
-    T_Task = 305,
-    T_Region = 306,
-    T_Layout = 307,
-    T_IndexTaskMap = 308,
-    T_Print = 309,
-    T_Instance = 310,
-    T_Collect = 311,
-    T_ControlReplicate = 312,
-    T_Le = 313,
-    T_Ge = 314,
-    T_Eq = 315,
-    T_Ne = 316,
-    T_And = 317,
-    T_Or = 318,
-    T_Identifier = 319,
-    T_StringConstant = 320,
-    T_IntConstant = 321
+    T_VIRTUAL = 296,
+    T_Int = 297,
+    T_Bool = 298,
+    T_IPoint = 299,
+    T_ISpace = 300,
+    T_MSpace = 301,
+    T_Def = 302,
+    T_Return = 303,
+    T_True = 304,
+    T_False = 305,
+    T_Task = 306,
+    T_Region = 307,
+    T_Layout = 308,
+    T_IndexTaskMap = 309,
+    T_Print = 310,
+    T_Instance = 311,
+    T_Collect = 312,
+    T_ControlReplicate = 313,
+    T_Le = 314,
+    T_Ge = 315,
+    T_Eq = 316,
+    T_Ne = 317,
+    T_And = 318,
+    T_Or = 319,
+    T_Identifier = 320,
+    T_StringConstant = 321,
+    T_IntConstant = 322
   };
 #endif
 /* Tokens.  */
@@ -154,32 +155,33 @@ extern int yydebug;
 #define T_RDMEM 293
 #define T_ZCMEM 294
 #define T_SOCKMEM 295
-#define T_Int 296
-#define T_Bool 297
-#define T_IPoint 298
-#define T_ISpace 299
-#define T_MSpace 300
-#define T_Def 301
-#define T_Return 302
-#define T_True 303
-#define T_False 304
-#define T_Task 305
-#define T_Region 306
-#define T_Layout 307
-#define T_IndexTaskMap 308
-#define T_Print 309
-#define T_Instance 310
-#define T_Collect 311
-#define T_ControlReplicate 312
-#define T_Le 313
-#define T_Ge 314
-#define T_Eq 315
-#define T_Ne 316
-#define T_And 317
-#define T_Or 318
-#define T_Identifier 319
-#define T_StringConstant 320
-#define T_IntConstant 321
+#define T_VIRTUAL 296
+#define T_Int 297
+#define T_Bool 298
+#define T_IPoint 299
+#define T_ISpace 300
+#define T_MSpace 301
+#define T_Def 302
+#define T_Return 303
+#define T_True 304
+#define T_False 305
+#define T_Task 306
+#define T_Region 307
+#define T_Layout 308
+#define T_IndexTaskMap 309
+#define T_Print 310
+#define T_Instance 311
+#define T_Collect 312
+#define T_ControlReplicate 313
+#define T_Le 314
+#define T_Ge 315
+#define T_Eq 316
+#define T_Ne 317
+#define T_And 318
+#define T_Or 319
+#define T_Identifier 320
+#define T_StringConstant 321
+#define T_IntConstant 322
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -220,7 +222,7 @@ union YYSTYPE
     class InstanceLimitNode* instancelimit;
     class IdentifierLstNode* stringlist;
 
-#line 224 "y.tab.h"
+#line 226 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

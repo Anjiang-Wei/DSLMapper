@@ -56,6 +56,7 @@ enum MemoryEnum
   ZCMEM,
   SOCKMEM,
   ALLMEM,
+  VIRTUAL,
 };
 
 const char *MemoryEnumName[] =
@@ -66,6 +67,7 @@ const char *MemoryEnumName[] =
         "ZCMEM",
         "SOCKMEM",
         "ALLMEM",
+        "VIRTUAL",
 };
 
 Processor::Kind MyProc2LegionProc(ProcessorEnum);
