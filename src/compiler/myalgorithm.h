@@ -17,6 +17,24 @@ void printvec(const std::vector<int> &my_vector);
 std::vector<int> order_optimize(int number, const std::vector<int> &launch_domain,
                                 const std::vector<std::vector<int>> &all_results);
 std::vector<int> greedy(const int number, const std::vector<int> &launch_domain);
+void generate_prime_factor(int big_number, std::vector<int> &factors_result);
+std::vector<float> divide(const std::vector<int> &a, const std::vector<int> &b);
+std::vector<int> brute_force(const int number, const std::vector<int> &launch_domain, const bool proxy);
+void generate_prime_factorization(const int number, std::unordered_map<int, int> &result, std::vector<int> &unique_prime);
+void enumerate_placement(const int prime, int power, int num_places,
+                         std::vector<int> partial_result, std::vector<std::vector<int>> &final_result);
+void cartesian_product(std::vector<int> unique_prime,
+                       const std::unordered_map<int, std::vector<std::vector<int>>> &prime_placement,
+                       const std::vector<int> &partial_result,
+                       std::vector<std::vector<int>> &final_result);
+std::vector<int> precise_enumerate(int number, const std::vector<int> &launch_domain);
+void printvec(const std::vector<float> &my_vector);
+float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_space, int node_num, int dx, int dy);
+std::string myvec2str(const std::vector<int> &my_vector);
+void printvec(const std::vector<int> &my_vector);
+std::string myvec2str(const std::vector<float> &my_vector);
+void printvec(const std::vector<float> &my_vector);
+unsigned int C(int n, int k);
 
 // Helper function: factorize a number (big_number) into sorted prime factors (factors_result)
 void generate_prime_factor(int big_number, std::vector<int> &factors_result)
@@ -37,7 +55,7 @@ void generate_prime_factor(int big_number, std::vector<int> &factors_result)
                                   97, 101, 103, 107, 109, 113, 127, 131};
   // Increase the size of the prime number table if you ever hit this
   assert(big_number <= (primes[num_primes - 1] * primes[num_primes - 1]));
-  for (int i = 0; i < num_primes; i++)
+  for (size_t i = 0; i < num_primes; i++)
   {
     if (primes[i] * primes[i] > big_number) // There is at most 1 prime whose index >= i
       break;
@@ -77,7 +95,7 @@ std::vector<int> greedy(const int number, const std::vector<int> &launch_domain)
   // Assign prime nums onto the dimensions
   // from the largest primes down to the smallest, in a greedy approach
   std::vector<double> domain_vec;
-  for (int i = 0; i < dim; i++)
+  for (auto i = 0; i < dim; i++)
     domain_vec.push_back((double)launch_domain[i]); // integer to double
 
   // from the largest primes down to the smallest
@@ -103,7 +121,7 @@ std::vector<float> divide(const std::vector<int> &a, const std::vector<int> &b)
 {
   assert(a.size() == b.size());
   std::vector<float> result;
-  for (int i = 0; i < a.size(); i++)
+  for (size_t i = 0; i < a.size(); i++)
   {
     result.push_back((float)a[i] * 1.0 / (float)b[i]);
   }
@@ -148,7 +166,7 @@ std::vector<int> brute_force(const int number, const std::vector<int> &launch_do
   // Enumerate all possible mapping choices j for p_k (j can choose any index from 0 to dim)
   // state_o_vec[k][state \union p_k] =  state_w[k-1][state].update(j, multiplied by p_k)
 
-  for (int i = 0; i < prime_nums.size(); i++) // Each step decides the mapping for p_i
+  for (size_t i = 0; i < prime_nums.size(); i++) // Each step decides the mapping for p_i
   {
     std::unordered_map<long long int, std::vector<int>> state_o_vec_i;
     for (const auto item : state_o_vec[i])
@@ -230,12 +248,12 @@ void generate_prime_factorization(const int number, std::unordered_map<int, int>
   unique_prime = std::vector<int>(prime_num_set.begin(), prime_num_set.end());
 
   std::multiset<int> prime_num_multiset(prime_nums.begin(), prime_nums.end());
-  int total_elements = 0;
-  for (int i = 0; i < prime_nums.size(); i++)
+  size_t total_elements = 0;
+  for (size_t i = 0; i < prime_nums.size(); i++)
   {
     if (result.count(prime_nums[i]) == 0)
     {
-      int appear_times = prime_num_multiset.count(prime_nums[i]);
+      size_t appear_times = prime_num_multiset.count(prime_nums[i]);
       total_elements += appear_times;
       result.insert({prime_nums[i], appear_times});
     }
@@ -291,11 +309,11 @@ void cartesian_product(std::vector<int> unique_prime,
 }
 
 // the number of ways to choose k elements from n elements
-int C(int n, int k)
+unsigned int C(int n, int k)
 {
   if (k == 0 || k == n)
     return 1;
-  int ans = 1;
+  unsigned int ans = 1;
   for (int i = 1; i <= k; i++)
   {
     ans = ans * (n - i + 1) / i; // Never shortened as *= because of integer division problem
@@ -359,14 +377,14 @@ std::vector<int> precise_enumerate(int number, const std::vector<int> &launch_do
 
   // prime_placement[p_i] records different ways to decompose {p_i}^{a_i} into {dim} places (each way is a {dim}-sized vector),
   std::unordered_map<int, std::vector<std::vector<int>>> prime_placement;
-  int total_choices = 1;
-  for (int i = 0; i < unique_prime.size(); i++)
+  unsigned int total_choices = 1;
+  for (size_t i = 0; i < unique_prime.size(); i++)
   {
     int prime_num = unique_prime[i];
     int power = prime2power.at(prime_num);
     std::vector<std::vector<int>> ways;
     enumerate_placement(prime_num, power, dim, std::vector<int>(), ways);
-    int num_ways = C(power + dim - 1, dim - 1);
+    unsigned int num_ways = C(power + dim - 1, dim - 1);
     assert(ways.size() == num_ways);
     total_choices *= num_ways;
     prime_placement.insert({prime_num, ways});
@@ -434,7 +452,7 @@ float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_sp
   float best_num = INT32_MAX;
   int best_idx = 0;
   std::vector<float> results;
-  for (int i = 0; i < candidates.size(); i++)
+  for (size_t i = 0; i < candidates.size(); i++)
   {
     // printf("Result:\n");
     // printvec(candidates[i]);
@@ -449,17 +467,17 @@ float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_sp
   }
   // assert(fabs(results[results.size()-1] - results[results.size()-2]) < 0.00001);
   float perc_improve = 0.0;
-  for (int i = 0; i < results.size(); i++)
+  for (size_t i = 0; i < results.size(); i++)
   {
     if (fabs(results[i] - best_num) > 0.000001)
     {
       printf("Find nonequal results for node_num = %d, launch_domain = (%d, %d)\n",
              node_num, dx, dy);
       printvec(results);
-      printf("%d is worse, %lf - %lf = diff = %lf\n", i, results[i], best_num, results[i] - best_num);
+      printf("%d is worse, %lf - %lf = diff = %lf\n", (int)i, results[i], best_num, results[i] - best_num);
       printf("Optimal's orientation is from %d: ", best_idx);
       printvec(candidates[best_idx]);
-      printf("Suboptimal's orientation is from %d:", i);
+      printf("Suboptimal's orientation is from %d:", (int)i);
       printvec(candidates[i]);
     }
   }

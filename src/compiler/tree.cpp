@@ -136,7 +136,7 @@ Node *ProcCustomNode::run(std::stack<std::unordered_map<std::string, Node *>> &l
   }
   else
   {
-    for (int i = 0; i < task_names.size(); i++)
+    for (size_t i = 0; i < task_names.size(); i++)
     {
       Tree2Legion::task_policies.insert({task_names[i], res});
     }
@@ -243,6 +243,7 @@ TupleIntNode *TaskNode::get_point()
     return ipoint;
   printf("Warning: currently SingleTask does not support get_point(), failure\n");
   assert(false);
+  return NULL;
   // TupleIntNode* tmpnode = new TupleIntNode(std::vector<int>());
   // local_temps.push_back(tmpnode);
   // return tmpnode;
@@ -254,6 +255,7 @@ TupleIntNode *TaskNode::get_space()
     return ispace;
   printf("Warning: currently SingleTask does not support get_space(), failure\n");
   assert(false);
+  return NULL;
   // TupleIntNode* tmpnode = new TupleIntNode(std::vector<int>());
   // local_temps.push_back(tmpnode);
   // return tmpnode;
@@ -291,7 +293,7 @@ std::vector<std::vector<int>> Tree2Legion::runsingle(const Task *task, const NSM
 #ifdef DEBUG_TREE
   std::cout << "in Tree2Legion::runsingle" << vec2str(x) << std::endl;
 #endif
-  FuncDefNode *func_node;
+  FuncDefNode *func_node = NULL;
   if (singletask2func.count(task_name) > 0)
   {
     func_node = singletask2func.at(task_name);
@@ -386,7 +388,7 @@ std::vector<std::vector<int>> Tree2Legion::runindex(const Task *task)
     const Legion::DomainT<DIM, coord_t> is = full_space;                          \
     const Legion::Point<DIM, coord_t> p1 = point;                                 \
     std::vector<int> index_point, launch_space;                                   \
-    for (int i = 0; i < DIM; i++)                                                 \
+    for (auto i = 0; i < DIM; i++)                                                 \
     {                                                                             \
       index_point.push_back(p1[i]);                                               \
       launch_space.push_back(is.bounds.hi[i] - is.bounds.lo[i] + 1);              \
@@ -411,7 +413,7 @@ std::vector<std::vector<int>> Tree2Legion::runindex(std::string task_name,
 #ifdef DEBUG_TREE
   std::cout << "in Tree2Legion::runindex " << vec2str(x) << std::endl;
 #endif
-  FuncDefNode *func_node;
+  FuncDefNode *func_node = NULL;
   if (indextask2func.count(task_name) > 0)
   {
     func_node = indextask2func.at(task_name);
@@ -495,7 +497,7 @@ std::vector<std::vector<int>> Tree2Legion::runindex(std::string task_name,
 
 Node *ControlReplicateNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
 {
-  for (int i = 0; i < task_name.size(); i++)
+  for (size_t i = 0; i < task_name.size(); i++)
   {
     Tree2Legion::control_replicate.insert(task_name[i]);
   }
@@ -521,7 +523,7 @@ Node *SingleTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>>
 
   std::vector<ArgNode *> params = func_node_c->func_args->arg_lst;
 
-  for (int i = 0; i < task_name.size(); i++)
+  for (size_t i = 0; i < task_name.size(); i++)
   {
     Tree2Legion::singletask2func.insert({task_name[i], func_node_c});
   }
@@ -553,7 +555,7 @@ Node *IndexTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>> 
 
   std::vector<ArgNode *> params = func_node_c->func_args->arg_lst;
 
-  for (int i = 0; i < task_name.size(); i++)
+  for (size_t i = 0; i < task_name.size(); i++)
   {
     Tree2Legion::indextask2func.insert({task_name[i], func_node_c});
   }
@@ -583,6 +585,7 @@ Node *FuncDefNode::invoked(std::stack<std::unordered_map<std::string, Node *>> &
   }
   std::cout << "Error: function without return" << std::endl;
   assert(false);
+  return NULL;
 }
 
 void local_temps_pop(std::vector<Node *> &local_temps) // free all the nodes in local_temps
@@ -1000,7 +1003,7 @@ TupleExprNode *TupleExprNode::binary_op(TupleExprNode *right_op, BinOpEnum op, s
     assert(false);
   }
   std::vector<Node *> res;
-  for (int i = 0; i < exprlst.size(); i++)
+  for (size_t i = 0; i < exprlst.size(); i++)
   {
     if (!(exprlst[i]->type == IntValType && right_op->exprlst[i]->type == IntValType))
     {
@@ -1025,7 +1028,7 @@ TupleIntNode *TupleIntNode::binary_op(TupleIntNode *rt, BinOpEnum op, std::vecto
     printf("Dimension mismatch in TupleIntNode's binary operation\n");
     assert(false);
   }
-  for (int i = 0; i < tupleint.size(); i++)
+  for (size_t i = 0; i < tupleint.size(); i++)
   {
     int new_res;
     switch (op)
@@ -1083,7 +1086,7 @@ BoolValNode *BoolValNode::binary_op(BoolValNode *rt, BinOpEnum op, std::vector<N
 
 TupleIntNode *TupleIntNode::slice(int a, int b, std::vector<Node *> &local_temps)
 {
-  if (b >= tupleint.size() && b >= 0)
+  if (b >= (int)tupleint.size() && b >= 0)
   {
     printf("slice's right index is out of bound!\n");
     assert(false);
@@ -1102,7 +1105,7 @@ TupleIntNode *TupleIntNode::slice(int a, int b, std::vector<Node *> &local_temps
 
 TupleExprNode *TupleExprNode::slice(int a, int b, std::vector<Node *> &local_temps)
 {
-  if (b >= exprlst.size() && b >= 0)
+  if (b >= (int)exprlst.size() && b >= 0)
   {
     printf("slice's right index is out of bound!\n");
     assert(false);
@@ -1122,7 +1125,7 @@ TupleExprNode *TupleExprNode::slice(int a, int b, std::vector<Node *> &local_tem
 TupleExprNode *TupleExprNode::negate(std::vector<Node *> &local_temps)
 {
   std::vector<Node *> res;
-  for (int i = 0; i < exprlst.size(); i++)
+  for (size_t i = 0; i < exprlst.size(); i++)
   {
     if (exprlst[i]->type != IntValType)
     {
@@ -1161,7 +1164,7 @@ Node *NegativeExprNode::run(std::stack<std::unordered_map<std::string, Node *>> 
 TupleIntNode *TupleIntNode::negate(std::vector<Node *> &local_temps)
 {
   std::vector<int> res;
-  for (int i = 0; i < tupleint.size(); i++)
+  for (size_t i = 0; i < tupleint.size(); i++)
   {
     res.push_back(-tupleint[i]);
   }
@@ -1172,7 +1175,7 @@ TupleIntNode *TupleIntNode::negate(std::vector<Node *> &local_temps)
 
 IntValNode *TupleIntNode::at(int x, std::vector<Node *> &local_temps)
 {
-  if (x < tupleint.size())
+  if (x < (int)tupleint.size())
   {
     IntValNode *tmpnode = new IntValNode(this->tupleint[x >= 0 ? x : tupleint.size() + x]);
     local_temps.push_back(tmpnode);
@@ -1190,7 +1193,7 @@ IntValNode *TupleIntNode::at(IntValNode *x, std::vector<Node *> &local_temps)
 
 Node *TupleExprNode::at(int x, std::vector<Node *> &local_temps)
 {
-  if (x < exprlst.size())
+  if (x < (int)exprlst.size())
   {
     return this->exprlst[x >= 0 ? x : exprlst.size() + x];
   }
@@ -1374,7 +1377,7 @@ ExprNode *TupleExprNode::Convert2TupleInt(std::vector<Node *> &local_temps, bool
 {
   // if all nodes in std::vector<Node*> exprlst; are IntValNode(IntValType), then can be converted to TupleIntNode
   std::vector<int> tuple_int;
-  for (int i = 0; i < this->exprlst.size(); i++)
+  for (size_t i = 0; i < this->exprlst.size(); i++)
   {
     if (this->exprlst[i]->type == IntValType)
     {

@@ -15,6 +15,7 @@ using namespace Legion;
 using namespace Legion::Mapping;
 
 extern std::string processor_kind_to_string(Processor::Kind kind);
+void handleError(int errorCode, const char *errorMessage);
 
 template <typename T1, typename T2>
 struct PairHash
@@ -71,7 +72,9 @@ const char *MemoryEnumName[] =
 };
 
 Processor::Kind MyProc2LegionProc(ProcessorEnum);
+std::vector<Processor::Kind> MyProc2LegionProcList(std::vector<ProcessorEnum>);
 Memory::Kind MyMem2LegionMem(MemoryEnum);
+std::vector<Memory::Kind> MyMem2LegionMemList(std::vector<MemoryEnum>);
 
 enum ArgTypeEnum
 {
@@ -660,7 +663,7 @@ public:
   {
     for (size_t kk = 0; kk < tupletupleint.size(); kk++)
     {
-      for (int i = 0; i < tupletupleint[kk].size(); i++)
+      for (size_t i = 0; i < tupletupleint[kk].size(); i++)
       {
         printf("%d", tupletupleint[kk][i]);
         if (i != tupletupleint[kk].size() - 1)

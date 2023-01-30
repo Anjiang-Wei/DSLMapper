@@ -22,6 +22,8 @@
 
 // #define DEBUG_MSPACE true
 
+std::string vec2str(std::vector<int> my_vector);
+
 std::string vec2str(std::vector<int> my_vector)
 {
   std::stringstream result;
@@ -76,7 +78,7 @@ public:
   {
     // shrink the dimension of point, closer to original machine model
     std::vector<int> result;
-    for (int i = 0; i < split_dim; i++)
+    for (auto i = 0; i < split_dim; i++)
     {
       result.push_back(old_point[i]);
     }
@@ -93,7 +95,7 @@ public:
   {
     // add 1 dimension to split the point
     std::vector<int> result;
-    for (int i = 0; i < split_dim; i++)
+    for (auto i = 0; i < split_dim; i++)
     {
       result.push_back(old_point[i]);
     }
@@ -110,7 +112,7 @@ public:
   {
     // the new machine model has 1 more dim
     std::vector<int> result;
-    for (int i = 0; i < split_dim; i++)
+    for (auto i = 0; i < split_dim; i++)
     {
       result.push_back(old_dim[i]);
     }
@@ -512,7 +514,7 @@ public:
       else
       {
         int point_i = old_point[i];
-        for (int kk = 0; kk < new_dims.size(); kk++)
+        for (size_t kk = 0; kk < new_dims.size(); kk++)
         {
           result.push_back(point_i % new_dims[kk]);
           point_i = point_i / new_dims[kk];
@@ -526,7 +528,7 @@ public:
   {
     newdim_preprod.push_back(1);
     int prior = 1;
-    for (int i = 0; i < new_dims.size(); i++)
+    for (size_t i = 0; i < new_dims.size(); i++)
     {
       prior = new_dims[i] * prior;
       newdim_preprod.push_back(prior);
@@ -547,7 +549,7 @@ public:
       }
       else
       {
-        for (int j = 0; j < new_dims.size(); j++)
+        for (size_t j = 0; j < new_dims.size(); j++)
         {
           result.push_back(new_dims[j]);
         }
@@ -581,7 +583,7 @@ public:
       }
       else
       {
-        for (int j = 0; j < new_dims.size(); j++)
+        for (size_t j = 0; j < new_dims.size(); j++)
         {
           result.push_back(new_dims[j]);
         }
@@ -832,7 +834,7 @@ public:
     bool is_one_point = true;
     std::vector<int> one_point;
     std::vector<std::vector<int>> set_points;
-    for (int i = 0; i < machine_point.size(); i++)
+    for (size_t i = 0; i < machine_point.size(); i++)
     {
       if (machine_point[i] >= 0)
       {
@@ -929,11 +931,11 @@ public:
       opstack.pop();
     }
     assert(this->each_dim.size() == current_point.size());
-    for (int i = 0; i < current_point.size(); i++)
+    for (size_t i = 0; i < current_point.size(); i++)
     {
       if (current_point[i] >= this->each_dim[i])
       {
-        printf("%d >= %d in legion2mspace: index out of bound!\n");
+        printf("%d >= %d in legion2mspace: index out of bound!\n", current_point[i], this->each_dim[i]);
         assert(false);
       }
     }

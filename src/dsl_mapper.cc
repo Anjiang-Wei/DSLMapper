@@ -181,7 +181,7 @@ public:
   void select_tasks_to_map(const Legion::Mapping::MapperContext ctx,
                            const SelectMappingInput &input,
                            SelectMappingOutput &output) override;
-  Processor idx_to_proc(int proc_idx, const Processor::Kind proc_kind) const;
+  Processor idx_to_proc(unsigned proc_idx, const Processor::Kind proc_kind) const;
 
 protected:
   void map_task_post_function(const MapperContext &ctx,
@@ -214,6 +214,7 @@ public:
   static bool untrackValidRegions;
   static bool use_semantic_name;
   static bool select_source_by_bandwidth;
+  static void create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs);
 };
 
 Tree2Legion NSMapper::tree_result;
@@ -304,7 +305,7 @@ void NSMapper::parse_policy_file(const std::string &policy_file)
   tree_result.print();
 }
 
-inline Processor NSMapper::idx_to_proc(int proc_idx, const Processor::Kind proc_kind) const
+inline Processor NSMapper::idx_to_proc(unsigned proc_idx, const Processor::Kind proc_kind) const
 {
   switch (proc_kind)
   {
@@ -349,27 +350,27 @@ inline Processor NSMapper::idx_to_proc(int proc_idx, const Processor::Kind proc_
 
 void NSMapper::build_proc_idx_cache()
 {
-  for (int i = 0; i < this->local_cpus.size(); i++)
+  for (size_t i  = 0; i < this->local_cpus.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_cpus[i], i});
   }
-  for (int i = 0; i < this->local_gpus.size(); i++)
+  for (size_t i  = 0; i < this->local_gpus.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_gpus[i], i});
   }
-  for (int i = 0; i < this->local_omps.size(); i++)
+  for (size_t i  = 0; i < this->local_omps.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_omps[i], i});
   }
-  // for (int i = 0; i < this->local_ios.size(); i++)
+  // for (size_t i  = 0; i < this->local_ios.size(); i++)
   // {
   //   this->proc_idx_cache.insert({this->local_ios[i], i});
   // }
-  // for (int i = 0; i < this->local_pys.size(); i++)
+  // for (size_t i  = 0; i < this->local_pys.size(); i++)
   // {
   //   this->proc_idx_cache.insert({this->local_pys[i], i});
   // }
-  // for (int i = 0; i < this->local_procsets.size(); i++)
+  // for (size_t i  = 0; i < this->local_procsets.size(); i++)
   // {
   //   this->proc_idx_cache.insert({this->local_procsets[i], i})
   // }
@@ -522,15 +523,15 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
     {
       res = tree_result.runindex(&task);
     }
-    int node_idx = res[0][0];
+    unsigned node_idx = (unsigned)res[0][0];
     assert(task.target_proc.address_space() == node_idx);
-    for (int i = 0; i < res.size(); i++)
+    for (size_t i  = 0; i < res.size(); i++)
     {
-      assert(res[i][0] == node_idx); // must be on the same node
+      assert((unsigned)res[i][0] == node_idx); // must be on the same node
       // Todo: for round-robin semantic
       // We might also need to create physical instance for all the returned processors
       // Currently not implemented due to lack of motivating examples
-      target_procs.push_back(idx_to_proc(res[i][1], task.target_proc.kind()));
+      target_procs.push_back(idx_to_proc((unsigned)res[i][1], task.target_proc.kind()));
     }
   }
   else
@@ -1021,7 +1022,7 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
     // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
     memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
 #ifdef DEBUG_REGION_PLACEMENT
-    for (int i = 0; i < path.size(); i++)
+    for (auto i  = 0; i < path.size(); i++)
     {
       printf("----start get_handle_names------\n");
       std::cout << path[i] << std::endl;
@@ -1034,7 +1035,7 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
     memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
   }
 #ifdef DEBUG_REGION_PLACEMENT
-  for (int i = 0; i < memory_list.size(); i++)
+  for (auto i  = 0; i < memory_list.size(); i++)
   {
     printf("-----start query_memory_list ---\n");
     std::cout << memory_kind_to_string(memory_list[i]) << std::endl;
@@ -1381,7 +1382,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       if (dsl_constraint.aos)
       {
         // log_mapper.debug() << "dsl_constraint.aos = true";
-        for (int i = 0; i < dim; ++i)
+        for (auto i  = 0; i < dim; ++i)
         {
           dimension_ordering[dim - i] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1391,7 +1392,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       else
       {
         // log_mapper.debug() << "dsl_constraint.aos = false";
-        for (int i = 0; i < dim; ++i)
+        for (auto i  = 0; i < dim; ++i)
         {
           dimension_ordering[dim - i - 1] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1416,7 +1417,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       {
         // log_mapper.debug() << "dsl_constraint.aos = false";
         // DefaultMapper's choice
-        for (int i = 0; i < dim; ++i)
+        for (auto i  = 0; i < dim; ++i)
         {
           dimension_ordering[i] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1546,7 +1547,7 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
         // rather than target_proc to match with our heuristics for where serial task
         // launch loops go.
         std::deque<InFlightTask> inflight = this->backPressureQueue[task->orig_proc];
-        if (inflight.size() == max_num)
+        if ((int)inflight.size() == max_num)
         {
           // We've hit the cap, so we can't schedule any more tasks.
           schedule = false;
@@ -1880,19 +1881,19 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     std::string policy_file = get_policy_file();
     parse_policy_file(policy_file);
   }
-  for (int i = 0; i < this->local_gpus.size(); i++)
+  for (size_t i  = 0; i < this->local_gpus.size(); i++)
   {
     query_best_memory_for_proc(this->local_gpus[i], Memory::GPU_FB_MEM);
     query_best_memory_for_proc(this->local_gpus[i], Memory::Z_COPY_MEM);
   }
-  for (int i = 0; i < this->local_cpus.size(); i++)
+  for (size_t i  = 0; i < this->local_cpus.size(); i++)
   {
     query_best_memory_for_proc(this->local_cpus[i], Memory::SYSTEM_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::Z_COPY_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::REGDMA_MEM);
   }
-  for (int i = 0; i < this->local_omps.size(); i++)
+  for (size_t i  = 0; i < this->local_omps.size(); i++)
   {
     query_best_memory_for_proc(this->local_omps[i], Memory::SYSTEM_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::Z_COPY_MEM);
@@ -1901,7 +1902,7 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
   }
 }
 
-static void create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs)
+void NSMapper::create_mappers(Machine machine, Runtime *runtime, const std::set<Processor> &local_procs)
 {
   // log_mapper.debug("Inside create_mappers local_procs.size() = %ld", local_procs.size());
   bool use_logging_wrapper = false;
@@ -1973,7 +1974,7 @@ static void create_mappers(Machine machine, Runtime *runtime, const std::set<Pro
 
 void register_mappers()
 {
-  Runtime::add_registration_callback(create_mappers);
+  Runtime::add_registration_callback(NSMapper::create_mappers);
 }
 
 namespace Legion
