@@ -267,7 +267,7 @@ union YYSTYPE
 {
 #line 26 "parser.y"
 
-    char* string;
+    const char* string;
     int intVal;
 
     class ProgramNode* program;
@@ -1844,7 +1844,7 @@ yyreduce:
 
   case 19:
 #line 140 "parser.y"
-                    { char s[8]; sprintf(s,"%ld", (yyvsp[0].intVal)); (yyval.string) = s;}
+                    { char s[8]; sprintf(s,"%d", (yyvsp[0].intVal)); (yyval.string) = s; }
 #line 1849 "y.tab.c"
     break;
 

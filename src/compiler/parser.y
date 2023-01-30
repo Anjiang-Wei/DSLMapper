@@ -24,7 +24,7 @@ void yyerror(const char*);
 
 %union
 {
-    char* string;
+    const char* string;
     int intVal;
 
     class ProgramNode* program;
@@ -137,7 +137,7 @@ Identifier_star:
 Identifier_star_num:
     T_Identifier    { $$ = $1; }
 |   '*'             { $$ = "*"; }
-|   T_IntConstant   { char s[8]; sprintf(s,"%ld", $1); $$ = s;}
+|   T_IntConstant   { char s[8]; sprintf(s,"%d", $1); $$ = s; }
 
 Identifier_List:
     T_Identifier ','  T_Identifier   { $$ = new IdentifierLstNode($1, $3); }

@@ -189,7 +189,7 @@ union YYSTYPE
 {
 #line 26 "parser.y"
 
-    char* string;
+    const char* string;
     int intVal;
 
     class ProgramNode* program;
