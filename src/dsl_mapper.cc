@@ -1466,6 +1466,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
   // Differs from DefaultMapper:
   // 1) remove assertion for replicating only top-level task
   // 2) default_find_preferred_variant not requiring tight bound (allowing finding multiple variants)
+  // 3) support node=1, comment out the DEBUG_CTRL_REPL
   assert(task.regions.size() == 0);
   const Processor::Kind target_kind = task.target_proc.kind();
   // Get the variant that we are going to use to map this task
@@ -1514,7 +1515,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
           output.task_mappings[space].target_procs.push_back(*it);
         }
       }
-#ifdef DEBUG_CTRL_REPL
+// #ifdef DEBUG_CTRL_REPL
       else
       {
         const std::vector<Processor> &local_procs =
@@ -1526,7 +1527,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
              it != local_procs.end(); it++, index++)
           output.task_mappings[index].target_procs.push_back(*it);
       }
-#endif
+// #endif
     }
     // Indicate that we want to do control replication by filling
     // in the control replication map with our chosen processors
@@ -1541,7 +1542,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
             output.task_mappings[idx].target_procs[0];
       }
     }
-#ifdef DEBUG_CTRL_REPL
+// #ifdef DEBUG_CTRL_REPL
     else
     {
       const std::vector<Processor> &local_procs =
@@ -1554,7 +1555,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
             output.task_mappings[idx].target_procs[0];
       }
     }
-#endif
+// #endif
   }
   else
   {
