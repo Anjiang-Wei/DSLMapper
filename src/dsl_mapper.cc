@@ -153,6 +153,11 @@ public:
                         const Task &task,
                         const MapTaskInput &input,
                         MapTaskOutput &output);
+  virtual void map_replicate_task(const MapperContext ctx,
+                                  const Task &task,
+                                  const MapTaskInput &input,
+                                  const MapTaskOutput &def_output,
+                                  MapReplicateTaskOutput &output);
   virtual void select_sharding_functor(const MapperContext ctx,
                                        const Task &task,
                                        const SelectShardingFunctorInput &input,
@@ -350,15 +355,15 @@ inline Processor NSMapper::idx_to_proc(unsigned proc_idx, const Processor::Kind 
 
 void NSMapper::build_proc_idx_cache()
 {
-  for (size_t i  = 0; i < this->local_cpus.size(); i++)
+  for (size_t i = 0; i < this->local_cpus.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_cpus[i], i});
   }
-  for (size_t i  = 0; i < this->local_gpus.size(); i++)
+  for (size_t i = 0; i < this->local_gpus.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_gpus[i], i});
   }
-  for (size_t i  = 0; i < this->local_omps.size(); i++)
+  for (size_t i = 0; i < this->local_omps.size(); i++)
   {
     this->proc_idx_cache.insert({this->local_omps[i], i});
   }
@@ -525,7 +530,7 @@ void NSMapper::dsl_default_policy_select_target_processors(MapperContext ctx,
     }
     unsigned node_idx = (unsigned)res[0][0];
     assert(task.target_proc.address_space() == node_idx);
-    for (size_t i  = 0; i < res.size(); i++)
+    for (size_t i = 0; i < res.size(); i++)
     {
       assert((unsigned)res[i][0] == node_idx); // must be on the same node
       // Todo: for round-robin semantic
@@ -1022,7 +1027,7 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
     // log_mapper.debug() << "found_policy = false; path.size() = " << path.size(); // use index for regent
     memory_list = tree_result.query_memory_list(task_name, path, target_proc.kind());
 #ifdef DEBUG_REGION_PLACEMENT
-    for (auto i  = 0; i < path.size(); i++)
+    for (auto i = 0; i < path.size(); i++)
     {
       printf("----start get_handle_names------\n");
       std::cout << path[i] << std::endl;
@@ -1035,7 +1040,7 @@ Memory NSMapper::dsl_default_policy_select_target_memory(MapperContext ctx,
     memory_list = tree_result.query_memory_list(task_name, {std::to_string(idx)}, target_proc.kind());
   }
 #ifdef DEBUG_REGION_PLACEMENT
-  for (auto i  = 0; i < memory_list.size(); i++)
+  for (auto i = 0; i < memory_list.size(); i++)
   {
     printf("-----start query_memory_list ---\n");
     std::cout << memory_kind_to_string(memory_list[i]) << std::endl;
@@ -1382,7 +1387,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       if (dsl_constraint.aos)
       {
         // log_mapper.debug() << "dsl_constraint.aos = true";
-        for (auto i  = 0; i < dim; ++i)
+        for (auto i = 0; i < dim; ++i)
         {
           dimension_ordering[dim - i] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1392,7 +1397,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       else
       {
         // log_mapper.debug() << "dsl_constraint.aos = false";
-        for (auto i  = 0; i < dim; ++i)
+        for (auto i = 0; i < dim; ++i)
         {
           dimension_ordering[dim - i - 1] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1417,7 +1422,7 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
       {
         // log_mapper.debug() << "dsl_constraint.aos = false";
         // DefaultMapper's choice
-        for (auto i  = 0; i < dim; ++i)
+        for (auto i = 0; i < dim; ++i)
         {
           dimension_ordering[i] =
               static_cast<Legion::DimensionKind>(static_cast<int>(LEGION_DIM_X) + i);
@@ -1449,6 +1454,116 @@ void NSMapper::dsl_default_policy_select_constraints(MapperContext ctx,
     }
   }
   DefaultMapper::default_policy_select_constraints(ctx, constraints, target_memory, req);
+}
+
+void NSMapper::map_replicate_task(const MapperContext ctx,
+                                  const Task &task,
+                                  const MapTaskInput &input,
+                                  const MapTaskOutput &def_output,
+                                  MapReplicateTaskOutput &output)
+//--------------------------------------------------------------------------
+{
+  // Only the following assertion differs from DefaultMapper
+  assert(task.regions.size() == 0);
+  const Processor::Kind target_kind = task.target_proc.kind();
+  // Get the variant that we are going to use to map this task
+  const VariantInfo chosen = default_find_preferred_variant(task, ctx,
+                                                            true /*needs tight bound*/, true /*cache*/, target_kind);
+  if (chosen.is_replicable)
+  {
+    const std::vector<Processor> &remote_procs =
+        remote_procs_by_kind(target_kind);
+    // Place on replicate on each node by default
+    assert(remote_procs.size() == total_nodes);
+    output.task_mappings.resize(total_nodes, def_output);
+    // Only check for MPI interop case when dealing with CPUs
+    if ((target_kind == Processor::LOC_PROC) &&
+        runtime->is_MPI_interop_configured(ctx))
+    {
+      // Check to see if we're interoperating with MPI
+      const std::map<AddressSpace, int /*rank*/> &mpi_interop_mapping =
+          runtime->find_reverse_MPI_mapping(ctx);
+      // If we're interoperating with MPI make the shards align with ranks
+      assert(mpi_interop_mapping.size() == total_nodes);
+      for (std::vector<Processor>::const_iterator it =
+               remote_procs.begin();
+           it != remote_procs.end(); it++)
+      {
+        AddressSpace space = it->address_space();
+        std::map<AddressSpace, int>::const_iterator finder =
+            mpi_interop_mapping.find(space);
+        assert(finder != mpi_interop_mapping.end());
+        assert(finder->second < int(output.task_mappings.size()));
+        output.task_mappings[finder->second].target_procs.push_back(*it);
+      }
+    }
+    else
+    {
+      // Otherwise we can just assign shards based on address space
+      if (total_nodes > 1)
+      {
+        for (std::vector<Processor>::const_iterator it =
+                 remote_procs.begin();
+             it != remote_procs.end(); it++)
+        {
+          AddressSpace space = it->address_space();
+          assert(space < output.task_mappings.size());
+          output.task_mappings[space].target_procs.push_back(*it);
+        }
+      }
+#ifdef DEBUG_CTRL_REPL
+      else
+      {
+        const std::vector<Processor> &local_procs =
+            local_procs_by_kind(target_kind);
+        output.task_mappings.resize(local_cpus.size());
+        unsigned index = 0;
+        for (std::vector<Processor>::const_iterator it =
+                 local_procs.begin();
+             it != local_procs.end(); it++, index++)
+          output.task_mappings[index].target_procs.push_back(*it);
+      }
+#endif
+    }
+    // Indicate that we want to do control replication by filling
+    // in the control replication map with our chosen processors
+    // Also set our chosen variant
+    if (total_nodes > 1)
+    {
+      output.control_replication_map.resize(total_nodes);
+      for (unsigned idx = 0; idx < total_nodes; idx++)
+      {
+        output.task_mappings[idx].chosen_variant = chosen.variant;
+        output.control_replication_map[idx] =
+            output.task_mappings[idx].target_procs[0];
+      }
+    }
+#ifdef DEBUG_CTRL_REPL
+    else
+    {
+      const std::vector<Processor> &local_procs =
+          local_procs_by_kind(target_kind);
+      output.control_replication_map.resize(local_procs.size());
+      for (unsigned idx = 0; idx < local_procs.size(); idx++)
+      {
+        output.task_mappings[idx].chosen_variant = chosen.variant;
+        output.control_replication_map[idx] =
+            output.task_mappings[idx].target_procs[0];
+      }
+    }
+#endif
+  }
+  else
+  {
+    // log_mapper.warning("WARNING: Default mapper was unable to locate "
+    //                    "a replicable task variant for the top-level "
+    //                    "task during a multi-node execution! We STRONGLY "
+    //                    "encourage users to make their top-level tasks "
+    //                    "replicable to avoid sequential bottlenecks on "
+    //                    "one node during the execution of an application!");
+    output.task_mappings.resize(1);
+    map_task(ctx, task, input, output.task_mappings[0]);
+  }
 }
 
 void NSMapper::report_profiling(const MapperContext ctx,
@@ -1881,19 +1996,19 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     std::string policy_file = get_policy_file();
     parse_policy_file(policy_file);
   }
-  for (size_t i  = 0; i < this->local_gpus.size(); i++)
+  for (size_t i = 0; i < this->local_gpus.size(); i++)
   {
     query_best_memory_for_proc(this->local_gpus[i], Memory::GPU_FB_MEM);
     query_best_memory_for_proc(this->local_gpus[i], Memory::Z_COPY_MEM);
   }
-  for (size_t i  = 0; i < this->local_cpus.size(); i++)
+  for (size_t i = 0; i < this->local_cpus.size(); i++)
   {
     query_best_memory_for_proc(this->local_cpus[i], Memory::SYSTEM_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::Z_COPY_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::REGDMA_MEM);
   }
-  for (size_t i  = 0; i < this->local_omps.size(); i++)
+  for (size_t i = 0; i < this->local_omps.size(); i++)
   {
     query_best_memory_for_proc(this->local_omps[i], Memory::SYSTEM_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::Z_COPY_MEM);
