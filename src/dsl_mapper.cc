@@ -1467,13 +1467,15 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
   // 1) remove assertion for replicating only top-level task
   // 2) default_find_preferred_variant not requiring tight bound (allowing finding multiple variants)
   // 3) support node=1, comment out the DEBUG_CTRL_REPL
+  // 4) assume the variant is always replicable
   assert(task.regions.size() == 0);
   const Processor::Kind target_kind = task.target_proc.kind();
   // Get the variant that we are going to use to map this task
   const VariantInfo chosen = default_find_preferred_variant(task, ctx,
                                                             false /*no need for tight bound*/,
                                                             true /*cache*/, target_kind);
-  if (chosen.is_replicable)
+  // if (chosen.is_replicable)
+  if (true)
   {
     const std::vector<Processor> &remote_procs =
         remote_procs_by_kind(target_kind);
