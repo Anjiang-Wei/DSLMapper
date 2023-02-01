@@ -1,0 +1,568 @@
+[0 - 20004ef6f8b0]    0.363810 {2}{mapper}: Memories on rank 0:
+[0 - 20004ef6f8b0]    0.363859 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.363866 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.363872 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.363878 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.363883 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004ef6f8b0]    0.363889 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.363894 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.363900 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.363905 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.363910 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.363915 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.363921 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.363926 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.363931 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.363937 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004ef6f8b0]    0.363942 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004ef6f8b0]    0.363947 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.363953 {2}{mapper}: Processors on rank 0:
+[0 - 20004ef6f8b0]    0.363959 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.363964 {2}{mapper}:   1d00000000000001 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.363972 {2}{mapper}:   1d00000000000002 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.363978 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.363984 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.363989 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364104 {2}{mapper}: Memories on rank 0:
+[0 - 20004ef6f8b0]    0.364111 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364117 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364122 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364127 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364132 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004ef6f8b0]    0.364138 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364143 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364148 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364153 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364158 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364164 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364169 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364174 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364179 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364185 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004ef6f8b0]    0.364190 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004ef6f8b0]    0.364195 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364201 {2}{mapper}: Processors on rank 0:
+[0 - 20004ef6f8b0]    0.364206 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364211 {2}{mapper}:   1d00000000000001 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364217 {2}{mapper}:   1d00000000000002 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364222 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364228 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364233 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364330 {2}{mapper}: Memories on rank 0:
+[0 - 20004ef6f8b0]    0.364336 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364342 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364347 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364352 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364357 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004ef6f8b0]    0.364363 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364368 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364373 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364378 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364383 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364388 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364394 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364399 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364404 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364409 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004ef6f8b0]    0.364414 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004ef6f8b0]    0.364420 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364425 {2}{mapper}: Processors on rank 0:
+[0 - 20004ef6f8b0]    0.364430 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364436 {2}{mapper}:   1d00000000000001 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364441 {2}{mapper}:   1d00000000000002 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364446 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364452 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364457 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364553 {2}{mapper}: Memories on rank 0:
+[0 - 20004ef6f8b0]    0.364559 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364565 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364570 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364575 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364580 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004ef6f8b0]    0.364585 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364590 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364596 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364601 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364606 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364611 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364616 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364621 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364627 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364632 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004ef6f8b0]    0.364637 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004ef6f8b0]    0.364642 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364647 {2}{mapper}: Processors on rank 0:
+[0 - 20004ef6f8b0]    0.364653 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364658 {2}{mapper}:   1d00000000000001 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364664 {2}{mapper}:   1d00000000000002 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364669 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364675 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364680 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364775 {2}{mapper}: Memories on rank 0:
+[0 - 20004ef6f8b0]    0.364781 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364786 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364792 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364797 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004ef6f8b0]    0.364802 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004ef6f8b0]    0.364807 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364812 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364817 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364823 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364828 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004ef6f8b0]    0.364833 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364838 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364843 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364848 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004ef6f8b0]    0.364853 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004ef6f8b0]    0.364859 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004ef6f8b0]    0.364864 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004ef6f8b0]    0.364869 {2}{mapper}: Processors on rank 0:
+[0 - 20004ef6f8b0]    0.364874 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364880 {2}{mapper}:   1d00000000000001 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004ef6f8b0]    0.364885 {2}{mapper}:   1d00000000000002 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364891 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364896 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004ef6f8b0]    0.364901 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef1f8b0]    0.365518 {2}{mapper}: MAP_REPLICATE_TASK for main<4>
+[0 - 20004ef1f8b0]    0.365533 {2}{mapper}:   REPLICANT 0 -> 1d00000000000001
+[0 - 20004ef1f8b0]    0.365540 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.365546 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.365551 {2}{mapper}:   REPLICANT 1 -> 1d00010000000001
+[0 - 20004ef1f8b0]    0.365557 {2}{mapper}:   TARGET PROCS: 1d00010000000001
+[0 - 20004ef1f8b0]    0.365562 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.366620 {2}{mapper}: SELECT_SHARDING_FUNCTOR for read_config<10> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:530
+[0 - 20004ef1f8b0]    0.366628 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.366634 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.366739 {2}{mapper}: MAP_TASK for read_config<10> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:530
+[0 - 20004ef1f8b0]    0.366746 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.366752 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.368948 {2}{mapper}: SELECT_SHARDING_FUNCTOR for make_private_partition<16> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:545
+[0 - 20004ef1f8b0]    0.368956 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.368962 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.369073 {2}{mapper}: MAP_TASK for make_private_partition<16> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:545
+[0 - 20004ef1f8b0]    0.369081 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.369086 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.369092 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(1,1),2),domain=<0,0>..<60011,30003>,fields=)
+[0 - 20004ef1f8b0]    0.369098 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.369832 {2}{mapper}: SELECT_SHARDING_FUNCTOR for make_interior_partition<22> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:546
+[0 - 20004ef1f8b0]    0.369841 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.369847 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.369917 {2}{mapper}: MAP_TASK for make_interior_partition<22> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:546
+[0 - 20004ef1f8b0]    0.369925 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.369930 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.369936 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(1,1),2),domain=<0,0>..<60011,30003>,fields=)
+[0 - 20004ef1f8b0]    0.369941 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.370424 {2}{mapper}: SELECT_SHARDING_FUNCTOR for make_exterior_partition<28> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:547
+[0 - 20004ef1f8b0]    0.370432 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.370438 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.370521 {2}{mapper}: MAP_TASK for make_exterior_partition<28> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:547
+[0 - 20004ef1f8b0]    0.370529 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.370535 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.370540 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(1,1),2),domain=<0,0>..<60011,30003>,fields=)
+[0 - 20004ef1f8b0]    0.370546 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.375740 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_x_partition<50> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:553
+[0 - 20004ef1f8b0]    0.375748 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.375754 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.375829 {2}{mapper}: MAP_TASK for ghost_x_partition<50> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:553
+[0 - 20004ef1f8b0]    0.375836 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.375842 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.375848 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(1,(3,3),1),domain=<0,0>..<7,29995>,fields=)
+[0 - 20004ef1f8b0]    0.375853 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.376568 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_x_partition<56> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:554
+[0 - 20004ef1f8b0]    0.376576 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.376582 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.376659 {2}{mapper}: MAP_TASK for ghost_x_partition<56> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:554
+[0 - 20004ef1f8b0]    0.376667 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.376673 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.376678 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(4,(66,18),4),domain=<0,0>..<7,29995>,fields=)
+[0 - 20004ef1f8b0]    0.376684 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.377055 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_y_partition<62> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:555
+[0 - 20004ef1f8b0]    0.377063 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.377069 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.377148 {2}{mapper}: MAP_TASK for ghost_y_partition<62> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:555
+[0 - 20004ef1f8b0]    0.377155 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.377161 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.377167 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(3,(5,5),3),domain=<0,0>..<59995,3>,fields=)
+[0 - 20004ef1f8b0]    0.377172 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.377742 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_y_partition<68> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:556
+[0 - 20004ef1f8b0]    0.377750 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.377756 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.377832 {2}{mapper}: MAP_TASK for ghost_y_partition<68> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:556
+[0 - 20004ef1f8b0]    0.377839 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.377845 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.377850 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(6,(68,20),6),domain=<0,0>..<59995,3>,fields=)
+[0 - 20004ef1f8b0]    0.377856 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.378209 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_x_partition<74> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:557
+[0 - 20004ef1f8b0]    0.378217 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.378223 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.378301 {2}{mapper}: MAP_TASK for ghost_x_partition<74> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:557
+[0 - 20004ef1f8b0]    0.378309 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.378315 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.378320 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(1,(3,3),1),domain=<0,0>..<7,29995>,fields=)
+[0 - 20004ef1f8b0]    0.378326 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.378889 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_x_partition<80> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:558
+[0 - 20004ef1f8b0]    0.378896 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.378902 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.378979 {2}{mapper}: MAP_TASK for ghost_x_partition<80> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:558
+[0 - 20004ef1f8b0]    0.378987 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.378993 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.378998 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(4,(66,18),4),domain=<0,0>..<7,29995>,fields=)
+[0 - 20004ef1f8b0]    0.379003 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.379360 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_y_partition<86> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:559
+[0 - 20004ef1f8b0]    0.379368 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.379374 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.379446 {2}{mapper}: MAP_TASK for ghost_y_partition<86> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:559
+[0 - 20004ef1f8b0]    0.379453 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.379459 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.379464 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(3,(5,5),3),domain=<0,0>..<59995,3>,fields=)
+[0 - 20004ef1f8b0]    0.379469 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.379990 {2}{mapper}: SELECT_SHARDING_FUNCTOR for ghost_y_partition<92> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:560
+[0 - 20004ef1f8b0]    0.379998 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.380004 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.380080 {2}{mapper}: MAP_TASK for ghost_y_partition<92> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:560
+[0 - 20004ef1f8b0]    0.380088 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    0.380094 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.380099 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(6,(68,20),6),domain=<0,0>..<59995,3>,fields=)
+[0 - 20004ef1f8b0]    0.380105 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.387234 {2}{mapper}: SELECT_SHARDING_FUNCTOR for stencil<158> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.387242 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.387249 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.389528 {2}{mapper}: SLICE_TASK for stencil<176> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.389536 {2}{mapper}:   <0>..<0> -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.389543 {2}{mapper}:   <1>..<1> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.389548 {2}{mapper}:   <2>..<2> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.389554 {2}{mapper}:   <3>..<3> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.390975 {2}{mapper}: MAP_TASK for stencil(index_point=(0))<186> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.390984 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.390990 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.390996 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(10,1),2),domain=<0,0>..<15002,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.391002 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<0,0>..<15002,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.391007 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(30,1),2),domain=<2,2>..<15000,14999>,fields=)
+[0 - 20004ef1f8b0]    0.391013 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(74,3),1),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.391018 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.391024 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(94,18),4),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.391029 {2}{mapper}:       Instance[4000000000800003](region=(4,*,4),memory=1e00000000000002,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.391035 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(114,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.391040 {2}{mapper}:       Instance[4000000000800004](region=(3,*,3),memory=1e00000000000002,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.391045 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(134,20),6),domain=<0,2>..<14998,3>,fields=input)
+[0 - 20004ef1f8b0]    0.391051 {2}{mapper}:       Instance[4000000000800005](region=(6,*,6),memory=1e00000000000002,domain=<0,2>..<14998,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.391056 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(232,7),5),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.391062 {2}{mapper}:       Instance[4000000000800006](region=(5,*,5),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.392428 {2}{mapper}: MAP_TASK for stencil(index_point=(1))<188> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.392437 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.392444 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.392449 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(12,1),2),domain=<15003,0>..<30005,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.392455 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<15003,0>..<30005,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.392461 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(32,1),2),domain=<15005,2>..<30003,14999>,fields=)
+[0 - 20004ef1f8b0]    0.392466 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(76,3),1),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.392472 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.392477 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(96,18),4),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.392483 {2}{mapper}:       Instance[4000000000c00003](region=(4,*,4),memory=1e00000000000003,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.392488 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(116,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.392493 {2}{mapper}:       Instance[4000000000c00004](region=(3,*,3),memory=1e00000000000003,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.392499 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(136,20),6),domain=<14999,2>..<29997,3>,fields=input)
+[0 - 20004ef1f8b0]    0.392504 {2}{mapper}:       Instance[4000000000c00005](region=(6,*,6),memory=1e00000000000003,domain=<14999,2>..<29997,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.392510 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(11,7),5),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.392515 {2}{mapper}:       Instance[4000000000c00006](region=(5,*,5),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.393636 {2}{mapper}: MAP_TASK for stencil(index_point=(2))<190> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.393644 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef1f8b0]    0.393650 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.393656 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<30006,0>..<45008,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.393662 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<30006,0>..<45008,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.393667 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(34,1),2),domain=<30008,2>..<45006,14999>,fields=)
+[0 - 20004ef1f8b0]    0.393673 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(78,3),1),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.393678 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.393684 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(98,18),4),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.393691 {2}{mapper}:       Instance[4000000001000003](region=(4,*,4),memory=1e00000000000004,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.393696 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(118,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.393701 {2}{mapper}:       Instance[4000000001000004](region=(3,*,3),memory=1e00000000000004,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.393707 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(138,20),6),domain=<29998,2>..<44996,3>,fields=input)
+[0 - 20004ef1f8b0]    0.393712 {2}{mapper}:       Instance[4000000001000005](region=(6,*,6),memory=1e00000000000004,domain=<29998,2>..<44996,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.393718 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(234,7),5),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.393723 {2}{mapper}:       Instance[4000000001000006](region=(5,*,5),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.397135 {2}{mapper}: MAP_TASK for stencil(index_point=(3))<192> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.397144 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.397150 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.397156 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<45009,0>..<60011,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.397162 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<45009,0>..<60011,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.397167 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(36,1),2),domain=<45011,2>..<60009,14999>,fields=)
+[0 - 20004ef1f8b0]    0.397173 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(80,3),1),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.397178 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.397183 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(100,18),4),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.397189 {2}{mapper}:       Instance[4000000001400003](region=(4,*,4),memory=1e00000000000005,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.397194 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(120,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.397199 {2}{mapper}:       Instance[4000000001400004](region=(3,*,3),memory=1e00000000000005,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.397205 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(140,20),6),domain=<44997,2>..<59995,3>,fields=input)
+[0 - 20004ef1f8b0]    0.397210 {2}{mapper}:       Instance[4000000001400005](region=(6,*,6),memory=1e00000000000005,domain=<44997,2>..<59995,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.397216 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(13,7),5),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.397221 {2}{mapper}:       Instance[4000000001400006](region=(5,*,5),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.414651 {2}{mapper}: SELECT_SHARDING_FUNCTOR for increment<194> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.414660 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.414667 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.420941 {2}{mapper}: SLICE_TASK for increment<212> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.420950 {2}{mapper}:   <0>..<0> -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.420956 {2}{mapper}:   <1>..<1> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.420962 {2}{mapper}:   <2>..<2> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.420968 {2}{mapper}:   <3>..<3> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.421551 {2}{mapper}: MAP_TASK for increment(index_point=(0))<222> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.421560 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.421566 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.421572 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(10,1),2),domain=<0,0>..<15002,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.421578 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<0,0>..<15002,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.421583 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(50,1),2),domain=<0,0>..<15000,14999>,fields=)
+[0 - 20004ef1f8b0]    0.421589 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(154,3),1),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.421594 {2}{mapper}:       Instance[4000000000800007](region=(1,*,1),memory=1e00000000000002,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.421600 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(174,18),4),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.421605 {2}{mapper}:       Instance[4000000000800008](region=(4,*,4),memory=1e00000000000002,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.421610 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(194,5),3),domain=<0,0>..<14998,1>,fields=input)
+[0 - 20004ef1f8b0]    0.421616 {2}{mapper}:       Instance[4000000000800009](region=(3,*,3),memory=1e00000000000002,domain=<0,0>..<14998,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.421621 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(214,20),6),domain=<0,0>..<14998,1>,fields=input)
+[0 - 20004ef1f8b0]    0.421626 {2}{mapper}:       Instance[400000000080000a](region=(6,*,6),memory=1e00000000000002,domain=<0,0>..<14998,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.421632 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(232,7),5),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.421637 {2}{mapper}:       Instance[4000000000800006](region=(5,*,5),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.422678 {2}{mapper}: MAP_TASK for increment(index_point=(2))<226> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.422687 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef1f8b0]    0.422694 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.422700 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<30006,0>..<45008,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.422705 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<30006,0>..<45008,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.422711 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(54,1),2),domain=<30008,0>..<45006,14999>,fields=)
+[0 - 20004ef1f8b0]    0.422716 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(158,3),1),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.422722 {2}{mapper}:       Instance[4000000001000007](region=(1,*,1),memory=1e00000000000004,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.422727 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(178,18),4),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.422733 {2}{mapper}:       Instance[4000000001000008](region=(4,*,4),memory=1e00000000000004,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.422738 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(198,5),3),domain=<29998,0>..<44996,1>,fields=input)
+[0 - 20004ef1f8b0]    0.422744 {2}{mapper}:       Instance[4000000001000009](region=(3,*,3),memory=1e00000000000004,domain=<29998,0>..<44996,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.422749 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(218,20),6),domain=<29998,0>..<44996,1>,fields=input)
+[0 - 20004ef1f8b0]    0.422754 {2}{mapper}:       Instance[400000000100000a](region=(6,*,6),memory=1e00000000000004,domain=<29998,0>..<44996,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.422760 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(234,7),5),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.422765 {2}{mapper}:       Instance[4000000001000006](region=(5,*,5),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.425084 {2}{mapper}: MAP_TASK for increment(index_point=(1))<224> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.425094 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.425100 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.425106 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(12,1),2),domain=<15003,0>..<30005,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.425112 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<15003,0>..<30005,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.425117 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(52,1),2),domain=<15005,0>..<30003,14999>,fields=)
+[0 - 20004ef1f8b0]    0.425123 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(156,3),1),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.425128 {2}{mapper}:       Instance[4000000000c00007](region=(1,*,1),memory=1e00000000000003,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.425134 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(176,18),4),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.425139 {2}{mapper}:       Instance[4000000000c00008](region=(4,*,4),memory=1e00000000000003,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.425144 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(196,5),3),domain=<14999,0>..<29997,1>,fields=input)
+[0 - 20004ef1f8b0]    0.425149 {2}{mapper}:       Instance[4000000000c00009](region=(3,*,3),memory=1e00000000000003,domain=<14999,0>..<29997,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.425155 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(216,20),6),domain=<14999,0>..<29997,1>,fields=input)
+[0 - 20004ef1f8b0]    0.425160 {2}{mapper}:       Instance[4000000000c0000a](region=(6,*,6),memory=1e00000000000003,domain=<14999,0>..<29997,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.425165 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(11,7),5),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.425171 {2}{mapper}:       Instance[4000000000c00006](region=(5,*,5),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.426753 {2}{mapper}: MAP_TASK for increment(index_point=(3))<228> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.426763 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.426769 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.426775 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<45009,0>..<60011,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.426781 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<45009,0>..<60011,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.426786 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(56,1),2),domain=<45011,0>..<60011,14999>,fields=)
+[0 - 20004ef1f8b0]    0.426792 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(160,3),1),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.426797 {2}{mapper}:       Instance[4000000001400007](region=(1,*,1),memory=1e00000000000005,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.426803 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(180,18),4),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.426808 {2}{mapper}:       Instance[4000000001400008](region=(4,*,4),memory=1e00000000000005,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.426813 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(200,5),3),domain=<44997,0>..<59995,1>,fields=input)
+[0 - 20004ef1f8b0]    0.426819 {2}{mapper}:       Instance[4000000001400009](region=(3,*,3),memory=1e00000000000005,domain=<44997,0>..<59995,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.426824 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(220,20),6),domain=<44997,0>..<59995,1>,fields=input)
+[0 - 20004ef1f8b0]    0.426830 {2}{mapper}:       Instance[400000000140000a](region=(6,*,6),memory=1e00000000000005,domain=<44997,0>..<59995,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.426835 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(13,7),5),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.426840 {2}{mapper}:       Instance[4000000001400006](region=(5,*,5),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.434543 {2}{mapper}: SELECT_SHARDING_FUNCTOR for stencil<236> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.434552 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.434558 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.434873 {2}{mapper}: SLICE_TASK for stencil<246> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.434882 {2}{mapper}:   <0>..<0> -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.434888 {2}{mapper}:   <1>..<1> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.434893 {2}{mapper}:   <2>..<2> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.434898 {2}{mapper}:   <3>..<3> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.435344 {2}{mapper}: MAP_TASK for stencil(index_point=(0))<256> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.435353 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.435359 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.435364 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(10,1),2),domain=<0,0>..<15002,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.435370 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<0,0>..<15002,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435375 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(30,1),2),domain=<2,2>..<15000,14999>,fields=)
+[0 - 20004ef1f8b0]    0.435381 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(74,3),1),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.435386 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435392 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(94,18),4),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.435397 {2}{mapper}:       Instance[4000000000800003](region=(4,*,4),memory=1e00000000000002,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435402 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(114,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.435408 {2}{mapper}:       Instance[4000000000800004](region=(3,*,3),memory=1e00000000000002,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435413 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(134,20),6),domain=<0,2>..<14998,3>,fields=input)
+[0 - 20004ef1f8b0]    0.435418 {2}{mapper}:       Instance[4000000000800005](region=(6,*,6),memory=1e00000000000002,domain=<0,2>..<14998,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435424 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(232,7),5),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.435429 {2}{mapper}:       Instance[4000000000800006](region=(5,*,5),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.435827 {2}{mapper}: MAP_TASK for stencil(index_point=(1))<258> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.435835 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.435841 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.435846 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(12,1),2),domain=<15003,0>..<30005,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.435852 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<15003,0>..<30005,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435857 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(32,1),2),domain=<15005,2>..<30003,14999>,fields=)
+[0 - 20004ef1f8b0]    0.435862 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(76,3),1),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.435867 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435873 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(96,18),4),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.435878 {2}{mapper}:       Instance[4000000000c00003](region=(4,*,4),memory=1e00000000000003,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435883 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(116,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.435889 {2}{mapper}:       Instance[4000000000c00004](region=(3,*,3),memory=1e00000000000003,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435894 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(136,20),6),domain=<14999,2>..<29997,3>,fields=input)
+[0 - 20004ef1f8b0]    0.435899 {2}{mapper}:       Instance[4000000000c00005](region=(6,*,6),memory=1e00000000000003,domain=<14999,2>..<29997,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.435904 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(11,7),5),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.435910 {2}{mapper}:       Instance[4000000000c00006](region=(5,*,5),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.436322 {2}{mapper}: MAP_TASK for stencil(index_point=(2))<260> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.436330 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef1f8b0]    0.436336 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.436342 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<30006,0>..<45008,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.436347 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<30006,0>..<45008,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.436353 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(34,1),2),domain=<30008,2>..<45006,14999>,fields=)
+[0 - 20004ef1f8b0]    0.436359 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(78,3),1),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.436364 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.436369 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(98,18),4),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.436375 {2}{mapper}:       Instance[4000000001000003](region=(4,*,4),memory=1e00000000000004,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.436380 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(118,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.436386 {2}{mapper}:       Instance[4000000001000004](region=(3,*,3),memory=1e00000000000004,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.436391 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(138,20),6),domain=<29998,2>..<44996,3>,fields=input)
+[0 - 20004ef1f8b0]    0.436396 {2}{mapper}:       Instance[4000000001000005](region=(6,*,6),memory=1e00000000000004,domain=<29998,2>..<44996,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.436402 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(234,7),5),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.436407 {2}{mapper}:       Instance[4000000001000006](region=(5,*,5),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.437235 {2}{mapper}: MAP_TASK for stencil(index_point=(3))<262> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:603
+[0 - 20004ef1f8b0]    0.437243 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.437249 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.437255 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<45009,0>..<60011,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    0.437260 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<45009,0>..<60011,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.437266 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(36,1),2),domain=<45011,2>..<60009,14999>,fields=)
+[0 - 20004ef1f8b0]    0.437271 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(1,(80,3),1),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.437277 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.437282 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(4,(100,18),4),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.437288 {2}{mapper}:       Instance[4000000001400003](region=(4,*,4),memory=1e00000000000005,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.437293 {2}{mapper}:     Requirement[4](privilege=READ_ONLY,region=(3,(120,5),3),domain=,fields=input)
+[0 - 20004ef1f8b0]    0.437299 {2}{mapper}:       Instance[4000000001400004](region=(3,*,3),memory=1e00000000000005,domain=,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.437304 {2}{mapper}:     Requirement[5](privilege=READ_ONLY,region=(6,(140,20),6),domain=<44997,2>..<59995,3>,fields=input)
+[0 - 20004ef1f8b0]    0.437309 {2}{mapper}:       Instance[4000000001400005](region=(6,*,6),memory=1e00000000000005,domain=<44997,2>..<59995,3>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.437315 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(13,7),5),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.437320 {2}{mapper}:       Instance[4000000001400006](region=(5,*,5),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.448582 {2}{mapper}: SELECT_SHARDING_FUNCTOR for increment<264> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.448591 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.448597 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.448948 {2}{mapper}: SLICE_TASK for increment<274> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.448957 {2}{mapper}:   <0>..<0> -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.448963 {2}{mapper}:   <1>..<1> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.448969 {2}{mapper}:   <2>..<2> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.448974 {2}{mapper}:   <3>..<3> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.449239 {2}{mapper}: MAP_TASK for increment(index_point=(0))<284> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.449247 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.449253 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.449259 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(10,1),2),domain=<0,0>..<15002,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.449265 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<0,0>..<15002,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449270 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(50,1),2),domain=<0,0>..<15000,14999>,fields=)
+[0 - 20004ef1f8b0]    0.449276 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(154,3),1),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.449281 {2}{mapper}:       Instance[4000000000800007](region=(1,*,1),memory=1e00000000000002,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449286 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(174,18),4),domain=<0,0>..<1,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.449292 {2}{mapper}:       Instance[4000000000800008](region=(4,*,4),memory=1e00000000000002,domain=<0,0>..<1,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449297 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(194,5),3),domain=<0,0>..<14998,1>,fields=input)
+[0 - 20004ef1f8b0]    0.449302 {2}{mapper}:       Instance[4000000000800009](region=(3,*,3),memory=1e00000000000002,domain=<0,0>..<14998,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449308 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(214,20),6),domain=<0,0>..<14998,1>,fields=input)
+[0 - 20004ef1f8b0]    0.449313 {2}{mapper}:       Instance[400000000080000a](region=(6,*,6),memory=1e00000000000002,domain=<0,0>..<14998,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449318 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(232,7),5),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.449323 {2}{mapper}:       Instance[4000000000800006](region=(5,*,5),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.449643 {2}{mapper}: MAP_TASK for increment(index_point=(1))<286> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.449652 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.449658 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.449664 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(12,1),2),domain=<15003,0>..<30005,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.449669 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<15003,0>..<30005,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449675 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(52,1),2),domain=<15005,0>..<30003,14999>,fields=)
+[0 - 20004ef1f8b0]    0.449680 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(156,3),1),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.449685 {2}{mapper}:       Instance[4000000000c00007](region=(1,*,1),memory=1e00000000000003,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449691 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(176,18),4),domain=<2,0>..<3,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.449696 {2}{mapper}:       Instance[4000000000c00008](region=(4,*,4),memory=1e00000000000003,domain=<2,0>..<3,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449702 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(196,5),3),domain=<14999,0>..<29997,1>,fields=input)
+[0 - 20004ef1f8b0]    0.449707 {2}{mapper}:       Instance[4000000000c00009](region=(3,*,3),memory=1e00000000000003,domain=<14999,0>..<29997,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449712 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(216,20),6),domain=<14999,0>..<29997,1>,fields=input)
+[0 - 20004ef1f8b0]    0.449718 {2}{mapper}:       Instance[4000000000c0000a](region=(6,*,6),memory=1e00000000000003,domain=<14999,0>..<29997,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.449723 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(11,7),5),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.449728 {2}{mapper}:       Instance[4000000000c00006](region=(5,*,5),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.450139 {2}{mapper}: MAP_TASK for increment(index_point=(2))<288> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.450148 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef1f8b0]    0.450154 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.450160 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<30006,0>..<45008,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.450165 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<30006,0>..<45008,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450171 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(54,1),2),domain=<30008,0>..<45006,14999>,fields=)
+[0 - 20004ef1f8b0]    0.450177 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(158,3),1),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.450182 {2}{mapper}:       Instance[4000000001000007](region=(1,*,1),memory=1e00000000000004,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450187 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(178,18),4),domain=<4,0>..<5,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.450193 {2}{mapper}:       Instance[4000000001000008](region=(4,*,4),memory=1e00000000000004,domain=<4,0>..<5,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450198 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(198,5),3),domain=<29998,0>..<44996,1>,fields=input)
+[0 - 20004ef1f8b0]    0.450204 {2}{mapper}:       Instance[4000000001000009](region=(3,*,3),memory=1e00000000000004,domain=<29998,0>..<44996,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450209 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(218,20),6),domain=<29998,0>..<44996,1>,fields=input)
+[0 - 20004ef1f8b0]    0.450214 {2}{mapper}:       Instance[400000000100000a](region=(6,*,6),memory=1e00000000000004,domain=<29998,0>..<44996,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450219 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(234,7),5),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.450225 {2}{mapper}:       Instance[4000000001000006](region=(5,*,5),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.450530 {2}{mapper}: MAP_TASK for increment(index_point=(3))<290> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:607
+[0 - 20004ef1f8b0]    0.450538 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.450544 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.450550 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<45009,0>..<60011,15001>,fields=input)
+[0 - 20004ef1f8b0]    0.450555 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<45009,0>..<60011,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450561 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(56,1),2),domain=<45011,0>..<60011,14999>,fields=)
+[0 - 20004ef1f8b0]    0.450566 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(1,(160,3),1),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.450590 {2}{mapper}:       Instance[4000000001400007](region=(1,*,1),memory=1e00000000000005,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450596 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(4,(180,18),4),domain=<6,0>..<7,14997>,fields=input)
+[0 - 20004ef1f8b0]    0.450601 {2}{mapper}:       Instance[4000000001400008](region=(4,*,4),memory=1e00000000000005,domain=<6,0>..<7,14997>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450607 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(3,(200,5),3),domain=<44997,0>..<59995,1>,fields=input)
+[0 - 20004ef1f8b0]    0.450612 {2}{mapper}:       Instance[4000000001400009](region=(3,*,3),memory=1e00000000000005,domain=<44997,0>..<59995,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450618 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(6,(220,20),6),domain=<44997,0>..<59995,1>,fields=input)
+[0 - 20004ef1f8b0]    0.450623 {2}{mapper}:       Instance[400000000140000a](region=(6,*,6),memory=1e00000000000005,domain=<44997,0>..<59995,1>,fields=input,layout=SoA:YX)
+[0 - 20004ef1f8b0]    0.450629 {2}{mapper}:     Requirement[6](privilege=READ_WRITE,region=(5,(13,7),5),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.450634 {2}{mapper}:       Instance[4000000001400006](region=(5,*,5),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    1.784111 {2}{mapper}: SELECT_SHARDING_FUNCTOR for check<4814> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.784123 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    1.784130 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    1.785251 {2}{mapper}: SLICE_TASK for check<4814> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.785260 {2}{mapper}:   <0>..<3> -> 1d00000000000001
+[0 - 20004ef1f8b0]    1.785487 {2}{mapper}: MAP_TASK for check(index_point=(0))<4836> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.785495 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    1.785501 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    1.785507 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(10,1),2),domain=<0,0>..<15002,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    1.785513 {2}{mapper}:       Instance[4000000000000001](region=(2,*,2),memory=1e00000000000000,domain=<0,0>..<15002,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    1.785518 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(30,1),2),domain=<2,2>..<15000,14999>,fields=)
+[0 - 20004ef1f8b0]    1.785733 {2}{mapper}: MAP_TASK for check(index_point=(1))<4838> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.785741 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    1.785747 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    1.785753 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(12,1),2),domain=<15003,0>..<30005,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    1.785758 {2}{mapper}:       Instance[4000000000000002](region=(2,*,2),memory=1e00000000000000,domain=<15003,0>..<30005,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    1.785764 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(32,1),2),domain=<15005,2>..<30003,14999>,fields=)
+[0 - 20004ef1f8b0]    1.785964 {2}{mapper}: MAP_TASK for check(index_point=(2))<4840> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.785972 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    1.785979 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    1.785984 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(14,1),2),domain=<30006,0>..<45008,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    1.785989 {2}{mapper}:       Instance[4000000000000003](region=(2,*,2),memory=1e00000000000000,domain=<30006,0>..<45008,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    1.785995 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(34,1),2),domain=<30008,2>..<45006,14999>,fields=)
+[0 - 20004ef1f8b0]    1.786195 {2}{mapper}: MAP_TASK for check(index_point=(3))<4842> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:612
+[0 - 20004ef1f8b0]    1.786203 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    1.786209 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    1.786214 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(16,1),2),domain=<45009,0>..<60011,15001>,fields=input+output)
+[0 - 20004ef1f8b0]    1.786220 {2}{mapper}:       Instance[4000000000000004](region=(2,*,2),memory=1e00000000000000,domain=<45009,0>..<60011,15001>,fields=input+output,layout=SoA:YX)
+[0 - 20004ef1f8b0]    1.786225 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(36,1),2),domain=<45011,2>..<60009,14999>,fields=)
+[0 - 20004ef1f8b0]    4.536238 {2}{mapper}: SELECT_SHARDING_FUNCTOR for get_elapsed<4844> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:617
+[0 - 20004ef1f8b0]    4.536267 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    4.536273 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    4.537376 {2}{mapper}: MAP_TASK for get_elapsed<4844> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:617
+[0 - 20004ef1f8b0]    4.537391 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    4.537397 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    4.537403 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(5,(7,7),5),domain=<0>..<7>,fields=start+stop)
+[0 - 20004ef1f8b0]    4.537409 {2}{mapper}:       Instance[4000000000000005](region=(5,*,5),memory=1e00000000000000,domain=<0>..<7>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    4.538999 {2}{mapper}: SELECT_SHARDING_FUNCTOR for print_time<4848> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539009 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    4.539015 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    4.539090 {2}{mapper}: SLICE_TASK for print_time<4848> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539098 {2}{mapper}:   <0>..<3> -> 1d00000000000001
+[0 - 20004ef1f8b0]    4.539197 {2}{mapper}: MAP_TASK for print_time(index_point=(0))<4852> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539205 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    4.539211 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    4.539237 {2}{mapper}: MAP_TASK for print_time(index_point=(1))<4854> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539243 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    4.539249 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    4.539270 {2}{mapper}: MAP_TASK for print_time(index_point=(2))<4856> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539277 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    4.539282 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    4.539303 {2}{mapper}: MAP_TASK for print_time(index_point=(3))<4858> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/stencil_fast.rg:618
+[0 - 20004ef1f8b0]    4.539309 {2}{mapper}:   TARGET PROCS: 1d00000000000001
+[0 - 20004ef1f8b0]    4.539314 {2}{mapper}:   CHOSEN INSTANCES:

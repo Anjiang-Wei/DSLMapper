@@ -1,0 +1,823 @@
+[0 - 20004efbf8b0]    0.379692 {2}{mapper}: Memories on rank 0:
+[0 - 20004efbf8b0]    0.379731 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.379738 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.379744 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.379749 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.379755 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004efbf8b0]    0.379761 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.379766 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.379772 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.379777 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.379783 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.379788 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.379793 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.379799 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.379804 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.379810 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004efbf8b0]    0.379815 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004efbf8b0]    0.379821 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.379826 {2}{mapper}: Processors on rank 0:
+[0 - 20004efbf8b0]    0.379832 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.379838 {2}{mapper}:   1d00000000000001 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.379843 {2}{mapper}:   1d00000000000002 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.379851 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.379857 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.379863 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.379869 {2}{mapper}:   1d00000000000006 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380006 {2}{mapper}: Memories on rank 0:
+[0 - 20004efbf8b0]    0.380012 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380018 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380023 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380028 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380034 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004efbf8b0]    0.380039 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380044 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380050 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380055 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380060 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380065 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380071 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380076 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380081 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380087 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004efbf8b0]    0.380092 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004efbf8b0]    0.380097 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380103 {2}{mapper}: Processors on rank 0:
+[0 - 20004efbf8b0]    0.380108 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380114 {2}{mapper}:   1d00000000000001 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380119 {2}{mapper}:   1d00000000000002 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380125 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380131 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380136 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380142 {2}{mapper}:   1d00000000000006 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380245 {2}{mapper}: Memories on rank 0:
+[0 - 20004efbf8b0]    0.380252 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380257 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380263 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380268 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380273 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004efbf8b0]    0.380278 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380284 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380289 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380294 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380299 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380305 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380310 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380315 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380321 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380326 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004efbf8b0]    0.380331 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004efbf8b0]    0.380337 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380342 {2}{mapper}: Processors on rank 0:
+[0 - 20004efbf8b0]    0.380348 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380353 {2}{mapper}:   1d00000000000001 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380359 {2}{mapper}:   1d00000000000002 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380364 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380370 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380376 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380381 {2}{mapper}:   1d00000000000006 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380484 {2}{mapper}: Memories on rank 0:
+[0 - 20004efbf8b0]    0.380490 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380496 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380501 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380506 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380511 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004efbf8b0]    0.380517 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380522 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380527 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380533 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380538 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380543 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380549 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380554 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380559 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380565 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004efbf8b0]    0.380570 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004efbf8b0]    0.380576 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380581 {2}{mapper}: Processors on rank 0:
+[0 - 20004efbf8b0]    0.380587 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380592 {2}{mapper}:   1d00000000000001 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380597 {2}{mapper}:   1d00000000000002 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380603 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380609 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380614 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380620 {2}{mapper}:   1d00000000000006 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380722 {2}{mapper}: Memories on rank 0:
+[0 - 20004efbf8b0]    0.380728 {2}{mapper}:   1a00000000000000 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380734 {2}{mapper}:   1a00000000000001 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380739 {2}{mapper}:   1a00000000000002 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380744 {2}{mapper}:   1a00000000000003 (GPU_FB_MEM): 134217728 bytes
+[0 - 20004efbf8b0]    0.380750 {2}{mapper}:   1e00000000000000 (SYSTEM_MEM): 157286400000 bytes
+[0 - 20004efbf8b0]    0.380755 {2}{mapper}:   1e00000000000001 (SYSTEM_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380760 {2}{mapper}:   1e00000000000002 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380765 {2}{mapper}:   1e00000000000003 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380771 {2}{mapper}:   1e00000000000004 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380776 {2}{mapper}:   1e00000000000005 (GPU_FB_MEM): 15728640000 bytes
+[0 - 20004efbf8b0]    0.380781 {2}{mapper}:   1e00000000000006 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380786 {2}{mapper}:   1e00000000000007 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380792 {2}{mapper}:   1e00000000000008 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380797 {2}{mapper}:   1e00000000000009 (GPU_DYNAMIC_MEM): 16911433728 bytes
+[0 - 20004efbf8b0]    0.380802 {2}{mapper}:   1e0000000000000a (Z_COPY_MEM): 2147483648 bytes
+[0 - 20004efbf8b0]    0.380808 {2}{mapper}:   1e0000000000000b (REGDMA_MEM): 536870912 bytes
+[0 - 20004efbf8b0]    0.380813 {2}{mapper}:   1e0000000000000c (FILE_MEM): 0 bytes
+[0 - 20004efbf8b0]    0.380818 {2}{mapper}: Processors on rank 0:
+[0 - 20004efbf8b0]    0.380824 {2}{mapper}:   1d00000000000000 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380829 {2}{mapper}:   1d00000000000001 (UTIL_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380834 {2}{mapper}:   1d00000000000002 (LOC_PROC) can see 1e00000000000000(bw=100) 1e00000000000001(bw=100) 1e0000000000000a(bw=40) 1e0000000000000b(bw=80) 1e0000000000000c(bw=5)
+[0 - 20004efbf8b0]    0.380840 {2}{mapper}:   1d00000000000003 (TOC_PROC) can see 1e00000000000002(bw=200) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=200) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380846 {2}{mapper}:   1d00000000000004 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=200) 1e00000000000004(bw=10) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=200) 1e00000000000008(bw=10) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380851 {2}{mapper}:   1d00000000000005 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=200) 1e00000000000005(bw=10) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=200) 1e00000000000009(bw=10) 1e0000000000000a(bw=20)
+[0 - 20004efbf8b0]    0.380857 {2}{mapper}:   1d00000000000006 (TOC_PROC) can see 1e00000000000002(bw=10) 1e00000000000003(bw=10) 1e00000000000004(bw=10) 1e00000000000005(bw=200) 1e00000000000006(bw=10) 1e00000000000007(bw=10) 1e00000000000008(bw=10) 1e00000000000009(bw=200) 1e0000000000000a(bw=20)
+[0 - 20004ef1f8b0]    0.381337 {2}{mapper}: MAP_REPLICATE_TASK for toplevel<4>
+[0 - 20004ef1f8b0]    0.381369 {2}{mapper}:   REPLICANT 0 -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.381376 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.381382 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.381388 {2}{mapper}:   REPLICANT 1 -> 1d00010000000002
+[0 - 20004ef1f8b0]    0.381393 {2}{mapper}:   TARGET PROCS: 1d00010000000002
+[0 - 20004ef1f8b0]    0.381399 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.382565 {2}{mapper}: SELECT_SHARDING_FUNCTOR for parse_input<10> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:722
+[0 - 20004ef1f8b0]    0.382573 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.382579 {2}{mapper}:   1 <-
+[0 - 20004ef6f8b0]    0.382719 {2}{mapper}: MAP_TASK for parse_input<10> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:722
+[0 - 20004ef6f8b0]    0.382736 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.382742 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.404161 {2}{mapper}: SELECT_SHARDING_FUNCTOR for init_piece<206> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef1f8b0]    0.404170 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.404176 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.406455 {2}{mapper}: SLICE_TASK for init_piece<206> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef1f8b0]    0.406464 {2}{mapper}:   <0>..<3> -> 1d00000000000002
+[0 - 20004ef1f8b0]    0.409017 {2}{mapper}: MAP_TASK for init_piece(index_point=(0))<222> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef1f8b0]    0.409026 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.409032 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.409038 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(40,9),3),domain=<0>..<0>,fields=rect)
+[0 - 20004ef1f8b0]    0.409044 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.409050 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.409056 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.409062 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(2,(22,1),2),domain=<0>..<499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.409067 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.409073 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.409078 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.409085 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.409092 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.409785 {2}{mapper}: MAP_TASK for init_nodes<230> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:380
+[0 - 20004ef1f8b0]    0.409794 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.409800 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.409806 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.409812 {2}{mapper}:       Instance[4000000000000001](region=(2,*,2),memory=1e00000000000000,domain=<4000>..<53499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.410177 {2}{mapper}: MAP_TASK for init_piece(index_point=(1))<224> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef1f8b0]    0.410185 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.410191 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.410196 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(37,9),3),domain=<1>..<1>,fields=rect)
+[0 - 20004ef1f8b0]    0.410202 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410210 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.410216 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410222 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(2,(21,1),2),domain=<500>..<999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.410228 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410233 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.410238 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410245 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.410251 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410937 {2}{mapper}: MAP_TASK for init_piece(index_point=(2))<226> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef1f8b0]    0.410945 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.410951 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.410957 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(42,9),3),domain=<2>..<2>,fields=rect)
+[0 - 20004ef1f8b0]    0.410963 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410969 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.410974 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410980 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.410985 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.410991 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.410997 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.411004 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.411010 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef6f8b0]    0.412308 {2}{mapper}: MAP_TASK for init_piece(index_point=(3))<228> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:756
+[0 - 20004ef6f8b0]    0.412318 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.412325 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.412331 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(39,9),3),domain=<3>..<3>,fields=rect)
+[0 - 20004ef6f8b0]    0.412336 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef6f8b0]    0.412342 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef6f8b0]    0.412347 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef6f8b0]    0.412353 {2}{mapper}:     Requirement[2](privilege=READ_WRITE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef6f8b0]    0.412358 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef6f8b0]    0.412364 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef6f8b0]    0.412369 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef6f8b0]    0.412377 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef6f8b0]    0.412382 {2}{mapper}:       Instance(VIRTUAL)
+[0 - 20004ef1f8b0]    0.413446 {2}{mapper}: MAP_TASK for init_nodes<232> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:380
+[0 - 20004ef1f8b0]    0.413455 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.413461 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.413467 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.413473 {2}{mapper}:       Instance[4000000000000002](region=(2,*,2),memory=1e00000000000000,domain=<53500>..<102999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.413580 {2}{mapper}: MAP_TASK for init_nodes<234> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:381
+[0 - 20004ef6f8b0]    0.413589 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.413595 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.413601 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(22,1),2),domain=<0>..<499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef6f8b0]    0.413606 {2}{mapper}:       Instance[4000000000000003](region=(2,*,2),memory=1e00000000000000,domain=<0>..<499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.413641 {2}{mapper}: MAP_TASK for init_nodes<236> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:380
+[0 - 20004ef1f8b0]    0.413649 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.413660 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.413667 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.413674 {2}{mapper}:       Instance[4000000000000004](region=(2,*,2),memory=1e00000000000000,domain=<103000>..<152499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.413704 {2}{mapper}: MAP_TASK for init_nodes<238> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:380
+[0 - 20004ef1f8b0]    0.413710 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.413716 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.413721 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.413727 {2}{mapper}:       Instance[4000000000000005](region=(2,*,2),memory=1e00000000000000,domain=<152500>..<201999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.416216 {2}{mapper}: MAP_TASK for init_nodes<240> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:381
+[0 - 20004ef6f8b0]    0.416225 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.416231 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.416237 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(21,1),2),domain=<500>..<999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef6f8b0]    0.416243 {2}{mapper}:       Instance[4000000000000006](region=(2,*,2),memory=1e00000000000000,domain=<500>..<999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.416495 {2}{mapper}: MAP_TASK for init_wires<242> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:382
+[0 - 20004ef1f8b0]    0.416504 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.416510 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.416516 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(40,9),3),domain=<0>..<0>,fields=rect)
+[0 - 20004ef1f8b0]    0.416522 {2}{mapper}:       Instance[4000000000000007](region=(3,*,3),memory=1e00000000000000,domain=<0>..<0>,fields=rect,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.416527 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(14,1),2),domain=<4000>..<53499>,fields=)
+[0 - 20004ef1f8b0]    0.416533 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(22,1),2),domain=<0>..<499>,fields=)
+[0 - 20004ef1f8b0]    0.416538 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.416544 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.416550 {2}{mapper}:       Instance[4000000000000008](region=(1,*,1),memory=1e00000000000000,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.420384 {2}{mapper}: MAP_TASK for init_nodes<244> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:381
+[0 - 20004ef6f8b0]    0.420392 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.420398 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.420404 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef6f8b0]    0.420410 {2}{mapper}:       Instance[4000000000000009](region=(2,*,2),memory=1e00000000000000,domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.420442 {2}{mapper}: MAP_TASK for init_nodes<246> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:381
+[0 - 20004ef1f8b0]    0.420450 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.420456 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.420462 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_cap+leakage+charge+node_voltage)
+[0 - 20004ef1f8b0]    0.420468 {2}{mapper}:       Instance[400000000000000a](region=(2,*,2),memory=1e00000000000000,domain=<1500>..<1999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.479890 {2}{mapper}: MAP_TASK for init_wires<248> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:382
+[0 - 20004ef6f8b0]    0.479899 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.479905 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.479911 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(37,9),3),domain=<1>..<1>,fields=rect)
+[0 - 20004ef6f8b0]    0.479917 {2}{mapper}:       Instance[400000000000000b](region=(3,*,3),memory=1e00000000000000,domain=<1>..<1>,fields=rect,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.479923 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(11,1),2),domain=<53500>..<102999>,fields=)
+[0 - 20004ef6f8b0]    0.479928 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(21,1),2),domain=<500>..<999>,fields=)
+[0 - 20004ef6f8b0]    0.479934 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef6f8b0]    0.479940 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef6f8b0]    0.479947 {2}{mapper}:       Instance[400000000000000c](region=(1,*,1),memory=1e00000000000000,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.480121 {2}{mapper}: MAP_TASK for init_wires<254> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:382
+[0 - 20004ef1f8b0]    0.480130 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.480137 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.480142 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(42,9),3),domain=<2>..<2>,fields=rect)
+[0 - 20004ef1f8b0]    0.480148 {2}{mapper}:       Instance[400000000000000d](region=(3,*,3),memory=1e00000000000000,domain=<2>..<2>,fields=rect,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.480154 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(16,1),2),domain=<103000>..<152499>,fields=)
+[0 - 20004ef1f8b0]    0.480159 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(24,1),2),domain=<1000>..<1499>,fields=)
+[0 - 20004ef1f8b0]    0.480165 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.480172 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.480178 {2}{mapper}:       Instance[400000000000000e](region=(1,*,1),memory=1e00000000000000,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.480392 {2}{mapper}: MAP_TASK for init_wires<258> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:382
+[0 - 20004ef1f8b0]    0.480400 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.480406 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.480411 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(3,(39,9),3),domain=<3>..<3>,fields=rect)
+[0 - 20004ef1f8b0]    0.480417 {2}{mapper}:       Instance[400000000000000f](region=(3,*,3),memory=1e00000000000000,domain=<3>..<3>,fields=rect,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.480423 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(13,1),2),domain=<152500>..<201999>,fields=)
+[0 - 20004ef1f8b0]    0.480429 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(23,1),2),domain=<1500>..<1999>,fields=)
+[0 - 20004ef1f8b0]    0.480434 {2}{mapper}:     Requirement[3](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.480440 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.480447 {2}{mapper}:       Instance[4000000000000010](region=(1,*,1),memory=1e00000000000000,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.666321 {2}{mapper}: SELECT_SHARDING_FUNCTOR for create_ghost_partition<286> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:762
+[0 - 20004ef1f8b0]    0.666329 {2}{mapper}:   0 <- (0)
+[0 - 20004ef1f8b0]    0.666335 {2}{mapper}:   1 <-
+[0 - 20004ef1f8b0]    0.667186 {2}{mapper}: MAP_TASK for create_ghost_partition<286> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:762
+[0 - 20004ef1f8b0]    0.667195 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.667201 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.667207 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(7,1),2),domain=<0>..<3999>,fields=)
+[0 - 20004ef1f8b0]    0.667212 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(3,(19,9),3),domain=<0>..<7>,fields=rect)
+[0 - 20004ef1f8b0]    0.667218 {2}{mapper}:       Instance[4000000000000011](region=(3,*,3),memory=1e00000000000000,domain=<0>..<7>,fields=rect,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.669272 {2}{mapper}: SELECT_SHARDING_FUNCTOR for init_pointers<296> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef1f8b0]    0.669280 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.669286 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    0.669364 {2}{mapper}: SLICE_TASK for init_pointers<296> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef6f8b0]    0.669374 {2}{mapper}:   <0>..<3> -> 1d00000000000002
+[0 - 20004ef6f8b0]    0.671062 {2}{mapper}: MAP_TASK for init_pointers(index_point=(0))<300> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef6f8b0]    0.671070 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.671076 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.671082 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(14,1),2),domain=<4000>..<53499>,fields=)
+[0 - 20004ef6f8b0]    0.671088 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(22,1),2),domain=<0>..<499>,fields=)
+[0 - 20004ef6f8b0]    0.671094 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(62,1),2),domain=<0>..<649>,fields=)
+[0 - 20004ef6f8b0]    0.671100 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index)
+[0 - 20004ef6f8b0]    0.671107 {2}{mapper}:       Instance[4000000000000008](region=(1,*,1),memory=1e00000000000000,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.671200 {2}{mapper}: MAP_TASK for init_pointers(index_point=(1))<302> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef1f8b0]    0.671209 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.671215 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.671221 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(11,1),2),domain=<53500>..<102999>,fields=)
+[0 - 20004ef1f8b0]    0.671226 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(21,1),2),domain=<500>..<999>,fields=)
+[0 - 20004ef1f8b0]    0.671232 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(64,1),2),domain=<350>..<1099>,fields=)
+[0 - 20004ef1f8b0]    0.671238 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index)
+[0 - 20004ef1f8b0]    0.671244 {2}{mapper}:       Instance[400000000000000c](region=(1,*,1),memory=1e00000000000000,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.671287 {2}{mapper}: MAP_TASK for init_pointers(index_point=(2))<304> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef1f8b0]    0.671294 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    0.671300 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.671306 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(16,1),2),domain=<103000>..<152499>,fields=)
+[0 - 20004ef1f8b0]    0.671311 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(24,1),2),domain=<1000>..<1499>,fields=)
+[0 - 20004ef1f8b0]    0.671317 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(66,1),2),domain=<900>..<1649>,fields=)
+[0 - 20004ef1f8b0]    0.671323 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index)
+[0 - 20004ef1f8b0]    0.671329 {2}{mapper}:       Instance[400000000000000e](region=(1,*,1),memory=1e00000000000000,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.671353 {2}{mapper}: MAP_TASK for init_pointers(index_point=(3))<306> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:766
+[0 - 20004ef6f8b0]    0.671361 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    0.671367 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.671373 {2}{mapper}:     Requirement[0](privilege=NO_ACCESS,region=(2,(13,1),2),domain=<152500>..<201999>,fields=)
+[0 - 20004ef6f8b0]    0.671379 {2}{mapper}:     Requirement[1](privilege=NO_ACCESS,region=(2,(23,1),2),domain=<1500>..<1999>,fields=)
+[0 - 20004ef6f8b0]    0.671384 {2}{mapper}:     Requirement[2](privilege=NO_ACCESS,region=(2,(68,1),2),domain=<1350>..<2149>,fields=)
+[0 - 20004ef6f8b0]    0.671390 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index)
+[0 - 20004ef6f8b0]    0.671397 {2}{mapper}:       Instance[4000000000000010](region=(1,*,1),memory=1e00000000000000,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap+current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.811069 {2}{mapper}: SELECT_SHARDING_FUNCTOR for calculate_new_currents<314> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.811081 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef6f8b0]    0.811090 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    0.811705 {2}{mapper}: SLICE_TASK for calculate_new_currents<322> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.811715 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef6f8b0]    0.811723 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef6f8b0]    0.811730 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef6f8b0]    0.811738 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef6f8b0]    0.813399 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(0))<332> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.813411 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef6f8b0]    0.813420 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.813428 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.813436 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.813445 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(22,1),2),domain=<0>..<499>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.813453 {2}{mapper}:       Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.813461 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(62,1),2),domain=<0>..<649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.813462 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(2))<336> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.813475 {2}{mapper}:       Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813486 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef6f8b0]    0.813497 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef1f8b0]    0.813507 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.813517 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813525 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.813530 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(30,4),1),domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.813534 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.813542 {2}{mapper}:       Instance[4000000000800003](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813546 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.813554 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(48,3),4),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.813561 {2}{mapper}:       Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.813568 {2}{mapper}:       Instance[4000000000800004](region=(4,*,4),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813575 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(66,1),2),domain=<900>..<1649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.813587 {2}{mapper}:       Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813596 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef1f8b0]    0.813606 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813615 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(32,4),1),domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.813625 {2}{mapper}:       Instance[4000000001000003](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.813633 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(50,3),4),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.813643 {2}{mapper}:       Instance[4000000001000004](region=(4,*,4),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.814266 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(2))<336> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.814266 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(0))<332> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.814282 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.814293 {2}{mapper}:   TARGET:
+[0 - 20004ef1f8b0]    0.814303 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(66,1),2),domain=<900>..<1649>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.814313 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(62,1),2),domain=<0>..<649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.814323 {2}{mapper}:     Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.814333 {2}{mapper}:     Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.814343 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.814353 {2}{mapper}:   SOURCES:
+[0 - 20004ef1f8b0]    0.814364 {2}{mapper}:     Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.814373 {2}{mapper}:     Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.814384 {2}{mapper}:     Instance[4000000000000009](region=(2,*,2),memory=1e00000000000000,domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.814394 {2}{mapper}:     Instance[4000000000000003](region=(2,*,2),memory=1e00000000000000,domain=<0>..<499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817377 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(1))<334> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.817388 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef6f8b0]    0.817396 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.817404 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.817411 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817418 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(21,1),2),domain=<500>..<999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.817426 {2}{mapper}:       Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817433 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(64,1),2),domain=<350>..<1099>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.817440 {2}{mapper}:       Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817448 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef6f8b0]    0.817456 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817464 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(29,4),1),domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef6f8b0]    0.817472 {2}{mapper}:       Instance[4000000000c00003](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817480 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(45,3),4),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.817487 {2}{mapper}:       Instance[4000000000c00004](region=(4,*,4),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817854 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(1))<334> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.817865 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.817873 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(64,1),2),domain=<350>..<1099>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.817880 {2}{mapper}:     Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817888 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.817897 {2}{mapper}:     Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817906 {2}{mapper}:     Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.817915 {2}{mapper}:     Instance[4000000000000003](region=(2,*,2),memory=1e00000000000000,domain=<0>..<499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818031 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(1))<334> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.818041 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.818048 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(64,1),2),domain=<350>..<1099>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.818055 {2}{mapper}:     Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818063 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.818070 {2}{mapper}:     Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818077 {2}{mapper}:     Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818085 {2}{mapper}:     Instance[4000000000000009](region=(2,*,2),memory=1e00000000000000,domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818179 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(1))<334> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.818188 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.818195 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(64,1),2),domain=<350>..<1099>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.818202 {2}{mapper}:     Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818210 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.818217 {2}{mapper}:     Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.818224 {2}{mapper}:     Instance[4000000000000006](region=(2,*,2),memory=1e00000000000000,domain=<500>..<999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820680 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(3))<338> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.820691 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef1f8b0]    0.820699 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.820706 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.820714 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820722 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.820729 {2}{mapper}:       Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820737 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(68,1),2),domain=<1350>..<2149>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.820744 {2}{mapper}:       Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820752 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef1f8b0]    0.820759 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820767 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(31,4),1),domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.820775 {2}{mapper}:       Instance[4000000001400003](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.820782 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(47,3),4),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.820790 {2}{mapper}:       Instance[4000000001400004](region=(4,*,4),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821073 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(3))<338> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.821081 {2}{mapper}:   TARGET:
+[0 - 20004ef1f8b0]    0.821087 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(68,1),2),domain=<1350>..<2149>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.821093 {2}{mapper}:     Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821098 {2}{mapper}:   SOURCES:
+[0 - 20004ef1f8b0]    0.821104 {2}{mapper}:     Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821110 {2}{mapper}:     Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821115 {2}{mapper}:     Instance[4000000000000009](region=(2,*,2),memory=1e00000000000000,domain=<1000>..<1499>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821196 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(3))<338> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.821203 {2}{mapper}:   TARGET:
+[0 - 20004ef1f8b0]    0.821209 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(68,1),2),domain=<1350>..<2149>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.821214 {2}{mapper}:     Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821220 {2}{mapper}:   SOURCES:
+[0 - 20004ef1f8b0]    0.821225 {2}{mapper}:     Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.821231 {2}{mapper}:     Instance[400000000000000a](region=(2,*,2),memory=1e00000000000000,domain=<1500>..<1999>,fields=node_cap+leakage+charge+node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.848205 {2}{mapper}: SELECT_SHARDING_FUNCTOR for distribute_charge<340> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef6f8b0]    0.848214 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef6f8b0]    0.848220 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.848414 {2}{mapper}: SLICE_TASK for distribute_charge<344> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.848423 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.848429 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.848434 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.848440 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef1f8b0]    0.849221 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(0))<354> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.849233 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.849242 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.849250 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=charge)
+[0 - 20004ef1f8b0]    0.849259 {2}{mapper}:       Instance[4000000000800005](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.849267 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(22,1),2),domain=<0>..<499>,fields=charge)
+[0 - 20004ef1f8b0]    0.849276 {2}{mapper}:       Instance[4000000002800009](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.849284 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(62,1),2),domain=<0>..<649>,fields=charge)
+[0 - 20004ef1f8b0]    0.849292 {2}{mapper}:       Instance[400000000280000b](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.849300 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef1f8b0]    0.849309 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849316 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(1))<356> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.849317 {2}{mapper}:       Instance[4000000000800003](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849329 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef6f8b0]    0.849346 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.849355 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=charge)
+[0 - 20004ef6f8b0]    0.849365 {2}{mapper}:       Instance[4000000000c00005](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849374 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(21,1),2),domain=<500>..<999>,fields=charge)
+[0 - 20004ef6f8b0]    0.849383 {2}{mapper}:       Instance[400000000280000a](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849392 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(64,1),2),domain=<350>..<1099>,fields=charge)
+[0 - 20004ef6f8b0]    0.849401 {2}{mapper}:       Instance[400000000280000c](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849410 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef6f8b0]    0.849419 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.849429 {2}{mapper}:       Instance[4000000000c00003](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.850253 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(2))<358> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.850265 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.850274 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.850283 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=charge)
+[0 - 20004ef1f8b0]    0.850291 {2}{mapper}:       Instance[4000000001000005](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.850299 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=charge)
+[0 - 20004ef1f8b0]    0.850308 {2}{mapper}:       Instance[400000000280000d](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850312 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(3))<360> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.850316 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(66,1),2),domain=<900>..<1649>,fields=charge)
+[0 - 20004ef6f8b0]    0.850324 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef1f8b0]    0.850331 {2}{mapper}:       Instance[400000000280000f](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850338 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.850346 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef6f8b0]    0.850350 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=charge)
+[0 - 20004ef1f8b0]    0.850358 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850362 {2}{mapper}:       Instance[4000000001400005](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.850373 {2}{mapper}:       Instance[4000000001000003](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850383 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=charge)
+[0 - 20004ef6f8b0]    0.850399 {2}{mapper}:       Instance[400000000280000e](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850408 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(68,1),2),domain=<1350>..<2149>,fields=charge)
+[0 - 20004ef6f8b0]    0.850417 {2}{mapper}:       Instance[4000000002800010](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850426 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef6f8b0]    0.850436 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.850446 {2}{mapper}:       Instance[4000000001400003](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.854346 {2}{mapper}: SELECT_SHARDING_FUNCTOR for update_voltages<362> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.854358 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.854364 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    0.854555 {2}{mapper}: SLICE_TASK for update_voltages<366> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.854566 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef6f8b0]    0.854573 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef6f8b0]    0.854581 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef6f8b0]    0.854588 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef6f8b0]    0.855489 {2}{mapper}: MAP_TASK for update_voltages(index_point=(0))<376> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.855501 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef6f8b0]    0.855510 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.855518 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.855527 {2}{mapper}:       Instance[4000000000800006](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.855535 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.855544 {2}{mapper}:       Instance[4000000000800005](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.855552 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.855560 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(22,1),2),domain=<0>..<499>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.855569 {2}{mapper}:       Instance[4000000002800011](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.855577 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(22,1),2),domain=<0>..<499>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.855585 {2}{mapper}:       Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.855593 {2}{mapper}:       Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855592 {2}{mapper}: MAP_TASK for update_voltages(index_point=(1))<378> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.855606 {2}{mapper}:       Instance[4000000002800013](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855616 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef6f8b0]    0.855626 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(48,3),4),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.855637 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.855648 {2}{mapper}:       Instance[4000000000800004](region=(4,*,4),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855658 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.855676 {2}{mapper}:       Instance[4000000000c00006](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855685 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.855693 {2}{mapper}:       Instance[4000000000c00005](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855703 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855712 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(21,1),2),domain=<500>..<999>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.855721 {2}{mapper}:       Instance[4000000002800012](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855729 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(21,1),2),domain=<500>..<999>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.855738 {2}{mapper}:       Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855746 {2}{mapper}:       Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855755 {2}{mapper}:       Instance[4000000002800015](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.855763 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(45,3),4),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.855772 {2}{mapper}:       Instance[4000000000c00004](region=(4,*,4),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.856998 {2}{mapper}: MAP_TASK for update_voltages(index_point=(2))<380> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.857009 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.857018 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.857027 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.857035 {2}{mapper}:       Instance[4000000001000006](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.857044 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.857052 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857053 {2}{mapper}: MAP_TASK for update_voltages(index_point=(3))<382> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.857066 {2}{mapper}:       Instance[4000000001000005](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857076 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef1f8b0]    0.857086 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.857096 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.857106 {2}{mapper}:       Instance[4000000002800014](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857116 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.857126 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.857135 {2}{mapper}:       Instance[4000000001400006](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.857145 {2}{mapper}:       Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857155 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.857165 {2}{mapper}:       Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857175 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.857184 {2}{mapper}:       Instance[4000000002800017](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857194 {2}{mapper}:       Instance[4000000001400005](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.857204 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(50,3),4),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.857214 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.857224 {2}{mapper}:       Instance[4000000001000004](region=(4,*,4),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857234 {2}{mapper}:       Instance[4000000002800016](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857250 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.857258 {2}{mapper}:       Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857267 {2}{mapper}:       Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857276 {2}{mapper}:       Instance[4000000002800018](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.857285 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(47,3),4),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.857294 {2}{mapper}:       Instance[4000000001400004](region=(4,*,4),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.860051 {2}{mapper}: SELECT_SHARDING_FUNCTOR for calculate_new_currents<390> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.860062 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.860070 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    0.860268 {2}{mapper}: SLICE_TASK for calculate_new_currents<394> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.860279 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef6f8b0]    0.860286 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef6f8b0]    0.860294 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef6f8b0]    0.860301 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef6f8b0]    0.860779 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(0))<404> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.860779 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(1))<406> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.860794 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.860805 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef6f8b0]    0.860814 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.860824 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.860835 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.860845 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.860855 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.860864 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.860874 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(22,1),2),domain=<0>..<499>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.860884 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(21,1),2),domain=<500>..<999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.860894 {2}{mapper}:       Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.860903 {2}{mapper}:       Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.860913 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(62,1),2),domain=<0>..<649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.860923 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(64,1),2),domain=<350>..<1099>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.860933 {2}{mapper}:       Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.860943 {2}{mapper}:       Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.860953 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef1f8b0]    0.860963 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef6f8b0]    0.860973 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.860983 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.860993 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(30,4),1),domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.861003 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(29,4),1),domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef6f8b0]    0.861013 {2}{mapper}:       Instance[4000000000800003](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.861021 {2}{mapper}:       Instance[4000000000c00003](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.861025 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(48,3),4),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.861033 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(45,3),4),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.861040 {2}{mapper}:       Instance[4000000000800004](region=(4,*,4),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.861047 {2}{mapper}:       Instance[4000000000c00004](region=(4,*,4),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.861249 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(0))<404> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.861260 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.861269 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(62,1),2),domain=<0>..<649>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.861277 {2}{mapper}:     Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.861286 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.861295 {2}{mapper}:     Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.861304 {2}{mapper}:     Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.861983 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(2))<408> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.861994 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef1f8b0]    0.862002 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.862010 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.862017 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862024 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.862033 {2}{mapper}:       Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862042 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(66,1),2),domain=<900>..<1649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.862050 {2}{mapper}:       Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862058 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef1f8b0]    0.862067 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862077 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(32,4),1),domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef1f8b0]    0.862086 {2}{mapper}:       Instance[4000000001000003](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862095 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(50,3),4),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.862104 {2}{mapper}:       Instance[4000000001000004](region=(4,*,4),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862271 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(2))<408> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef1f8b0]    0.862281 {2}{mapper}:   TARGET:
+[0 - 20004ef1f8b0]    0.862290 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(66,1),2),domain=<900>..<1649>,fields=node_voltage)
+[0 - 20004ef1f8b0]    0.862298 {2}{mapper}:     Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862306 {2}{mapper}:   SOURCES:
+[0 - 20004ef1f8b0]    0.862314 {2}{mapper}:     Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.862322 {2}{mapper}:     Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862397 {2}{mapper}: MAP_TASK for calculate_new_currents(index_point=(3))<410> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.862408 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef6f8b0]    0.862417 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.862426 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.862435 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862444 {2}{mapper}:     Requirement[1](privilege=READ_ONLY,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.862452 {2}{mapper}:       Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862460 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(68,1),2),domain=<1350>..<2149>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.862469 {2}{mapper}:       Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862478 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap)
+[0 - 20004ef6f8b0]    0.862487 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862497 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(1,(31,4),1),domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8)
+[0 - 20004ef6f8b0]    0.862507 {2}{mapper}:       Instance[4000000001400003](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862516 {2}{mapper}:     Requirement[5](privilege=READ_WRITE,region=(4,(47,3),4),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.862524 {2}{mapper}:       Instance[4000000001400004](region=(4,*,4),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.862958 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(3))<410> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.862979 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.863006 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(68,1),2),domain=<1350>..<2149>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.863033 {2}{mapper}:     Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.863061 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.863088 {2}{mapper}:     Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.863116 {2}{mapper}:     Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.863752 {2}{mapper}: SELECT_TASK_SOURCES for calculate_new_currents(index_point=(4))<391> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:779
+[0 - 20004ef6f8b0]    0.863764 {2}{mapper}:   TARGET:
+[0 - 20004ef6f8b0]    0.863773 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(70,1),2),domain=<1850>..<2649>,fields=node_voltage)
+[0 - 20004ef6f8b0]    0.863780 {2}{mapper}:     Instance[4000400042800008](region=(2,*,2),memory=1e0001000000000a,domain=<1850>..<2649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.863788 {2}{mapper}:   SOURCES:
+[0 - 20004ef6f8b0]    0.863795 {2}{mapper}:     Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.863803 {2}{mapper}:     Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.884926 {2}{mapper}: SELECT_SHARDING_FUNCTOR for distribute_charge<412> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef6f8b0]    0.884938 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef6f8b0]    0.884947 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    0.885140 {2}{mapper}: SLICE_TASK for distribute_charge<416> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef6f8b0]    0.885150 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef6f8b0]    0.885158 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef6f8b0]    0.885165 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef6f8b0]    0.885172 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef1f8b0]    0.885516 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(0))<426> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.885528 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef6f8b0]    0.885528 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(1))<428> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.885542 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.885553 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef1f8b0]    0.885564 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=charge)
+[0 - 20004ef6f8b0]    0.885575 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.885585 {2}{mapper}:       Instance[4000000000800005](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885596 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=charge)
+[0 - 20004ef1f8b0]    0.885607 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(22,1),2),domain=<0>..<499>,fields=charge)
+[0 - 20004ef6f8b0]    0.885617 {2}{mapper}:       Instance[4000000000c00005](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.885627 {2}{mapper}:       Instance[4000000002800009](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885637 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(21,1),2),domain=<500>..<999>,fields=charge)
+[0 - 20004ef1f8b0]    0.885646 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(62,1),2),domain=<0>..<649>,fields=charge)
+[0 - 20004ef6f8b0]    0.885656 {2}{mapper}:       Instance[400000000280000a](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.885666 {2}{mapper}:       Instance[400000000280000b](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885676 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(64,1),2),domain=<350>..<1099>,fields=charge)
+[0 - 20004ef1f8b0]    0.885686 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(30,4),1),domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef6f8b0]    0.885696 {2}{mapper}:       Instance[400000000280000c](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.885706 {2}{mapper}:       Instance[4000000000800002](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885716 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(29,4),1),domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef1f8b0]    0.885726 {2}{mapper}:       Instance[4000000000800003](region=(1,*,1),memory=1e00000000000002,domain=<0>..<199999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885736 {2}{mapper}:       Instance[4000000000c00002](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.885753 {2}{mapper}:       Instance[4000000000c00003](region=(1,*,1),memory=1e00000000000003,domain=<200000>..<399999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.886552 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(2))<430> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef6f8b0]    0.886564 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef6f8b0]    0.886573 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.886582 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=charge)
+[0 - 20004ef6f8b0]    0.886592 {2}{mapper}:       Instance[4000000001000005](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.886601 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=charge)
+[0 - 20004ef6f8b0]    0.886610 {2}{mapper}:       Instance[400000000280000d](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.886618 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(66,1),2),domain=<900>..<1649>,fields=charge)
+[0 - 20004ef6f8b0]    0.886627 {2}{mapper}:       Instance[400000000280000f](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.886636 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(32,4),1),domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef6f8b0]    0.886646 {2}{mapper}:       Instance[4000000001000002](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.886655 {2}{mapper}:       Instance[4000000001000003](region=(1,*,1),memory=1e00000000000004,domain=<400000>..<599999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.886915 {2}{mapper}: MAP_TASK for distribute_charge(index_point=(3))<432> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:782
+[0 - 20004ef1f8b0]    0.886926 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef1f8b0]    0.886936 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.886945 {2}{mapper}:     Requirement[0](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=charge)
+[0 - 20004ef1f8b0]    0.886954 {2}{mapper}:       Instance[4000000001400005](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.886962 {2}{mapper}:     Requirement[1](privilege=REDUCE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=charge)
+[0 - 20004ef1f8b0]    0.886971 {2}{mapper}:       Instance[400000000280000e](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.886980 {2}{mapper}:     Requirement[2](privilege=REDUCE,region=(2,(68,1),2),domain=<1350>..<2149>,fields=charge)
+[0 - 20004ef1f8b0]    0.886989 {2}{mapper}:       Instance[4000000002800010](REDUCTION,region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.886999 {2}{mapper}:     Requirement[3](privilege=READ_ONLY,region=(1,(31,4),1),domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+current._0+current._9)
+[0 - 20004ef1f8b0]    0.887007 {2}{mapper}:       Instance[4000000001400002](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=in_ptr.__ptr+in_ptr.__index+out_ptr.__ptr+out_ptr.__index+inductance+resistance+wire_cap,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.887015 {2}{mapper}:       Instance[4000000001400003](region=(1,*,1),memory=1e00000000000005,domain=<600000>..<799999>,fields=current._0+current._1+current._2+current._3+current._4+current._5+current._6+current._7+current._8+current._9+voltage._0+voltage._1+voltage._2+voltage._3+voltage._4+voltage._5+voltage._6+voltage._7+voltage._8,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.890185 {2}{mapper}: SELECT_SHARDING_FUNCTOR for update_voltages<434> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.890197 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    0.890206 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef1f8b0]    0.890413 {2}{mapper}: SLICE_TASK for update_voltages<438> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.890423 {2}{mapper}:   <0>..<0> -> 1d00000000000003
+[0 - 20004ef1f8b0]    0.890430 {2}{mapper}:   <1>..<1> -> 1d00000000000004
+[0 - 20004ef1f8b0]    0.890437 {2}{mapper}:   <2>..<2> -> 1d00000000000005
+[0 - 20004ef1f8b0]    0.890445 {2}{mapper}:   <3>..<3> -> 1d00000000000006
+[0 - 20004ef1f8b0]    0.890880 {2}{mapper}: MAP_TASK for update_voltages(index_point=(1))<450> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.890880 {2}{mapper}: MAP_TASK for update_voltages(index_point=(0))<448> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef1f8b0]    0.890895 {2}{mapper}:   TARGET PROCS: 1d00000000000004
+[0 - 20004ef6f8b0]    0.890905 {2}{mapper}:   TARGET PROCS: 1d00000000000003
+[0 - 20004ef1f8b0]    0.890915 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.890925 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    0.890935 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(11,1),2),domain=<53500>..<102999>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.890945 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(14,1),2),domain=<4000>..<53499>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.890955 {2}{mapper}:       Instance[4000000000c00006](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.890964 {2}{mapper}:       Instance[4000000000800006](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.890974 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(11,1),2),domain=<53500>..<102999>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.890986 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(14,1),2),domain=<4000>..<53499>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.890997 {2}{mapper}:       Instance[4000000000c00005](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891008 {2}{mapper}:       Instance[4000000000800005](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891018 {2}{mapper}:       Instance[4000000000c00001](region=(2,*,2),memory=1e00000000000003,domain=<53500>..<102999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891028 {2}{mapper}:       Instance[4000000000800001](region=(2,*,2),memory=1e00000000000002,domain=<4000>..<53499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891037 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(21,1),2),domain=<500>..<999>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.891047 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(22,1),2),domain=<0>..<499>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.891058 {2}{mapper}:       Instance[4000000002800012](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891066 {2}{mapper}:       Instance[4000000002800011](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891073 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(21,1),2),domain=<500>..<999>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.891080 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(22,1),2),domain=<0>..<499>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.891088 {2}{mapper}:       Instance[4000000002800005](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891095 {2}{mapper}:       Instance[4000000002800001](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891104 {2}{mapper}:       Instance[4000000002800006](region=(2,*,2),memory=1e0000000000000a,domain=<350>..<1099>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891113 {2}{mapper}:       Instance[4000000002800002](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891123 {2}{mapper}:       Instance[4000000002800015](region=(2,*,2),memory=1e0000000000000a,domain=<500>..<999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891133 {2}{mapper}:       Instance[4000000002800013](region=(2,*,2),memory=1e0000000000000a,domain=<0>..<499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.891143 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(45,3),4),domain=<1>..<1>,fields=start+stop)
+[0 - 20004ef6f8b0]    0.891153 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(48,3),4),domain=<0>..<0>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.891163 {2}{mapper}:       Instance[4000000000c00004](region=(4,*,4),memory=1e00000000000003,domain=<1>..<1>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.891173 {2}{mapper}:       Instance[4000000000800004](region=(4,*,4),memory=1e00000000000002,domain=<0>..<0>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892169 {2}{mapper}: MAP_TASK for update_voltages(index_point=(2))<452> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.892180 {2}{mapper}:   TARGET PROCS: 1d00000000000005
+[0 - 20004ef6f8b0]    0.892189 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.892197 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(16,1),2),domain=<103000>..<152499>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.892206 {2}{mapper}:       Instance[4000000001000006](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892214 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(16,1),2),domain=<103000>..<152499>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.892218 {2}{mapper}: MAP_TASK for update_voltages(index_point=(3))<454> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:785
+[0 - 20004ef6f8b0]    0.892226 {2}{mapper}:       Instance[4000000001000001](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892233 {2}{mapper}:   TARGET PROCS: 1d00000000000006
+[0 - 20004ef6f8b0]    0.892241 {2}{mapper}:       Instance[4000000001000005](region=(2,*,2),memory=1e00000000000004,domain=<103000>..<152499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892248 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    0.892255 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(24,1),2),domain=<1000>..<1499>,fields=node_cap+leakage)
+[0 - 20004ef1f8b0]    0.892265 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(2,(13,1),2),domain=<152500>..<201999>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.892276 {2}{mapper}:       Instance[4000000002800014](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892287 {2}{mapper}:       Instance[4000000001400006](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892297 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(24,1),2),domain=<1000>..<1499>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.892307 {2}{mapper}:     Requirement[1](privilege=READ_WRITE,region=(2,(13,1),2),domain=<152500>..<201999>,fields=charge+node_voltage)
+[0 - 20004ef6f8b0]    0.892317 {2}{mapper}:       Instance[4000000002800003](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892326 {2}{mapper}:       Instance[4000000001400001](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892336 {2}{mapper}:       Instance[4000000002800004](region=(2,*,2),memory=1e0000000000000a,domain=<900>..<1649>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892346 {2}{mapper}:       Instance[4000000001400005](region=(2,*,2),memory=1e00000000000005,domain=<152500>..<201999>,fields=charge,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892356 {2}{mapper}:       Instance[4000000002800017](region=(2,*,2),memory=1e0000000000000a,domain=<1000>..<1499>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892366 {2}{mapper}:     Requirement[2](privilege=READ_ONLY,region=(2,(23,1),2),domain=<1500>..<1999>,fields=node_cap+leakage)
+[0 - 20004ef6f8b0]    0.892376 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(50,3),4),domain=<2>..<2>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.892386 {2}{mapper}:       Instance[4000000002800016](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_cap+leakage,layout=SoA:X)
+[0 - 20004ef6f8b0]    0.892395 {2}{mapper}:       Instance[4000000001000004](region=(4,*,4),memory=1e00000000000004,domain=<2>..<2>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892405 {2}{mapper}:     Requirement[3](privilege=READ_WRITE,region=(2,(23,1),2),domain=<1500>..<1999>,fields=charge+node_voltage)
+[0 - 20004ef1f8b0]    0.892422 {2}{mapper}:       Instance[4000000002800007](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892430 {2}{mapper}:       Instance[4000000002800008](region=(2,*,2),memory=1e0000000000000a,domain=<1350>..<2149>,fields=node_voltage,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892439 {2}{mapper}:       Instance[4000000002800018](region=(2,*,2),memory=1e0000000000000a,domain=<1500>..<1999>,fields=charge,layout=SoA:X)
+[0 - 20004ef1f8b0]    0.892448 {2}{mapper}:     Requirement[4](privilege=READ_WRITE,region=(4,(47,3),4),domain=<3>..<3>,fields=start+stop)
+[0 - 20004ef1f8b0]    0.892457 {2}{mapper}:       Instance[4000000001400004](region=(4,*,4),memory=1e00000000000005,domain=<3>..<3>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef6f8b0]    3.556447 {2}{mapper}: SELECT_SHARDING_FUNCTOR for get_elapsed<6904> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:790
+[0 - 20004ef6f8b0]    3.556495 {2}{mapper}:   0 <- (0)
+[0 - 20004ef6f8b0]    3.556505 {2}{mapper}:   1 <-
+[0 - 20004ef6f8b0]    3.558527 {2}{mapper}: MAP_TASK for get_elapsed<6904> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:790
+[0 - 20004ef6f8b0]    3.558538 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    3.558546 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    3.558553 {2}{mapper}:     Requirement[0](privilege=READ_ONLY,region=(4,(3,3),4),domain=<0>..<7>,fields=start+stop)
+[0 - 20004ef6f8b0]    3.558561 {2}{mapper}:       Instance[4000000000000012](region=(4,*,4),memory=1e00000000000000,domain=<0>..<7>,fields=start+stop,layout=SoA:X)
+[0 - 20004ef1f8b0]    3.581819 {2}{mapper}: SELECT_SHARDING_FUNCTOR for print_summary<6944> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef1f8b0]    3.581828 {2}{mapper}:   0 <- (0) (1) (2) (3)
+[0 - 20004ef1f8b0]    3.581834 {2}{mapper}:   1 <- (4) (5) (6) (7)
+[0 - 20004ef6f8b0]    3.581919 {2}{mapper}: SLICE_TASK for print_summary<6944> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef6f8b0]    3.581929 {2}{mapper}:   <0>..<3> -> 1d00000000000002
+[0 - 20004ef1f8b0]    3.582040 {2}{mapper}: MAP_TASK for print_summary(index_point=(0))<6948> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef1f8b0]    3.582051 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    3.582060 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    3.582118 {2}{mapper}: MAP_TASK for print_summary(index_point=(1))<6950> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef6f8b0]    3.582128 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    3.582135 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef1f8b0]    3.582169 {2}{mapper}: MAP_TASK for print_summary(index_point=(2))<6952> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef1f8b0]    3.582178 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef1f8b0]    3.582187 {2}{mapper}:   CHOSEN INSTANCES:
+[0 - 20004ef6f8b0]    3.582230 {2}{mapper}: MAP_TASK for print_summary(index_point=(3))<6954> @ /g/g92/wei8/release_exp/legion/language/pldi23_scripts/../examples/circuit_sparse.rg:791
+[0 - 20004ef6f8b0]    3.582239 {2}{mapper}:   TARGET PROCS: 1d00000000000002
+[0 - 20004ef6f8b0]    3.582247 {2}{mapper}:   CHOSEN INSTANCES:
