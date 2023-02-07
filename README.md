@@ -66,7 +66,8 @@ The index is for `task.regions`, starting from 0.
 The supported memory kinds are the following:
   - `SYSMEM` (`Memory::SYSTEM_MEM` in Legion)
   - `FBMEM` (`Memory::GPU_FB_MEM` in Legion, FrameBuffer Memory on GPU)
-  - `ZCMEM` (`Memory::Z_COPY_MEM` in Legion, ZeroCopy Memory for GPU), `RDMEM` (`Memory::REGDMA_MEM` in Legion, or RDMA memory)
+  - `ZCMEM` (`Memory::Z_COPY_MEM` in Legion, ZeroCopy Memory for GPU)
+  - `RDMEM` (`Memory::REGDMA_MEM` in Legion, RDMA memory)
   - `SOCKMEM` (`Memory::SOCKET_MEM` in Legion)
   - `VIRTUAL` (`PhysicalInstance::get_virtual_instance()` in Legion, useful for inner tasks where no memory allocation is needed)
 
@@ -87,7 +88,16 @@ Layout * * * SOA C_order; # Other choices: AOS F_order Exact Align==128 Compact
 Implementation:
 `map_task`, `dsl_default_create_custom_instances`, `dsl_default_policy_select_constraints`, `dsl_default_policy_select_layout_constraints`
 ### Backpressure
+To turn on this feature, pass `-tm:enable_backpressure` in command line.
+```
+InstanceLimit task_4 1;
+InstanceLimit task_6 1;
+```
+On each node, only one `task_4` can be mapped at the same time. Only one `task_6` can be mapped at the same time. Typically, tasks are mapped ahead of time, and backpressure can avoid mapping too many tasks at the same time ahead of time, which can avoid consuming too much memory. The above example comes from the mapping policy for [Cannon](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/cannonMM-cuda/mappings).
 
+Implementation:
+`select_tasks_to_map`, `map_task`, `map_task_post_function`, `report_profiling`, `get_mapper_sync_model`
+[Backpressure example](https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc) in Legion repository has more detailed explanation.
 ### Memory Collection
 
 ### Index Task Launch Placement
