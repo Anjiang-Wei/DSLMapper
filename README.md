@@ -37,7 +37,13 @@ Task * GPU,OMP,CPU; # for any other task, by default try running on GPU first (i
 ```
 The task named `foo` will use `CPU`. For other tasks, they will use the default (fallback) strategies.
 The wildcard `*` is a way to describe fallback policies, after which is a priority-list of processors kinds.
-The supported processor kinds are `CPU`, `GPU`, `OMP` (OpenMP), `IO`, `PY` (Python), `PROC` (Proc set)
+The supported processor kinds are 
+  - `CPU`: `Processor::LOC_PROC` in Legion
+  - `GPU`: `Processor::TOC_PROC` in Legion
+  - `OMP`: OpenMP, `Processor::OMP_PROC` in Legion
+  - `IO`: `Processor::IO_PROC` in Legion
+  - `PY`: Python, `Processor::PY_PROC` in Legion
+  - `PROC`: `Processor::PROC_SET` in Legion 
 
 Implementation:
 `select_task_options`, `dsl_default_policy_select_initial_processor`, `validate_processor_mapping`
@@ -97,7 +103,8 @@ On each node, only one `task_4` can be mapped at the same time. Only one `task_6
 
 Implementation:
 `select_tasks_to_map`, `map_task`, `map_task_post_function`, `report_profiling`, `get_mapper_sync_model`
-[Backpressure example](https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc) in Legion repository has more detailed explanation.
+ 
+The [backpressure example](https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc) in Legion repository has more detailed explanation.
 ### Memory Collection
 
 ### Index Task Launch Placement
