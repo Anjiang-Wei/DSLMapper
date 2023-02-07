@@ -107,14 +107,23 @@ Implementation:
  
 The [backpressure example](https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc) in Legion repository has more detailed explanation.
 ### Memory Collection
+To turn on this feature, pass `-tm:untrack_valid_regions` in the command line.
+```
+# $task $region 
+CollectMemory task_4 *;
+```
+`CollectMemory` can tell Legion runtime to untrack certain read-only regions as valid regions so that those memories can be collected (i.e., adding the region into  `untracked_valid_regions` in `MapTaskOutput` struct). This is useful when users know that certain read-only regions will only be used once for some tasks, and keeping the regions in memory costs too much memory consumption.
+Here the region supports both semantic naming (if passing `-tm:use_semantic_name`), index naming (starting from `0`), and also wildcard (`*`).
 
+Implementation:
+`map_task`, `map_task_post_function`
 ### Index Task Launch Placement
 
 ### Machine Model Transformation
 
 ### Single Task Launch Placement
 
-## Circuit Example
+## Examples
 
 ## Command Line Options
 
