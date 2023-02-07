@@ -1,9 +1,13 @@
 # DSLMapper
 ## Getting Started
 
-### Downloading
+### Downloading and Copying Files
 
 ### Mapper Registration
+
+#### For Legion Program
+
+#### For Regent Program
 
 ## Language Design
 
