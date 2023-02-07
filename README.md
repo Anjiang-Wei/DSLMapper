@@ -90,6 +90,7 @@ Layout * * * SOA C_order; # Other choices: AOS F_order Exact Align==128 Compact
 - `C_order` and `F_order` are two different orderings. These options correspond to `OrderingConstraint` in Legion.
 - `Align` can specify memory alignment, and we support operators including `==`, `<=`, `>=`, `!=`. This corresponds to `AlignmentConstraint` in Legion.
 - `Compact` corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`.
+- `Exact` corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`. Users can also pass `-dm:exact_region` in command line to request exact region allocation.
 
 Implementation:
 `map_task`, `dsl_default_create_custom_instances`, `dsl_default_policy_select_constraints`, `dsl_default_policy_select_layout_constraints`
