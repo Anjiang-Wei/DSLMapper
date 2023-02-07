@@ -26,6 +26,8 @@ The original compilation flow needs to be customized in order to integrate DSL m
   1) Allow warnings in compilation. Comment out the `-Werror` flags. Here is the change we make for the [circuit example](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L59-L60)
   2) Make sure the right mapper registration function is used. Here is the circuit example's [compilation script](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L812) and corresponding [registration function](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_mapper.cc#L548)
 
+**Note**, using Legion's namespace and having user-defined typedef together could sometimes cause compilation problems. In DSL Mapper, we use `using namespace Legion; using namespace Legion::Mapping;` If it happens to collide with application code's typedef, users can change their code to be more specific about the namespace and the types, e.g., changing `Rect<3>` to `Legion::Rect<3,long long>`
+
 ## Language Design
 
 ### Task Placement
@@ -51,8 +53,9 @@ Region * rp_shared GPU ZCMEM;
 Region * rp_ghost GPU ZCMEM;
 ```
 To name the regions, users can attach semantic names (`runtime->attach_name`) to regions in Legion. Regent will automatically attach the variable names as the semantic names.
+
 **Note**: for region names, we need to use the region names that are passed in (instead of the names used in task definition/declaration). The implication is that as long as the task uses the `rp_shared` region, no matter what argument name the task uses for declaration, the `rp_shared` region will be placed onto zero-copy memory. In the above example, since the task is a wildcard (`*`), all tasks using the `rp_shared` will be placed onto zero-copy memory.
-In Regent, the semantic name binding happens when you invoke certain APIs (e.g., `partition`) and bind it to a variable, e.g., [`rp_shared`](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L744) and [`rp_ghost`](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L634) in the Circuit example.
+In Regent, the semantic name binding happens when you invoke certain APIs (e.g., `partition`) and bind it to a variable, e.g., [`rp_shared`](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L744) and [`rp_ghost`](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L634) in the Circuit example. Typically, regions that are across the partition boundaries needs faster communication, and thus may benefit from placing onto ZCMEM.
 
 Users can also choose to use index-based approach for placing regions (without passing `-tm:use_semantic_name` in command line).
 ```
@@ -72,7 +75,17 @@ The DSL mapper's implementation will try to get the memory that has the highest 
 Implementation:
 `map_task`, `get_handle_names`, `maybe_append_handle_name`, `dsl_default_policy_select_target_memory`, `query_best_memory_for_proc`
 ### Layout Constraint
+```
+# Task, Region, Processor Kind, List of Constraints
+Layout * * * SOA C_order; # Other choices: AOS F_order Exact Align==128 Compact
+```
+- `SOA` refers to `Struct of Array` while `AOS` refers to `Array of Struct`.
+- `C_order` and `F_order` are two different orderings. These options correspond to `OrderingConstraint` in Legion.
+- `Align` can specify memory alignment, and we support operators including `==`, `<=`, `>=`, `!=`. This corresponds to `AlignmentConstraint` in Legion.
+- `Compact` corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`.
 
+Implementation:
+`map_task`, `dsl_default_create_custom_instances`, `dsl_default_policy_select_constraints`, `dsl_default_policy_select_layout_constraints`
 ### Backpressure
 
 ### Memory Collection
