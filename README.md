@@ -211,7 +211,7 @@ def same_node(Task task) {
 ```
 Users can also specify `*` to specify a set of points in the machine model, to define a round-robin strategy. The above `same_node` function specifies that the task will be placed on the same node as its parent (`task.parent.processor(m_2d)[0]`), and any processor on that node (`*`) is acceptable. The runtime will make the choice dynamically.
 
-## Examples
+## Full Examples
 
 ## Command Line Options
 
