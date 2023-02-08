@@ -29,6 +29,9 @@ The original compilation flow needs to be customized in order to integrate DSL m
 **Note**, using Legion's namespace and having user-defined typedef together could sometimes cause compilation problems. In DSL Mapper, we use `using namespace Legion; using namespace Legion::Mapping;` If it happens to collide with application code's typedef, users can change their code to be more specific about the namespace and the types, e.g., changing `Rect<3>` to `Legion::Rect<3,long long>`
 
 ## Language Design
+Every line should end with `;`
+
+Comments should start with `#`
 
 ### Task Placement
 ```
@@ -142,7 +145,7 @@ On a high level, users want to map each N-dim point from the launch domain to a 
 `Machine($PROC_KIND)` can be used to initialize a 2-dim machine model with respect to a processor kind. The initialized machine model is a 2-dim tuple, and we can access the number of nodes with `mcpu.size[0]` and the number of CPU processors in each node with `mcpu.size[1]`.
 
 The function signature should always be taking one argument `Task`, and return one point in a machine model. Inside the function, users need to specify that for each index point, how to map the index point (`task.ipoint[0]` for 1d index launch) to one point in the machine model.
-If turning on the logging wrapper, users can see the following logs:
+If turning on the logging wrapper, users can see the following logs running on a 2 node, 4 GPU per node machine:
 ```
 SELECT_SHARDING_FUNCTOR for calculate_new_currents
 0 <- (0) (1) (2) (3)
@@ -163,7 +166,28 @@ The `SLICE_TASK` will report the decision of choosing processors within the node
 Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
+```
+def block_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
+    return x[dim1] * z.size[dim2] / y.size[dim1];
+}
 
+def cyclic_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
+    return x[dim1] % z.size[dim2];
+}
+
+def auto3d(Task task) {
+    m_4d = m_2d.auto_split(0, task.ispace); # split the original 0 dim into 0,1,2 dim
+    # subspace: task.ispace / m_4d[:-1]
+    m_6d = m_4d.auto_split(3, task.ispace / m_4d[:-1]); # split the processor (previosly 1, now 3) dim into 3,4,5 dim w.r.t subspace
+    upper = tuple(block_primitive(task.ipoint, task.ispace, m_6d, i, i) for i in (0,1,2));
+    lower = tuple(cyclic_primitive(task.ipoint, task.ispace, m_6d, i, i + 3) for i in (0,1,2));
+    return m_6d[*upper, *lower];
+}
+IndexTaskMap task_5 auto3d; # task_5 launch space: (rpoc, rpoc, c)
+```
+
+Implementation:
+  `MSpace.cc`
 ### Single Task Launch Placement
 
 ## Examples
