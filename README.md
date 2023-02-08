@@ -31,7 +31,7 @@ The original compilation flow needs to be customized in order to integrate DSL m
 ## Language Design
 Every statement in the program should end with `;` (like `C`)
 
-Functions should start and end with `{ ... }` (like `C`)
+Functions should start with `def FuncName(Arg1Type arg1, ...)` and the function body needs to be wrapped with `{ ... }`, e.g., used in [Index Task Placement](https://github.com/Anjiang-Wei/DSLMapper/#index-task-launch-placement)
 
 Comments should start with `#` (like `Python`)
 
