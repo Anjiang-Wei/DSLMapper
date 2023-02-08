@@ -194,17 +194,19 @@ Implementation:
 ```
 m_2d = Machine(GPU); # nodes * processors
 def same_point(Task task) {
-    return m_2d[*task.parent.processor(m_2d)]; # same point as parent
+    return m_2d[*task.parent.processor(m_2d)]; # same point as its parent
 }
 SingleTaskMap task_4 same_point;
 ```
-For tasks that are not index launch, users can also specify where to place tasks. Typically, the default mapper will use some heuristic depending on the depth of the task (`task.get_depth()` in `default_policy_select_initial_processor`): round-robin *local* processors (within the same node) for top-level (0-level) tasks, round-robin all processors for 1-level tasks (beyond the same node) if not tagged with `SAME_ADDRESS_SPACE`, round-robin local processors (within the same node) of the same kind for 2-level task or deeper tasks. Different applications may want different strategies, to get better data locality.
+For tasks that are not index launch, users can also specify where to place tasks.
+  
+Typically, the default mapper will use some heuristic depending on the depth of the task (`task.get_depth()` in `default_policy_select_initial_processor`): round-robin *local* processors (within the same node) for top-level (0-level) tasks, round-robin all processors for 1-level tasks (beyond the same node) if not tagged with `SAME_ADDRESS_SPACE`, round-robin local processors (within the same node) of the same kind for 2-level task or deeper tasks. Different applications may want different strategies to get better data locality, and users can customize it with DSL mapper.
 
 The above example code specifies that `task_4` will be placed on the same processor as its parent task (originating processsor). `task.parent` is another `Task` object, and `task.parent.processor(m_2d).processor(m_2d)` will return a tuple representing the position with respect to the machine model `m_2d`, e.g., (1, 1) means that `task_4`'s parent is placed on the second node's second GPU. `*` is used here to turn `(1, 1)` into `1, 1` with which we can use to index the `m_2d` again so that we place `task_4` on exactly the same processor as its parent. 
 
 ```
 def same_node(Task task) {
-    return m_2d[task.parent.processor(m_2d)[0], *]; # same node as parent
+    return m_2d[task.parent.processor(m_2d)[0], *]; # same node as its parent
 }
 ```
 Users can also specify `*` to specify a set of points in the machine model, to define a round-robin strategy. The above `same_node` function specifies that the task will be placed on the same node as its parent (`task.parent.processor(m_2d)[0]`), and any processor on that node (`*`) is acceptable. The runtime will make the choice dynamically.
