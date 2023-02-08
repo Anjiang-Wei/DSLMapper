@@ -125,7 +125,7 @@ mgpu = Machine(GPU); # 2-dim tuple: nodes * GPU processors, assuming one Legion 
 def linearblock(Task task) {
     # task.ipoint is a n-dim tuple (in this case n=1) indicating index point within the index launch domain
     # task.ispace is a n-dim tuple (in this case n=1) indicating launch domain, not used here
-    return mgpu[task.ipoint[0] / mgpu.size[1], task.ipoint[0] % mgpu.size[1]]; # return one point in a machine model (or generally, can be a subset of points on the same node)
+    return mgpu[task.ipoint[0] / mgpu.size[1], task.ipoint[0] % mgpu.size[1]]; # return one point in a machine model
 }
 
 def block_shard_cpu(Task task) {
