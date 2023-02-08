@@ -29,9 +29,11 @@ The original compilation flow needs to be customized in order to integrate DSL m
 **Note**, using Legion's namespace and having user-defined typedef together could sometimes cause compilation problems. In DSL Mapper, we use `using namespace Legion; using namespace Legion::Mapping;` If it happens to collide with application code's typedef, users can change their code to be more specific about the namespace and the types, e.g., changing `Rect<3>` to `Legion::Rect<3,long long>`
 
 ## Language Design
-Every line should end with `;`
+Every statement in the program should end with `;` (like `C`)
 
-Comments should start with `#`
+Functions should start and end with `{ ... }` (like `C`)
+
+Comments should start with `#` (like `Python`)
 
 ### Task Placement
 ```
