@@ -90,12 +90,12 @@ Implementation:
 ```
 # Task, Region, Processor Kind, List of Constraints
 Layout * * * SOA C_order; # Other choices: AOS F_order Exact Align==128 Compact
-```
-- `SOA` refers to `Struct of Array` while `AOS` refers to `Array of Struct`.
-- `C_order` and `F_order` are two different orderings. These options correspond to `OrderingConstraint` in Legion.
-- `Align` can specify memory alignment, and we support operators including `==`, `<=`, `>=`, `!=`. This corresponds to `AlignmentConstraint` in Legion.
-- `Compact` corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`.
-- `Exact` corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`. Users can also pass `-dm:exact_region` in command line to request exact region allocation.
+``` 
+- `SOA` refers to `Struct of Array` while `AOS` refers to `Array of Struct`. It is translated to `OrderingConstraint` in Legion.
+- `C_order` and `F_order` are two different orderings. It is translated to `OrderingConstraint` in Legion.
+- `Align` can specify memory alignment, and we support operators including `==`, `<=`, `>=`, `!=`. This corresponds to `AlignmentConstraint` in Legion. `OrderingConstraint` and `AlignmentConstraint` are useful because certain APIs from external libraries (e.g., CuBLAS) may require the data to be in a specific layout or the data to be aligned in memory.
+- `Compact`: it is translated to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint`.
+- `Exact`: it corresponds to `LEGION_COMPACT_SPECIALIZE` of `SpecializedConstraint` (setting `exact=true`). Users can also pass `-dm:exact_region` in command line to request exact region allocation (globally).
 
 Implementation:
 `map_task`, `dsl_default_create_custom_instances`, `dsl_default_policy_select_constraints`, `dsl_default_policy_select_layout_constraints`
