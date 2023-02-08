@@ -156,7 +156,10 @@ SLICE_TASK for calculate_new_currents
 <2>..<2> -> 1d00000000000005
 <3>..<3> -> 1d00000000000006
 ```
-The `SLICE_TASK` will report the decision of choosing processors within the node. The task `calculate_new_currents` will use `task.ipoint[0] % mgpu.size[1]` is actually `task.ipoint[0] % 4` in this case so that within each node, each index point will be placed on a different GPU processor.
+The `SLICE_TASK` will report the decision of choosing processors within the node. The task `calculate_new_currents` will use `task.ipoint[0] % mgpu.size[1]` (i.e.,  `task.ipoint[0] % 4` in this case) so that within each node, each index point will be placed on a different GPU processor.
+
+**Note**: if running multiple Legion runtimes per node, i.e., multiple ranks per node, then `mcpu.size[0]`, `mgpu.size[0]` becomes the number of ranks, and `mcpu.size[1]`, `mgpu.size[1]` becomes the number of processors within that rank.
+ 
 Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
