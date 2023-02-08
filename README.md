@@ -118,7 +118,47 @@ Here the region supports both semantic naming (if passing `-tm:use_semantic_name
 Implementation:
 `map_task`, `map_task_post_function`
 ### Index Task Launch Placement
+```
+mcpu = Machine(CPU); # 2-dim tuple: nodes * CPU processors, assuming one Legion runtime per node
+mgpu = Machine(GPU); # 2-dim tuple: nodes * GPU processors, assuming one Legion runtime per node
 
+def linearblock(Task task) {
+    # task.ipoint is a n-dim tuple (in this case n=1) indicating index point within the index launch domain
+    # task.ispace is a n-dim tuple (in this case n=1) indicating launch domain, not used here
+    return mgpu[task.ipoint[0] / mgpu.size[1], task.ipoint[0] % mgpu.size[1]]; # return one point in a machine model (or generally, can be a subset of points on the same node)
+}
+
+def block_shard_cpu(Task task) {
+    return mcpu[task.ipoint[0] / mcpu.size[1], 0]; # only one CPU per node
+}
+
+# specify $task_name(s) and sharding+slicing function
+IndexTaskMap calculate_new_currents,distribute_charge,update_voltages linearblock;
+IndexTaskMap init_piece,init_pointers,print_summary block_shard_cpu;
+```
+`IndexTaskMap` can specify a list of comma-separated task names and the corresponding sharding+slicing functions to use. The above code snippet is from the [circuit example](https://github.com/Anjiang-Wei/legion/blob/example/language/pldi23_scripts/circuit_mappings).
+
+On a high level, users want to map each N-dim point from the launch domain to a point in the machine model to pick the processor.
+`Machine($PROC_KIND)` can be used to initialize a 2-dim machine model with respect to a processor kind. The initialized machine model is a 2-dim tuple, and we can access the number of nodes with `mcpu.size[0]` and the number of CPU processors in each node with `mcpu.size[1]`.
+
+The function signature should always be taking one argument `Task`, and return one point in a machine model. Inside the function, users need to specify that for each index point, how to map the index point (`task.ipoint[0]` for 1d index launch) to one point in the machine model.
+If turning on the logging wrapper, users can see the following logs:
+```
+SELECT_SHARDING_FUNCTOR for calculate_new_currents
+0 <- (0) (1) (2) (3)
+1 <- (4) (5) (6) (7)
+```
+The `SELECT_SHARDING_FUNCTOR` will report the decision of choosing nodes. The task `calculate_new_currents` mapped onto GPU will use `linearblock` function, and it corresponds to `task.ipoint[0] / mgpu.size[1]` for choosing nodes. Here each node has 4 GPUs, so it is `task.ipoint[0] / 4`.
+```
+SLICE_TASK for calculate_new_currents
+<0>..<0> -> 1d00000000000003
+<1>..<1> -> 1d00000000000004
+<2>..<2> -> 1d00000000000005
+<3>..<3> -> 1d00000000000006
+```
+The `SLICE_TASK` will report the decision of choosing processors within the node. The task `calculate_new_currents` will use `task.ipoint[0] % mgpu.size[1]` is actually `task.ipoint[0] % 4` in this case so that within each node, each index point will be placed on a different GPU processor.
+Implementation:
+`select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
 
 ### Single Task Launch Placement
