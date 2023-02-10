@@ -212,6 +212,15 @@ def same_node(Task task) {
 Users can also specify `*` to specify a set of points in the machine model, to define a round-robin strategy. The above `same_node` function specifies that the task will be placed on the same node as its parent (`task.parent.processor(m_2d)[0]`), and any processor on that node (`*`) is acceptable. The runtime will make the choice dynamically.
 
 ## Full Examples
+Conventional Legion Benchmarks
+- [Circuit](https://github.com/Anjiang-Wei/legion/blob/example/language/pldi23_scripts/circuit_mappings)
+- [Stencil](https://github.com/Anjiang-Wei/legion/blob/example/language/pldi23_scripts/stencil_mappings)
+- [Pennant](https://github.com/Anjiang-Wei/legion/blob/example/language/pldi23_scripts/pennant_mappings)
+Distributed GEMM Algorithms
+- [Cannon](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/cannonMM-cuda/mappings)
+- [Solomonik](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/solomonikMM-cuda/mappings)
+- [Cosma](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/cosma-cuda/mappings)
+- [Johnson](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/johnsonMM-cuda/mappings)
 
 ## Command Line Options
 
