@@ -185,6 +185,8 @@ def auto3d(Task task) {
 IndexTaskMap task_5 auto3d; # task_5 launch space: (rpoc, rpoc, c)
 ```
 
+Explanation: To be done.
+
 Implementation:
   `MSpace.cc`
 ### Single Task Launch Placement
