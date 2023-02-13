@@ -79,6 +79,14 @@ public:
   static void register_user_sharding_functors(Runtime *runtime);
   void build_proc_idx_cache();
 
+protected:
+  std::vector<std::vector<Processor>> all_gpus;
+  std::vector<std::vector<Processor>> all_cpus;
+  std::vector<std::vector<Processor>> all_ios;
+  std::vector<std::vector<Processor>> all_procsets;
+  std::vector<std::vector<Processor>> all_omps;
+  std::vector<std::vector<Processor>> all_pys;
+
 private:
   Processor select_initial_processor_by_kind(const Task &task, Processor::Kind kind);
   bool validate_processor_mapping(MapperContext ctx, const Task &task, Processor proc, bool strict = true);
@@ -197,14 +205,18 @@ protected:
                                     const Memory::Kind &mem_target_kind);
   void dsl_slice_task(const Task &task,
                       const std::vector<Processor> &local_procs,
+                      const std::vector<std::vector<Processor>> &all_procs,
                       const SliceTaskInput &input,
                       SliceTaskOutput &output);
   template <int DIM>
   void dsl_decompose_points(std::vector<int> &index_launch_space,
                             const DomainT<DIM, coord_t> &point_space,
-                            const std::vector<Processor> &targets,
+                            const std::vector<Processor> &targets_local,
+                            const std::vector<std::vector<Processor>> &targets_all,
                             bool recurse, bool stealable,
-                            std::vector<TaskSlice> &slices, std::string taskname);
+                            std::vector<TaskSlice> &slices,
+                            std::string taskname,
+                            bool control_replicated);
 
 private:
   std::unordered_map<TaskID, Processor::Kind> cached_task_policies;
@@ -1517,7 +1529,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
           output.task_mappings[space].target_procs.push_back(*it);
         }
       }
-// #ifdef DEBUG_CTRL_REPL
+      // #ifdef DEBUG_CTRL_REPL
       else
       {
         const std::vector<Processor> &local_procs =
@@ -1529,7 +1541,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
              it != local_procs.end(); it++, index++)
           output.task_mappings[index].target_procs.push_back(*it);
       }
-// #endif
+      // #endif
     }
     // Indicate that we want to do control replication by filling
     // in the control replication map with our chosen processors
@@ -1544,7 +1556,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
             output.task_mappings[idx].target_procs[0];
       }
     }
-// #ifdef DEBUG_CTRL_REPL
+    // #ifdef DEBUG_CTRL_REPL
     else
     {
       const std::vector<Processor> &local_procs =
@@ -1557,7 +1569,7 @@ void NSMapper::map_replicate_task(const MapperContext ctx,
             output.task_mappings[idx].target_procs[0];
       }
     }
-// #endif
+    // #endif
   }
   else
   {
@@ -1842,10 +1854,12 @@ void NSMapper::select_task_options(const MapperContext ctx,
 template <int DIM>
 void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
                                     const DomainT<DIM, coord_t> &point_space,
-                                    const std::vector<Processor> &targets,
+                                    const std::vector<Processor> &targets_local,
+                                    const std::vector<std::vector<Processor>> &targets_all,
                                     bool recurse, bool stealable,
                                     std::vector<TaskSlice> &slices,
-                                    std::string task_name)
+                                    std::string task_name,
+                                    bool control_replicated)
 //--------------------------------------------------------------------------
 {
   // log_mapper.debug() << "dsl_decompose_points, dim=" << DIM
@@ -1865,27 +1879,58 @@ void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
         index_point.push_back(point[i]);
         // log_mapper.debug() << point[i] << " ,";
       }
-      size_t slice_res =
-          (size_t)tree_result.runindex(task_name, index_point, index_launch_space, targets[0].kind())[0][1];
-      // log_mapper.debug("--> %ld", slice_res);
-      assert(slice_res < targets.size());
-      // Construct the output slice for Legion.
-      Legion::DomainT<DIM, Legion::coord_t> slice;
-      slice.bounds.lo = point;
-      slice.bounds.hi = point;
-      slice.sparsity = point_space.sparsity;
-      if (!slice.dense())
+      if (control_replicated)
       {
-        slice = slice.tighten();
+        // printf("Control replicated\n");
+        size_t slice_res =
+            (size_t)tree_result.runindex(task_name, index_point, index_launch_space, targets_local[0].kind())[0][1];
+        // log_mapper.debug("--> %ld", slice_res);
+        assert(slice_res < targets_local.size());
+        // Construct the output slice for Legion.
+        Legion::DomainT<DIM, Legion::coord_t> slice;
+        slice.bounds.lo = point;
+        slice.bounds.hi = point;
+        slice.sparsity = point_space.sparsity;
+        if (!slice.dense())
+        {
+          slice = slice.tighten();
+        }
+        if (slice.volume() > 0)
+        {
+          TaskSlice ts;
+          ts.domain = slice;
+          ts.proc = targets_local[slice_res];
+          ts.recurse = recurse;
+          ts.stealable = stealable;
+          slices.push_back(ts);
+        }
       }
-      if (slice.volume() > 0)
+      else
       {
-        TaskSlice ts;
-        ts.domain = slice;
-        ts.proc = targets[slice_res];
-        ts.recurse = recurse;
-        ts.stealable = stealable;
-        slices.push_back(ts);
+        // printf("Not control-replicated");
+        std::vector<int> node_proc = tree_result.runindex(task_name, index_point, index_launch_space, targets_local[0].kind())[0];
+        int node_id = node_proc[0];
+        int proc_id = node_proc[1];
+        assert(node_id < targets_all.size());
+        assert(proc_id < targets_all[node_id].size());
+        // Construct the output slice for Legion.
+        Legion::DomainT<DIM, Legion::coord_t> slice;
+        slice.bounds.lo = point;
+        slice.bounds.hi = point;
+        slice.sparsity = point_space.sparsity;
+        if (!slice.dense())
+        {
+          slice = slice.tighten();
+        }
+        if (slice.volume() > 0)
+        {
+          TaskSlice ts;
+          ts.domain = slice;
+          ts.proc = targets_all[node_id][proc_id];
+          ts.recurse = recurse;
+          ts.stealable = stealable;
+          slices.push_back(ts);
+        }
       }
     }
   }
@@ -1893,6 +1938,7 @@ void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
 
 void NSMapper::dsl_slice_task(const Task &task,
                               const std::vector<Processor> &local,
+                              const std::vector<std::vector<Processor>> &all,
                               const SliceTaskInput &input,
                               SliceTaskOutput &output)
 //--------------------------------------------------------------------------
@@ -1900,6 +1946,7 @@ void NSMapper::dsl_slice_task(const Task &task,
   std::string task_name = task.get_task_name();
   std::vector<int> launch_space;
   Legion::Domain task_index_domain = task.index_domain;
+  bool control_replicated = task.get_parent_task()->get_total_shards() > 1;
   switch (task_index_domain.get_dim())
   {
 #define DIMFUNC(DIM)                                                 \
@@ -1920,13 +1967,14 @@ void NSMapper::dsl_slice_task(const Task &task,
 
   switch (input.domain.get_dim())
   {
-#define BLOCK(DIM)                                                                            \
-  case DIM:                                                                                   \
-  {                                                                                           \
-    DomainT<DIM, coord_t> partial_point_space = input.domain;                                 \
-    dsl_decompose_points<DIM>(launch_space, partial_point_space, local,                       \
-                              false /*recurse*/, stealing_enabled, output.slices, task_name); \
-    break;                                                                                    \
+#define BLOCK(DIM)                                                                \
+  case DIM:                                                                       \
+  {                                                                               \
+    DomainT<DIM, coord_t> partial_point_space = input.domain;                     \
+    dsl_decompose_points<DIM>(launch_space, partial_point_space, local, all,      \
+                              false /*recurse*/, stealing_enabled, output.slices, \
+                              task_name, control_replicated);                     \
+    break;                                                                        \
   }
     LEGION_FOREACH_N(BLOCK)
 #undef BLOCK
@@ -1956,37 +2004,37 @@ void NSMapper::slice_task(const MapperContext ctx,
   case Processor::LOC_PROC:
   {
     // log_mapper.debug("%d: CPU here", target_kind);
-    dsl_slice_task(task, local_cpus, input, output);
+    dsl_slice_task(task, local_cpus, all_cpus, input, output);
     break;
   }
   case Processor::TOC_PROC:
   {
     // log_mapper.debug("%d: GPU here", target_kind);
-    dsl_slice_task(task, local_gpus, input, output);
+    dsl_slice_task(task, local_gpus, all_gpus, input, output);
     break;
   }
   case Processor::IO_PROC:
   {
     // log_mapper.debug("%d: IO here", target_kind);
-    dsl_slice_task(task, local_ios, input, output);
+    dsl_slice_task(task, local_ios, all_ios, input, output);
     break;
   }
   case Processor::PY_PROC:
   {
     // log_mapper.debug("%d: PY here", target_kind);
-    dsl_slice_task(task, local_pys, input, output);
+    dsl_slice_task(task, local_pys, all_pys, input, output);
     break;
   }
   case Processor::PROC_SET:
   {
     // log_mapper.debug("%d: PROC here", target_kind);
-    dsl_slice_task(task, local_procsets, input, output);
+    dsl_slice_task(task, local_procsets, all_procsets, input, output);
     break;
   }
   case Processor::OMP_PROC:
   {
     // log_mapper.debug("%d: OMP here", target_kind);
-    dsl_slice_task(task, local_omps, input, output);
+    dsl_slice_task(task, local_omps, all_omps, input, output);
     break;
   }
   default:
@@ -2020,6 +2068,52 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     query_best_memory_for_proc(this->local_omps[i], Memory::Z_COPY_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::REGDMA_MEM);
+  }
+  all_gpus.resize(total_nodes, std::vector<Processor>{});
+  all_cpus.resize(total_nodes, std::vector<Processor>{});
+  all_ios.resize(total_nodes, std::vector<Processor>{});
+  all_procsets.resize(total_nodes, std::vector<Processor>{});
+  all_omps.resize(total_nodes, std::vector<Processor>{});
+  all_pys.resize(total_nodes, std::vector<Processor>{});
+  Machine::ProcessorQuery all_procs(machine);
+  for (Machine::ProcessorQuery::iterator it = all_procs.begin(); it != all_procs.end(); it++)
+  {
+    AddressSpace node = it->address_space();
+    switch (it->kind())
+    {
+    case Processor::TOC_PROC:
+    {
+      all_gpus[node].push_back(*it);
+      break;
+    }
+    case Processor::LOC_PROC:
+    {
+      all_cpus[node].push_back(*it);
+      break;
+    }
+    case Processor::IO_PROC:
+    {
+      all_ios[node].push_back(*it);
+      break;
+    }
+    case Processor::PY_PROC:
+    {
+      all_pys[node].push_back(*it);
+      break;
+    }
+    case Processor::PROC_SET:
+    {
+      all_procsets[node].push_back(*it);
+      break;
+    }
+    case Processor::OMP_PROC:
+    {
+      all_omps[node].push_back(*it);
+      break;
+    }
+    default: // ignore anything else
+      break;
+    }
   }
 }
 
@@ -2145,6 +2239,7 @@ namespace Legion
                                        const size_t total_shards)
     //--------------------------------------------------------------------------
     {
+      // printf("Sharded\n");
 #ifdef DEBUG_LEGION
       assert(point.get_dim() == full_space.get_dim());
 #endif
