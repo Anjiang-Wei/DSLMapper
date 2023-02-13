@@ -1,4 +1,5 @@
 # DSLMapper
+**DSL Mapper is tested on the `control_replication` branch of Legion.**
 ## Getting Started
 
 ### Downloading and Copying Files
