@@ -75,6 +75,7 @@ STRING              (\042[^\042\n]*\042)
 "RDMEM"             { return T_RDMEM; }
 "ZCMEM"             { return T_ZCMEM; }
 "SOCKMEM"           { return T_SOCKMEM; }
+"REGSOCKMEM"        { return T_REGSOCKMEM; }
 "VIRTUAL"           { return T_VIRTUAL; }
 
 

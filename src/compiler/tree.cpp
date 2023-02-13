@@ -94,6 +94,8 @@ Memory::Kind MyMem2LegionMem(MemoryEnum mymem)
     return Memory::REGDMA_MEM;
   case ZCMEM:
     return Memory::Z_COPY_MEM;
+  case REGSOCKMEM:
+    return Memory::REG_SOCKET_MEM;
   case SOCKMEM:
     return Memory::SOCKET_MEM;
   case ALLMEM:

@@ -283,6 +283,8 @@ std::string memory_kind_to_string(Memory::Kind kind)
     return "ZCMEM";
   case Memory::SOCKET_MEM:
     return "SOCKETMEM";
+  case Memory::REG_SOCKET_MEM:
+    return "REG_SOCKETMEM";
   default:
   {
     assert(false);
@@ -1579,7 +1581,8 @@ void NSMapper::report_profiling(const MapperContext ctx,
   // We should only get profiling responses if we've enabled backpressuring.
   std::string task_name = task.get_task_name();
   assert(NSMapper::backpressure && tree_result.query_max_instance(task_name) > 0);
-  bool is_index_launch = task.is_index_space && task.get_slice_domain().get_volume() > 1;
+  //  bool is_index_launch = task.is_index_space && task.get_slice_domain().get_volume() > 1;
+  bool is_index_launch = task.is_index_space && task.index_domain.get_volume() > 1;
   auto prof = input.profiling_responses.get_measurement<ProfilingMeasurements::OperationStatus>();
   // All our tasks should complete successfully.
   assert(prof->result == Realm::ProfilingMeasurements::OperationStatus::COMPLETED_SUCCESSFULLY);
@@ -1594,7 +1597,7 @@ void NSMapper::report_profiling(const MapperContext ctx,
   {
     if (is_index_launch)
     {
-      if (it->id == std::make_pair(task.get_slice_domain(), task.get_context_index()))
+      if (it->id == std::make_pair(task.index_domain, task.get_context_index()))
       {
         event = it->event;
         inflight.erase(it);
@@ -1660,7 +1663,8 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
       auto task = *it;
       bool schedule = true;
       std::string task_name = task->get_task_name();
-      bool is_index_launch = task->is_index_space && task->get_slice_domain().get_volume() > 1;
+      //bool is_index_launch = task->is_index_space && task->get_slice_domain().get_volume() > 1;
+      bool is_index_launch = task->is_index_space && task->index_domain.get_volume() > 1;
       int max_num = tree_result.query_max_instance(task_name);
       if (max_num > 0)
       {
@@ -1689,7 +1693,7 @@ void NSMapper::select_tasks_to_map(const MapperContext ctx,
           if (is_index_launch)
           {
             InFlightTask a;
-            a.id = std::make_pair(task->get_slice_domain(), task->get_context_index());
+            a.id = std::make_pair(task->index_domain, task->get_context_index());
             // a.id2 = task->get_unique_id();
             a.event = this->runtime->create_mapper_event(ctx);
             a.schedTime = schedTime;

@@ -56,6 +56,7 @@ enum MemoryEnum
   RDMEM,
   ZCMEM,
   SOCKMEM,
+  REGSOCKMEM,
   ALLMEM,
   VIRTUAL,
 };
@@ -67,6 +68,7 @@ const char *MemoryEnumName[] =
         "RDMEM",
         "ZCMEM",
         "SOCKMEM",
+	"REGSOCKMEM",
         "ALLMEM",
         "VIRTUAL",
 };

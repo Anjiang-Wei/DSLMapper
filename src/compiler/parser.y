@@ -16,7 +16,7 @@ void yyerror(const char*);
 %token T_Size T_Split T_Merge T_Swap T_Slice T_Reverse T_Balance_split T_Auto_split T_Greedy_split T_Volume T_Has T_Tuple T_For T_In T_Len T_TaskIPoint T_TaskISpace T_TaskParent T_TaskProcessor T_SingleTaskMap
 %token T_Reverse_Dimension T_Positive_Dimension T_AOS T_SOA T_Compact T_Align T_Exact
 %token T_CPU T_GPU T_IO T_PY T_PROC T_OMP
-%token T_SYSMEM T_FBMEM T_RDMEM T_ZCMEM T_SOCKMEM T_VIRTUAL
+%token T_SYSMEM T_FBMEM T_RDMEM T_ZCMEM T_SOCKMEM T_REGSOCKMEM T_VIRTUAL
 %token T_Int T_Bool T_IPoint T_ISpace T_MSpace T_Def T_Return T_True T_False
 %token T_Task T_Region T_Layout T_IndexTaskMap T_Print T_Instance T_Collect T_ControlReplicate
 %token T_Le T_Ge T_Eq T_Ne
@@ -346,6 +346,7 @@ Mem:
 |   T_RDMEM                 { $$ = new MemNode(RDMEM); }
 |   T_ZCMEM                 { $$ = new MemNode(ZCMEM); }
 |   T_SOCKMEM               { $$ = new MemNode(SOCKMEM); }
+|   T_REGSOCKMEM            { $$ = new MemNode(REGSOCKMEM); }
 |   T_VIRTUAL               { $$ = new MemNode(VIRTUAL); }
 ;
 
