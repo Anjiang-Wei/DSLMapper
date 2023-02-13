@@ -203,7 +203,8 @@ protected:
                               MapTaskOutput &output);
   Memory query_best_memory_for_proc(const Processor &proc,
                                     const Memory::Kind &mem_target_kind);
-  void dsl_slice_task(const Task &task,
+  void dsl_slice_task(const MapperContext &ctx,
+                      const Task &task,
                       const std::vector<Processor> &local_procs,
                       const std::vector<std::vector<Processor>> &all_procs,
                       const SliceTaskInput &input,
@@ -1936,7 +1937,8 @@ void NSMapper::dsl_decompose_points(std::vector<int> &index_launch_space,
   }
 }
 
-void NSMapper::dsl_slice_task(const Task &task,
+void NSMapper::dsl_slice_task(const MapperContext &ctx,
+                              const Task &task,
                               const std::vector<Processor> &local,
                               const std::vector<std::vector<Processor>> &all,
                               const SliceTaskInput &input,
@@ -1946,9 +1948,11 @@ void NSMapper::dsl_slice_task(const Task &task,
   std::string task_name = task.get_task_name();
   std::vector<int> launch_space;
   Legion::Domain task_index_domain = task.index_domain;
-  bool control_replicated = false;
-  // todo: how to detect whether a task is control-replicated on Legion's stable branch
-  // IndexSpace sharding_space = task.get_parent_task()->sharding_space;
+  // not sure whether this could work on stable branch without dynamic control replication
+  // IndexSpace shard_space = runtime->task.get_parent_task()->sharding_space;
+  bool control_replicated; // = task.get_parent_task()->sharding_space.volume() > 1;
+  // todo: decide whether a Task is control-replicated
+  control_replicated = false; // runtime->get_num_shards(ctx, true) > 1;
   switch (task_index_domain.get_dim())
   {
 #define DIMFUNC(DIM)                                                 \
@@ -2006,37 +2010,37 @@ void NSMapper::slice_task(const MapperContext ctx,
   case Processor::LOC_PROC:
   {
     // log_mapper.debug("%d: CPU here", target_kind);
-    dsl_slice_task(task, local_cpus, all_cpus, input, output);
+    dsl_slice_task(ctx, task, local_cpus, all_cpus, input, output);
     break;
   }
   case Processor::TOC_PROC:
   {
     // log_mapper.debug("%d: GPU here", target_kind);
-    dsl_slice_task(task, local_gpus, all_gpus, input, output);
+    dsl_slice_task(ctx, task, local_gpus, all_gpus, input, output);
     break;
   }
   case Processor::IO_PROC:
   {
     // log_mapper.debug("%d: IO here", target_kind);
-    dsl_slice_task(task, local_ios, all_ios, input, output);
+    dsl_slice_task(ctx, task, local_ios, all_ios, input, output);
     break;
   }
   case Processor::PY_PROC:
   {
     // log_mapper.debug("%d: PY here", target_kind);
-    dsl_slice_task(task, local_pys, all_pys, input, output);
+    dsl_slice_task(ctx, task, local_pys, all_pys, input, output);
     break;
   }
   case Processor::PROC_SET:
   {
     // log_mapper.debug("%d: PROC here", target_kind);
-    dsl_slice_task(task, local_procsets, all_procsets, input, output);
+    dsl_slice_task(ctx, task, local_procsets, all_procsets, input, output);
     break;
   }
   case Processor::OMP_PROC:
   {
     // log_mapper.debug("%d: OMP here", target_kind);
-    dsl_slice_task(task, local_omps, all_omps, input, output);
+    dsl_slice_task(ctx, task, local_omps, all_omps, input, output);
     break;
   }
   default:
