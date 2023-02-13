@@ -5,6 +5,20 @@ import re
 # 1e00000000000000 -> SYSTEM_MEM
 charmap = {}
 
+map_replicate = []
+sharding = []
+slicing = []
+map_task = []
+select_source = []
+
+keywords = [
+    "MAP_REPLICATE_TASK for ",
+    "SELECT_SHARDING_FUNCTOR ",
+    "SLICE_TASK for ",
+    "MAP_TASK for ",
+    "SELECT_TASK_SOURCES for ",
+]
+
 placement = {} # taskname --> (proc, mem)
 
 def read_from_file(filename):
@@ -15,6 +29,9 @@ def trim(lines):
     # trim the leading `[0 - 20006fecf8b0]    0.451730 {2}{mapper}:`
     res = []
     for line in lines:
+        if "{mapper}" not in line:
+            # skip customized mapper's log
+            continue
         # delete anything before }:
         trimmed = re.sub(r'.*}:', "", line).strip()
         res.append(trimmed)
@@ -33,7 +50,39 @@ def init(lines):
         if "MAP_TASK" in line:
             break
 
-def map_task(lines):
+def call_start(line):
+    for kw in keywords:
+        if kw in line:
+            return True
+    return False
+
+def group_lines(lines):
+    res = [] # list of groups of lines, each group represents one mapping call (keyword)
+    current_group = []
+    for line in lines:
+        if call_start(line):
+            if len(current_group) > 0:
+                res.append(current_group)
+            current_group = [line]
+        else:
+            if len(current_group) > 0:
+                current_group.append(line)
+    return res
+
+def handle_map_task(groups):
+    for g in groups:
+        taskname = ""
+        proc = ""
+        mem = ""
+        for line in g:
+            line = line.replace("MAP_TASK for ", "")
+            if "(index_point" in line:
+                # MAP_TASK for CorrectGhostOperators(index_point=(2,0,0))<5536>
+                taskname = line.split("(")[0]
+            else:
+                # MAP_TASK for task_6<296>
+                taskname = line.split("<")[0]
+            
     taskname = ""
     proc = ""
     mem = ""
@@ -70,7 +119,8 @@ def map_task(lines):
             proc = charmap[proc_char]
             placement[taskname] = (proc, "UNKNOWN")
         # PhysicalInstance[4000000001000003](memory=1e00000000000004,domain=<125 ...
-        if "PhysicalInstance" and "memory=" in line and skip == False:
+        # Instance[4000000000000005](region=(8,*,8),memory=1e00000000000000,domain=<0,
+        if "Instance" in line and "memory=" in line and skip == False:
             mem_char = re.search(r"memory=(.*),domain", line).group(1)
             mem = charmap[mem_char]
             placement[taskname] = (proc, mem)
@@ -104,10 +154,27 @@ def infer():
     infer_one_kind("LOC_PROC", ["SYSTEM_MEM", "UNKNOWN"])
     infer_one_kind("IO_PROC", ["UNKNOWN"])
 
+def split_groups(groups):
+    for g in groups:
+        if keywords[0] in g[0]:
+            map_replicate.append(g)
+        elif keywords[1] in g[0]:
+            sharding.append(g)
+        elif keywords[2] in g[0]:
+            slicing.append(g)
+        elif keywords[3] in g[0]:
+            map_task.append(g)
+        elif keywords[4] in g[0]:
+            select_source.append(g)
+        else:
+            assert False, g[0]
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    lines = trim(read_from_file(filename))
+    lines = trim(read_from_file(filename)[:1000])
     init(lines)
-    map_task(lines)
-    infer()
+    groups = group_lines(lines)
+    split_groups(groups)
+    print(map_task[:10])
+    # map_task(groups)
+    # infer()
