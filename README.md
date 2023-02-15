@@ -167,11 +167,14 @@ Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
 #### Merge
-The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into one dimension (`dim1` in the returned machine model). Therefore, the returned machine model `model_new` will have one dimension smaller than `model_old`.
+The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into one dimension (`dim1` in the returned machine model) in the new machine model. Therefore, the returned machine model `model_new` will have one dimension smaller than `model_old`.
 ```
 model_new = model_old.merge(dim1, dim2);
 ```
-We can guarantee that `model_new.size[dim1] == model_old.size[dim1] * model_old.size[dim2]`. And `model_new.size` will be a `N-1`-dim tuple if `model_old` is a `N`-dim tuple.
+We can guarantee that:
+-  The machine indexed by `model_new[..., i, ...]` (where `i` is at index `dim1`) is the same as `model_old[..., i / model_old.size[dim2], ..., i % model_old.size[dim2], ...]`, where `i / model_old.size[dim2]` appears at index `dim1` of the `model_old` and `i % model_old.size[dim2]` appears at index `dim2` of `model_old`.
+- `model_new.size[dim1] == model_old.size[dim1] * model_old.size[dim2]`
+- `model_new.size` will be a `N-1`-dim tuple if `model_old` is a `N`-dim tuple
 
 A real example of the `merge` transformation is below, extracted from [solomonik](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/solomonikMM-cuda/mappings). In general, `merge` transformation can return a new machine model with fewer dimensions, which can be useful to index launches with lower dimensions.
 ```
@@ -190,7 +193,33 @@ IndexTaskMap init_cublas block1d;
 ```
 The task `init_cublas` is a 1D index launch. The machine model `m_1d` is obtained by applying the `merge` transformation to the `m_2d` machine model. Then the it does a blockwise distribution. Here we define a function `block_primitive` which is a more general blockwise function that will be useful for later examples. It takes index point `IPoint x`, index space `ISpace y`, and machine model `MSpace z` as input, and also allows users to specify which dimensions of the index launch `int dim1` and which dimension of the machine model `int dim2` to be blockwise mapped. In this case, because both the machine model `m_1d` and the task's index launch (`task.ipoint`, `task.ispace`) are 1D, `dim1` and `dim2` are both set to `0`.
 
+#### Split
+The `split` transformation is a method supported on a machine model, and it takes two integers (`split_dim`, `split_factor`) as the arguments. The `split_dim` of the original machine model will be splitted into two dimensions `split_dim` (with size `split_factor`) and `split_dim+1`. Therefore, the returned machine model `model_new` will have one dimension bigger than `model_old`. You may think of `split` as a reverse transformation of `merge`.
+```
+model_new = model_old.split(split_dim, split_factor);
+```
+We can guarantee that:
+-  The machine indexed by `model_new[..., i, j, ...]` (where `i`,`j` is at index `split_dim` and `split_dim+1`) is the same as `model_old[..., i + j * split_factor]`
+- `model_new.size[split_dim] * model_new.size[split_dim+1] == model_old.size[split_dim]`
+- `model_new.size[split_dim].size == split_factor`
+- `model_new.size` will be a `N+1`-dim tuple if `model_old` is a `N`-dim tuple
 
+Due to the more expressivity that [autosplit](#auto_split) provides, `split` transformation is not used quite often in practice.
+
+#### Swap
+The `swap` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The returned machine model `model_new` will swap the two dimensions of `dim1` and `dim2`.
+```
+model_new = model_old.swap(dim1, dim2);
+```
+We can guarantee that:
+-  The machine indexed by `model_new[..., i, ..., j, ...]` (where `i`,`j` is at index `dim1` and `dim2`) is the same as `model_old[..., j, ..., i, ...]`
+- `model_new.size[dim1] == model_old.size[dim2]`
+- `model_new.size[dim2].size == model_old.size[dim1]`
+- `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
+
+Due to the more expressivity that [autosplit](#auto_split) provides, `split` transformation is not used quite often in practice.
+
+#### Auto_split
 ```
 def block_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
     return x[dim1] * z.size[dim2] / y.size[dim1];
