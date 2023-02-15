@@ -166,6 +166,31 @@ The `SLICE_TASK` will report the decision of choosing processors within the node
 Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
+#### Merge
+The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into one dimension (`dim1` in the returned machine model). Therefore, the returned machine model `model_new` will have one dimension smaller than `model_old`.
+```
+model_new = model_old.merge(dim1, dim2);
+```
+We can guarantee that `model_new.size[dim1] == model_old.size[dim1] * model_old.size[dim2]`. And `model_new.size` will be a `N-1`-dim tuple if `model_old` is a `N`-dim tuple.
+
+A real example of the `merge` transformation is below, extracted from [solomonik](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/solomonikMM-cuda/mappings). In general, `merge` transformation can return a new machine model with fewer dimensions, which can be useful to index launches with lower dimensions.
+```
+m_2d = Machine(GPU); # nodes * processors
+m_1d = m_2d.merge(0, 1);
+
+def block_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
+    return x[dim1] * z.size[dim2] / y.size[dim1];
+}
+
+def block1d(Task task) {
+    return m_1d[block_primitive(task.ipoint, task.ispace, m_1d, 0, 0)];
+}
+
+IndexTaskMap init_cublas block1d;
+```
+The task `init_cublas` is a 1D index launch. The machine model `m_1d` is obtained by applying the `merge` transformation to the `m_2d` machine model. Then the it does a blockwise distribution. Here we define a function `block_primitive` which is a more general blockwise function that will be useful for later examples. It takes index point `IPoint x`, index space `ISpace y`, and machine model `MSpace z` as input, and also allows users to specify which dimensions of the index launch `int dim1` and which dimension of the machine model `int dim2` to be blockwise mapped. In this case, because both the machine model `m_1d` and the task's index launch (`task.ipoint`, `task.ispace`) are 1D, `dim1` and `dim2` are both set to `0`.
+
+
 ```
 def block_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
     return x[dim1] * z.size[dim2] / y.size[dim1];
