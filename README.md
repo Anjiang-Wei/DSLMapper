@@ -172,7 +172,7 @@ The `merge` transformation is a method supported on a machine model, and it take
 model_new = model_old.merge(dim1, dim2);
 ```
 We can guarantee that:
--  The machine indexed by `model_new[..., i, ...]` (where `i` is at index `dim1`) is the same as `model_old[..., i / model_old.size[dim2], ..., i % model_old.size[dim2], ...]`, where `i / model_old.size[dim2]` appears at index `dim1` of the `model_old` and `i % model_old.size[dim2]` appears at index `dim2` of `model_old`.
+-  The processor indexed by `model_new[..., i, ...]` (where `i` is at index `dim1`) is the same as `model_old[..., i / model_old.size[dim2], ..., i % model_old.size[dim2], ...]`, where `i / model_old.size[dim2]` appears at index `dim1` of the `model_old` and `i % model_old.size[dim2]` appears at index `dim2` of `model_old`.
 - `model_new.size[dim1] == model_old.size[dim1] * model_old.size[dim2]`
 - `model_new.size` will be a `N-1`-dim tuple if `model_old` is a `N`-dim tuple
 
@@ -199,7 +199,7 @@ The `split` transformation is a method supported on a machine model, and it take
 model_new = model_old.split(split_dim, split_factor);
 ```
 We can guarantee that:
--  The machine indexed by `model_new[..., i, j, ...]` (where `i`,`j` is at index `split_dim` and `split_dim+1`) is the same as `model_old[..., i + j * split_factor]`
+-  The processor indexed by `model_new[..., i, j, ...]` (where `i`,`j` is at index `split_dim` and `split_dim+1`) is the same as `model_old[..., i + j * split_factor]`
 - `model_new.size[split_dim] * model_new.size[split_dim+1] == model_old.size[split_dim]`
 - `model_new.size[split_dim].size == split_factor`
 - `model_new.size` will be a `N+1`-dim tuple if `model_old` is a `N`-dim tuple
@@ -212,7 +212,7 @@ The `swap` transformation is a method supported on a machine model, and it takes
 model_new = model_old.swap(dim1, dim2);
 ```
 We can guarantee that:
--  The machine indexed by `model_new[..., i, ..., j, ...]` (where `i`,`j` is at index `dim1` and `dim2`) is the same as `model_old[..., j, ..., i, ...]`
+-  The processor indexed by `model_new[..., i, ..., j, ...]` (where `i`,`j` is at index `dim1` and `dim2`) is the same as `model_old[..., j, ..., i, ...]`
 - `model_new.size[dim1] == model_old.size[dim2]`
 - `model_new.size[dim2].size == model_old.size[dim1]`
 - `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
