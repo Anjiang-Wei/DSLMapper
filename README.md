@@ -1,5 +1,5 @@
 # DSLMapper
-**DSL Mapper is tested on the `control_replication` branch of Legion.**
+**DSL Mapper is tested on the [`control_replication` branch](https://github.com/StanfordLegion/legion/tree/control_replication) of [Legion](https://legion.stanford.edu/).**
 
 ## Content Overview
 
@@ -235,7 +235,7 @@ model_new = model_old.split(split_dim, split_factor);
 We can guarantee that:
 -  The processor indexed by `model_new[..., i, j, ...]` (where `i`,`j` is at index `split_dim` and `split_dim+1`) is the same as `model_old[..., i + j * split_factor]`
 - `model_new.size[split_dim] * model_new.size[split_dim+1] == model_old.size[split_dim]`
-- `model_new.size[split_dim].size == split_factor`
+- `model_new.size[split_dim] == split_factor`
 - `model_new.size` will be a `N+1`-dim tuple if `model_old` is a `N`-dim tuple
 
 Due to the more expressivity that [autosplit](#auto_split) provides, `split` transformation is not used quite often in practice.
@@ -248,10 +248,21 @@ model_new = model_old.swap(dim1, dim2);
 We can guarantee that:
 -  The processor indexed by `model_new[..., i, ..., j, ...]` (where `i`,`j` is at index `dim1` and `dim2`) is the same as `model_old[..., j, ..., i, ...]`
 - `model_new.size[dim1] == model_old.size[dim2]`
-- `model_new.size[dim2].size == model_old.size[dim1]`
+- `model_new.size[dim2] == model_old.size[dim1]`
 - `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
 
-Due to the more expressivity that [autosplit](#auto_split) provides, `split` transformation is not used quite often in practice.
+`swap` could be useful when the default ordering of `split` transformation is not what you expect. `swap` transformation is not used quite often in practice.
+
+#### Slice
+The `slice` transformation is a method supported on a machine model, and it takes three integers (`dim`, `low`, `high`) as the arguments. The returned machine model `model_new` will  be a machine model whose `dim` dimension only contains a subset of processors that ranges from `low` to `high` (both ends included), with other dimensions the same as `model_old`.
+```
+model_new = model_old.slice(dim, low, high);
+```
+We can guarantee that:
+-  The processor indexed by `model_new[..., i, ...]` (where `i` is at index `dim`) is the same as `model_old[..., i + low, ...]`
+- `model_new.size[dim] == high - low + 1`
+- `model_new.size[other_dim] == model_old.size[other_dim]` (`other_dim` not equal to `dim`)
+- `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
 
 #### Auto_split
 ```
