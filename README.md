@@ -1,5 +1,39 @@
 # DSLMapper
 **DSL Mapper is tested on the `control_replication` branch of Legion.**
+
+## Content Overview
+
+[Getting Started](#getting-started)
+
+[Task Placement](#task-placement)
+
+[Region Placement](#region-placement)
+
+[Layout Constraint](#layout-constraint)
+
+[Backpressure](#backpressure)
+
+[Memory Collection](#memory-collection)
+
+[Index Task Launch Placement (Sharding and Slicing)](#index-task-launch-placement)
+
+[Machine Model Transformation](#machine-model-transformation)
+
+- [merge](#merge)
+- [split](#split)
+- [swap](#swap)
+- [auto_split](#auto_split)
+
+[Single Task Launch Placement](#single-task-launch-placement)
+
+[Full Examples](#full-examples)
+
+[Command Line Options](#command-line-options)
+
+[Debugging Support](#debugging-support)
+
+[Limitations](#limitations)
+
 ## Getting Started
 
 ### Downloading and Copying Files
@@ -16,7 +50,7 @@ The callback will invoke the [registration function](https://github.com/Anjiang-
 User can try the DSL mapper while having an existing customized C++ mapper, and we allow users to choose whether to choose DSL mapper or the original customized C++ mapper from command line (`-dslmapper`). This is function that we change for the [circuit mapper](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_mapper.cc#L453-L522) to support it.
 
 In this way, users can choose whether to use DSL mapper by passing `-dslmapper` in the command line (without recompilation).
-  
+
 Besides, users can turn on [logging wrapper](https://legion.stanford.edu/debugging/#mapper-logging-wrapper) to record the mapping decisions by passing `-wrapper` in the command line.
 
 #### For Regent Program
@@ -88,7 +122,7 @@ Implementation:
 ```
 # Task, Region, Processor Kind, List of Constraints
 Layout * * * SOA C_order; # Other choices: AOS F_order Exact Align==128 Compact
-``` 
+```
 - `SOA` refers to `Struct of Array` while `AOS` refers to `Array of Struct`. It is translated to `OrderingConstraint` in Legion.
 - `C_order` and `F_order` are two different orderings. It is translated to `OrderingConstraint` in Legion.
 - `Align` can specify memory alignment, and we support operators including `==`, `<=`, `>=`, `!=`. This corresponds to `AlignmentConstraint` in Legion. `OrderingConstraint` and `AlignmentConstraint` are useful because certain APIs from external libraries (e.g., CuBLAS) may require the data to be in a specific layout or the data to be aligned in memory.
@@ -107,7 +141,7 @@ On each node, only one `task_4` can be mapped at the same time. Only one `task_6
 
 Implementation:
 `select_tasks_to_map`, `map_task`, `map_task_post_function`, `report_profiling`, `get_mapper_sync_model`
- 
+
 The [backpressure example](https://github.com/StanfordLegion/legion/blob/stable/examples/mapper_backpressure/backpressure.cc) in Legion repository has more detailed explanation.
 ### Memory Collection
 To turn on this feature, pass `-tm:untrack_valid_regions` in the command line.
@@ -162,7 +196,7 @@ SLICE_TASK for calculate_new_currents
 The `SLICE_TASK` will report the decision of choosing processors within the node. The task `calculate_new_currents` will use `task.ipoint[0] % mgpu.size[1]` (i.e.,  `task.ipoint[0] % 4` in this case) so that within each node, each index point will be placed on a different GPU processor.
 
 **Note**: if running multiple Legion runtimes per node, i.e., multiple ranks per node, then `mcpu.size[0]`, `mgpu.size[0]` becomes the number of ranks, and `mcpu.size[1]`, `mgpu.size[1]` becomes the number of processors within that rank.
- 
+
 Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
@@ -244,6 +278,7 @@ Explanation: To be done.
 
 Implementation:
   `MSpace.cc`
+
 ### Single Task Launch Placement
 ```
 m_2d = Machine(GPU); # nodes * processors
@@ -253,7 +288,7 @@ def same_point(Task task) {
 SingleTaskMap task_4 same_point;
 ```
 For tasks that are not index launch, users can also specify where to place tasks.
-  
+
 Typically, the default mapper will use some heuristic depending on the depth of the task (`task.get_depth()` in `default_policy_select_initial_processor`): round-robin *local* processors (within the same node) for top-level (0-level) tasks, round-robin all processors for 1-level tasks (beyond the same node) if not tagged with `SAME_ADDRESS_SPACE`, round-robin local processors (within the same node) of the same kind for 2-level task or deeper tasks. Different applications may want different strategies to get better data locality, and users can customize it with DSL mapper.
 
 The above example code specifies that `task_4` will be placed on the same processor as its parent task (originating processsor). `task.parent` is another `Task` object, and `task.parent.processor(m_2d).processor(m_2d)` will return a tuple representing the position with respect to the machine model `m_2d`, e.g., (1, 1) means that `task_4`'s parent is placed on the second node's second GPU. `*` is used here to turn `(1, 1)` into `1, 1` with which we can use to index the `m_2d` again so that we place `task_4` on exactly the same processor as its parent. 
