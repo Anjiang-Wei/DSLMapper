@@ -347,7 +347,7 @@ To express the mapping more easily, we need `m_4d.auto_split(3, task.ispace / m_
 
 It's not hard to intuitively understand the resulting 6D machine model -- the first 3 dimensions correspond to node dimension, and the last 3 dimensions correspond to the processor dimension. For each point in the launching domain, we choose nodes in a blockwise way while we choose processors in a cyclic way. The way to specify this is to compute the `upper` 3D tuple and `lower` 3D tuple respectively with`tuple` construction, user-defined functions (`block_primitive` and `cyclic_primitive`). The syntax (`tuple`, `for`) is similar to [Python's list comprehension](https://python101.pythonlibrary.org/chapter6_comprehensions.html#list-comprehensions)
 
-Finally, we can use `*` operator to turn tuples into integers for indexing the machine model to pick a specific processor in this way `m_6d[*upper, *lower]`.
+Finally, we can use `*` operator to turn a tuple of integers into integers (e.g., unwrapping `(1,2,1)` into `1,2,1`) for indexing the machine model to pick a specific processor via `m_6d[*upper, *lower]`.
 
 Implementation:
   `MSpace.cc`
