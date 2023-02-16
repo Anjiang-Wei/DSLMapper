@@ -305,9 +305,10 @@ Suppose `vec` is a 3D tuple: `vec=(4,2,4)` and we want to split `model_old`'s `d
 
 Generally, given a N-dim tuple $vec=(L_1, L_2, ..., L_N)$,  `auto_split` aims to automatically split the `model_old`'s `dim` dimension of size  $O$ into a N-dim tuple $O_1, O_2, ..., O_N$ satifying the following property:
 - $O_1 * O_2 * ... * O_N = O$
-- Define  $W_i = L_i / O_i$. $\Sigma_{i \neq j} (W_i * W_j)$ is minimized
+- Define  $W_i = \frac{L_i}{O_i}$. We guarantee that $\Sigma_{i \neq j} (W_i * W_j)$ is minimized
 
-It can be proven that the minimum is achieved when $W_i$s are as close to each other as possible. In the above example, $(L_1,L_2,L_3)=(4,2,4)$, we split $O=4$ into $(O_1,O_2,O_3)=(2,1,2)$ such that $(W_1,W_2,W_3)=(L_1/O_1, L_2/O_2, L_3/O_3) = (2,2,2)$ are equal to each other.
+
+It can be proven that the minimum is achieved when $W_i$ are as close to each other as possible. In the above example, $(L_1,L_2,L_3)=(4,2,4)$, we split $O=4$ into $(O_1,O_2,O_3)=(2,1,2)$ such that $(W_1,W_2,W_3)=(\frac{L_1}{O_1}, \frac{L_2}{O_2}, \frac{L_3}{O_3}) = (2,2,2)$ are equal to each other.
 
 This transformation primitive is quite useful in practice. If $dim$ represents the node dimension (i.e., $O$ is the number of nodes), and $vec$ is the task's index launch  domain, and `auto_split` can minimize inter-node communication assuming stencil computation pattern.
 
