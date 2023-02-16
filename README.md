@@ -22,6 +22,9 @@
 - [merge](#merge)
 - [split](#split)
 - [swap](#swap)
+- [slice](#slice)
+- [reverse](#reverse)
+- [balance_split](#balance_split)
 - [auto_split](#auto_split)
 
 [Single Task Launch Placement](#single-task-launch-placement)
@@ -263,6 +266,34 @@ We can guarantee that:
 - `model_new.size[dim] == high - low + 1`
 - `model_new.size[other_dim] == model_old.size[other_dim]` (`other_dim` not equal to `dim`)
 - `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
+
+#### Reverse
+The `reverse` transformation is a method supported on a machine model, and it takes one integers (`dim`) as the argument. The returned machine model `model_new` will  be a machine model whose `dim` dimension's index will be reversed.
+```
+model_new = model_old.reverse(dim);
+```
+We can guarantee that:
+-  The processor indexed by `model_new[..., i, ...]` (where `i` is at index `dim`) is the same as `model_old[..., model_old.size[dim] - 1 - i, ...]`
+- `model_new.size[any_dim] == model_old.size[any_dim]` the machine model's size does not change
+- `model_new.size` will be a `N`-dim tuple if `model_old` is a `N`-dim tuple
+
+We have not found a real use case for `reverse` so far. It could be useful when the processors are not exactly the same so that the order within the dimension would make a difference.
+
+
+#### Balance_split
+The `balance_split` transformation is a method supported on a machine model, and it takes two integers (`split_dim`, `num_dim`) as the arguments. The `split_dim` of the original machine model will be split into `num_dim` dimensions (i.e., splitting the original size of dimension`split_dim` into `split_dim`, `split_dim+1`, `split_dim+2` if `num_dim=3`). Therefore, the returned machine model `model_new` will have `num_dim-1` more dimensions  than `model_old`. The splitting is done in a "balanced"  way so that split dimensions' sizes are close to each other (as square/cubic as possible).
+```
+model_new = model_old.balance_split(split_dim, num_dim);
+```
+Let's see an example to understand how `balance_split` works.
+Suppose `model_old.size[split_dim]=6`, applying `model_old.split(split_dim, 2)` will return a `model_new` satisfying `model_new.size[split_dim]=3` and `model_new.size[split_dim+1]=2`. There are two ways to factor 6:  $6=3 \times 2=6 \times 1$, and obviously the $6=3 \times 2$ is a more balanced way.
+
+We also specify that the ordering in terms of the sizes of the newly created dimensions (`split_dim`, `split_dim+1`, `split_dim+2`) to be decreasing. Therefore, we will split 6 into 3X2 rather than 2X3. 
+
+We can guarantee that:
+- `model_new.size` will be a `N+num_dim-1`-dim tuple if `model_old` is a `N`-dim tuple
+
+Due to the more expressivity that [autosplit](#auto_split) provides, `balance_split` transformation is not used quite often in practice. We only support `num_dim` to be `2` or `3` for now.
 
 #### Auto_split
 ```
