@@ -296,6 +296,27 @@ We can guarantee that:
 Due to the more expressivity that [autosplit](#auto_split) provides, `balance_split` transformation is not used quite often in practice. We only support `num_dim` to be `2` or `3` for now.
 
 #### Auto_split
+
+The `auto_split` transformation is a method supported on a machine model, and it takes an integer `dim` and a tuple of integers `vec` as the arguments. The `dim` of the original machine model will be split into more dimensions, which will be the same number of dimension of the tuple `vec`.
+```
+model_new = model_old.auto_split(dim, vec);
+```
+Suppose `vec` is a 3D tuple: `vec=(4,2,4)` and we want to split `model_old`'s `dim` dimension, for instance, `model_old.size[dim]=4`. The balanced way to split 32 into 3 numbers with respect to `(4,2,4)` is `4=2*1*2`. As a result, `model_new[dim]=2, model_new[dim+1]=1, model_new[dim+2]=2`.
+
+Generally, given a N-dim tuple $vec=(L_1, L_2, ..., L_N)$,  `auto_split` aims to automatically split the `model_old`'s `dim` dimension of size  $O$ into a N-dim tuple $O_1, O_2, ..., O_N$ satifying the following property:
+- $O_1 * O_2 * ... * O_N = O$
+- Define  $W_i = L_i / O_i$. $\Sigma_{i \neq j} (W_i * W_j)$ is minimized
+
+It can be proven that the minimum is achieved when $W_i$s are as close to each other as possible. In the above example, $(L_1,L_2,L_3)=(4,2,4)$, we split $O=4$ into $(O_1,O_2,O_3)=(2,1,2)$ such that $(W_1,W_2,W_3)=(L_1/O_1, L_2/O_2, L_3/O_3) = (2,2,2)$ are equal to each other.
+
+This transformation primitive is quite useful in practice. If $dim$ represents the node dimension (i.e., $O$ is the number of nodes), and $vec$ is the task's index launch  domain, and `auto_split` can minimize inter-node communication assuming stencil computation pattern.
+
+We can guarantee that:
+
+- `model_new.size` will be a `N+vec.len`-dim tuple if `model_old` is a `N`-dim tuple
+
+Below is a real use case for `auto_split`, extracted from [solomonik](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/solomonikMM-cuda/mappings)
+
 ```
 def block_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
     return x[dim1] * z.size[dim2] / y.size[dim1];
@@ -305,6 +326,7 @@ def cyclic_primitive(IPoint x, ISpace y, MSpace z, int dim1, int dim2) {
     return x[dim1] % z.size[dim2];
 }
 
+m_2d = Machine(GPU); # nodes * processors
 def auto3d(Task task) {
     m_4d = m_2d.auto_split(0, task.ispace); # split the original 0 dim into 0,1,2 dim
     # subspace: task.ispace / m_4d[:-1]
@@ -316,7 +338,15 @@ def auto3d(Task task) {
 IndexTaskMap task_5 auto3d; # task_5 launch space: (rpoc, rpoc, c)
 ```
 
-Explanation: To be done.
+The first transformation is done via `m_2d.auto_split(0, task.ispace)` where `0` stands for the node dimension of the original machine model, and`task.ispace` is a tuple of integers representing the launch domain. The launch domain is 3D, so the original dimension 0 will be split into 3 dimensions, so the resulting machine model is `m_4d`, and its last dimension (dimension 3) corresponds to `m_2d`'s last dimension (dimension 1, representing processors per node).
+
+Imagine that the launching domains will be mapped onto the nodes, and each node will get a subset of the index points. The tuple which represents each nodes' workload can be computed as another tuple: `task.ispace / m_4d[:-1]` . Here we use `m_4d[:-1]` to get the first dimensions of a machine model as a tuple of integers, and we directly support `/` operator for two tuple of integers.
+
+To express the mapping more easily, we need `m_4d.auto_split(3, task.ispace / m_4d[:-1])` to obtain a 6D machine model. Here we split the last dimension (`3`) of `m_4d`, with respect to the workload tuple.
+
+It's not hard to intuitively understand the resulting 6D machine model -- the first 3 dimensions correspond to node dimension, and the last 3 dimensions correspond to the processor dimension. For each point in the launching domain, we choose nodes in a blockwise way while we choose processors in a cyclic way. The way to specify this is to compute the `upper` 3D tuple and `lower` 3D tuple respectively with`tuple` construction, user-defined functions (`block_primitive` and `cyclic_primitive`). The syntax (`tuple`, `for`) is similar to [Python's list comprehension](https://python101.pythonlibrary.org/chapter6_comprehensions.html#list-comprehensions)
+
+Finally, we can use `*` operator to turn tuples into integers for indexing the machine model to pick a specific processor in this way `m_6d[*upper, *lower]`.
 
 Implementation:
   `MSpace.cc`
