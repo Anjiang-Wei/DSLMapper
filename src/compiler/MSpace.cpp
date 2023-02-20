@@ -144,20 +144,23 @@ public:
 
   std::vector<int> trans(const std::vector<int> &old_point)
   {
-    // turn the point back to original machine model via splitting old_point[dim1] by dim2_volume
+    // if dim1 < dim2, then the two dimensions will be merged into dim1 in the transformed point's index
+    // if dim1 > dim2, then the two dimensions are merged into (dim1 - 1) in the transformed point's index
+    int merge_dim = dim1 < dim2 ? dim1 : (dim1 - 1);
+    // turn the point back to original machine model via splitting old_point[merge_dim] by dim2_volume
     std::vector<int> result;
     for (size_t i = 0; i < old_point.size(); i++)
     {
-      if ((int)i == dim1)
+      if ((int)i == merge_dim)
       {
-        result.push_back(old_point[dim1] / dim2_volume);
+        result.push_back(old_point[merge_dim] / dim2_volume);
       }
       else
       {
         result.push_back(old_point[i]);
       }
     }
-    result.insert(result.begin() + dim2, old_point[dim1] % dim2_volume);
+    result.insert(result.begin() + dim2, old_point[merge_dim] % dim2_volume);
     if (result.size() != old_point.size() + 1)
     {
       std::cout << "MergeMSpace trans fails" << std::endl;
