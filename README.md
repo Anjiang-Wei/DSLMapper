@@ -204,13 +204,14 @@ Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
 ### Machine Model Transformation
 #### Merge
-The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into one dimension (`dim1` in the returned machine model) in the new machine model. Therefore, the returned machine model `model_new` will have one dimension smaller than `model_old`.
+The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into the `dim1` dimension. More specifically, if `dim1 < dim2`, then the new merged dimension will be `dim1`; if `dim1 > dim2`, then the new merged dimension will be `dim1-1`. The returned machine model `model_new` will have one dimension smaller than `model_old`.
 ```
 model_new = model_old.merge(dim1, dim2);
 ```
 We can guarantee that:
--  The processor indexed by `model_new[..., i, ...]` (where `i` is at index `dim1`) is the same as `model_old[..., i / model_old.size[dim2], ..., i % model_old.size[dim2], ...]`, where `i / model_old.size[dim2]` appears at index `dim1` of the `model_old` and `i % model_old.size[dim2]` appears at index `dim2` of `model_old`.
-- `model_new.size[dim1] == model_old.size[dim1] * model_old.size[dim2]`
+- The merged dimension in the new machine model `merge_dim = dim1 < dim2 ? dim1 : (dim1 - 1)`
+- We specify that `dim2` is the faster changing dimension during merging. More specifically, suppose the `model_old.size[dim2]` is `dim2_volume`. Then the processsor indexed by `model_new[..., i, ...]` where `i` is at index `merge_dim` refers to the same processor as indexing `model_old` with `i / dim2_volume` in `dim1` and `i % dim2_volume` in `dim2`.
+- `model_new.size[merge_dim] == model_old.size[dim1] * model_old.size[dim2]`
 - `model_new.size` will be a `N-1`-dim tuple if `model_old` is a `N`-dim tuple
 
 A real example of the `merge` transformation is below, extracted from [solomonik](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/solomonikMM-cuda/mappings). In general, `merge` transformation can return a new machine model with fewer dimensions, which can be useful to index launches with lower dimensions.
