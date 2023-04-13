@@ -73,8 +73,8 @@ The original compilation flow needs to be customized in order to integrate DSL m
 
 1) `-mapping mapping_file`: specify the mapping policy file (using the DSL). Updating the policy file does not need recompilation.
 2) `-wrapper`: turn on [mapper logging wrapper](https://github.com/Anjiang-Wei/DSLMapper#mapper-logging-wrapper), for debugging purposes
-3) `-tm:enable_backpressure`: turn on [backpressure](https://github.com/Anjiang-Wei/DSLMapper#backpressure)
-4) `-tm:untrack_valid_regions`: turn on [memory collection](https://github.com/Anjiang-Wei/DSLMapper#memory-collection)
+3) `-tm:disable_backpressure`: disable [backpressure](https://github.com/Anjiang-Wei/DSLMapper#backpressure)
+4) `-tm:disable_untrack_valid_regions`: disable [memory collection](https://github.com/Anjiang-Wei/DSLMapper#memory-collection)
 5) `-tm:use_semantic_name`: use semantic name instead of 0-based index to specify regions, explained in [region placement](https://github.com/Anjiang-Wei/DSLMapper#region-placement)
 6) `-tm:select_source_by_bandwidth`: select sources for copies by bandwidth; the alternative option is to sort by the size of intersecting area. Refer to the implementation of the function `default_policy_select_sources` for details.
 
