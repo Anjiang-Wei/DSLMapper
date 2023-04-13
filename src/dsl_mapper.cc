@@ -2122,9 +2122,9 @@ void NSMapper::create_mappers(Machine machine, Runtime *runtime, const std::set<
   // log_mapper.debug("Inside create_mappers local_procs.size() = %ld", local_procs.size());
   bool use_logging_wrapper = false;
   auto args = Runtime::get_input_args();
-  NSMapper::backpressure = false;
+  NSMapper::backpressure = true;
   NSMapper::use_semantic_name = false;
-  NSMapper::untrackValidRegions = false;
+  NSMapper::untrackValidRegions = true;
   NSMapper::select_source_by_bandwidth = false;
   for (auto idx = 0; idx < args.argc; ++idx)
   {
@@ -2133,11 +2133,11 @@ void NSMapper::create_mappers(Machine machine, Runtime *runtime, const std::set<
       use_logging_wrapper = true;
     }
     // todo: in the final version, change tm to be the formal name of DSLMapper
-    if (strcmp(args.argv[idx], "-tm:enable_backpressure") == 0)
+    if (strcmp(args.argv[idx], "-tm:disable_backpressure") == 0)
     {
       NSMapper::backpressure = true;
     }
-    if (strcmp(args.argv[idx], "-tm:untrack_valid_regions") == 0)
+    if (strcmp(args.argv[idx], "-tm:disable_untrack_valid_regions") == 0)
     {
       NSMapper::untrackValidRegions = true;
     }

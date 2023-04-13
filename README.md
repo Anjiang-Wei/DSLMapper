@@ -75,8 +75,8 @@ The original compilation flow needs to be customized in order to integrate DSL m
 2) `-wrapper`: turn on [mapper logging wrapper](https://github.com/Anjiang-Wei/DSLMapper#mapper-logging-wrapper), for debugging purposes
 3) `-tm:disable_backpressure`: disable [backpressure](https://github.com/Anjiang-Wei/DSLMapper#backpressure)
 4) `-tm:disable_untrack_valid_regions`: disable [memory collection](https://github.com/Anjiang-Wei/DSLMapper#memory-collection)
-5) `-tm:use_semantic_name`: use semantic name instead of 0-based index to specify regions, explained in [region placement](https://github.com/Anjiang-Wei/DSLMapper#region-placement)
-6) `-tm:select_source_by_bandwidth`: select sources for copies by bandwidth; the alternative option is to sort by the size of intersecting area. Refer to the implementation of the function `default_policy_select_sources` for details.
+5) `-tm:use_semantic_name`: use semantic name to specify regions, explained in [region placement](https://github.com/Anjiang-Wei/DSLMapper#region-placement); the default option is to use 0-based index
+6) `-tm:select_source_by_bandwidth`: select sources for copies by bandwidth; the default option is to sort by the size of intersecting area. Refer to the implementation of the function `default_policy_select_sources` for details.
 
 ## Language Design
 Every statement in the program should end with `;` (like `C`)
