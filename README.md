@@ -5,6 +5,8 @@
 
 [Getting Started](#getting-started)
 
+[Command Line Options](#command-line-options)
+
 [Task Placement](#task-placement)
 
 [Region Placement](#region-placement)
@@ -31,11 +33,7 @@
 
 [Full Examples](#full-examples)
 
-[Command Line Options](#command-line-options)
-
 [Debugging Support](#debugging-support)
-
-[Limitations](#limitations)
 
 ## Getting Started
 
@@ -62,6 +60,14 @@ The original compilation flow needs to be customized in order to integrate DSL m
   2) Make sure the right mapper registration function is used. Here is the circuit example's [compilation script](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_sparse.rg#L812) and corresponding [registration function](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_mapper.cc#L548)
 
 **Note**, using Legion's namespace and having user-defined typedef together could sometimes cause compilation problems. In DSL Mapper, we use `using namespace Legion; using namespace Legion::Mapping;` If it happens to collide with application code's typedef, users can change their code to be more specific about the namespace and the types, e.g., changing `Rect<3>` to `Legion::Rect<3,long long>`
+
+## Command Line Options
+
+1) `-wrapper`: turn on [mapper logging wrapper](https://github.com/Anjiang-Wei/DSLMapper#mapper-logging-wrapper), for debugging purposes
+2) `-tm:enable_backpressure`: turn on [backpressure](https://github.com/Anjiang-Wei/DSLMapper#backpressure)
+3) `-tm:untrack_valid_regions`: turn on [memory collection](https://github.com/Anjiang-Wei/DSLMapper#memory-collection)
+4) `-tm:use_semantic_name`: use semantic name instead of 0-based index to specify regions, explained in [region placement](https://github.com/Anjiang-Wei/DSLMapper#region-placement)
+5) `-tm:select_source_by_bandwidth`: select sources for copies by bandwidth; the alternative option is to sort by the size of intersecting area. Refer to the implementation of the function `default_policy_select_sources` for details.
 
 ## Language Design
 Every statement in the program should end with `;` (like `C`)
@@ -386,12 +392,15 @@ Distributed GEMM Algorithms
 - [Cosma](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/cosma-cuda/mappings)
 - [Johnson](https://github.com/Anjiang-Wei/taco/blob/distal-pldi-2022/build/johnsonMM-cuda/mappings)
 
-## Command Line Options
 
 ## Debugging Support
 
-### Printing
+### Print
+
+Users can write print statement and `{}` in the language. The number of `{}` and the arguments for printing needs to match.
+```
+print("{}, {}, {}", a, b, c);
+```
 
 ### Mapper Logging Wrapper
-
-## Limitations
+Users can inspect the mapping decisions by turning on logging wrapper via command line (`-wrapper`). An example log is [circuit](https://github.com/Anjiang-Wei/DSLMapper/blob/main/tool/circuit.wrapper), and [more logs](https://github.com/Anjiang-Wei/DSLMapper/tree/main/tool) are collected for reference
