@@ -1,6 +1,8 @@
 # DSLMapper
 **DSL Mapper is tested on the [`control_replication` branch](https://github.com/StanfordLegion/legion/tree/control_replication) of [Legion](https://legion.stanford.edu/).**
 
+The resources for learning Legion's C++ mapping interface is on [Legion website](https://legion.stanford.edu/mapper/) and in [Legion manual, Chapter 7](https://legion.stanford.edu/pdfs/legion-manual.pdf)
+
 ## Content Overview
 
 [Presentation](#presentation)
@@ -52,13 +54,13 @@ cp -r DSLMapper/src/dsl_mapper.cc DSLMapper/src/dsl_mapper.h DSLMapper/src/compi
 
 #### For Legion Program
 Register the [callback function](https://github.com/Anjiang-Wei/DSLMapper/blob/224d1e0239714d823d1a9d334a8eb5459f8a3e2d/src/dsl_mapper.cc#L2190) to the Legion runtime.
-The callback will invoke the [function](https://github.com/Anjiang-Wei/DSLMapper/blob/224d1e0239714d823d1a9d334a8eb5459f8a3e2d/src/dsl_mapper.cc#L2120) to create mappers.
+The callback will invoke the [function](https://github.com/Anjiang-Wei/DSLMapper/blob/224d1e0239714d823d1a9d334a8eb5459f8a3e2d/src/dsl_mapper.cc#L2120) to create mappers (i.e., replacing the default mapper).
+
+Besides, users can turn on [logging wrapper](https://legion.stanford.edu/debugging/#mapper-logging-wrapper) to record the mapping decisions by passing `-wrapper` in the command line.
 
 User can try the DSL mapper while having an existing customized C++ mapper, and we allow users to choose whether to choose DSL mapper or the original customized C++ mapper from command line (`-dslmapper`). This is function that we change for the [circuit mapper](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_mapper.cc#L453-L522) to support it.
 
 In this way, users can choose whether to use DSL mapper by passing `-dslmapper` in the command line (without recompilation).
-
-Besides, users can turn on [logging wrapper](https://legion.stanford.edu/debugging/#mapper-logging-wrapper) to record the mapping decisions by passing `-wrapper` in the command line.
 
 #### For Regent Program
 The original compilation flow needs to be customized in order to integrate DSL mapper:
