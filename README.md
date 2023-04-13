@@ -51,8 +51,8 @@ cp -r DSLMapper/src/dsl_mapper.cc DSLMapper/src/dsl_mapper.h DSLMapper/src/compi
 ### Mapper Registration
 
 #### For Legion Program
-Register the [callback function](https://github.com/Anjiang-Wei/DSLMapper/blob/main/src/dsl_mapper.cc#L2096) to the Legion runtime.
-The callback will invoke the [registration function](https://github.com/Anjiang-Wei/DSLMapper/blob/main/src/dsl_mapper.cc#L2026)
+Register the [callback function](https://github.com/Anjiang-Wei/DSLMapper/blob/224d1e0239714d823d1a9d334a8eb5459f8a3e2d/src/dsl_mapper.cc#L2190) to the Legion runtime.
+The callback will invoke the [function](https://github.com/Anjiang-Wei/DSLMapper/blob/224d1e0239714d823d1a9d334a8eb5459f8a3e2d/src/dsl_mapper.cc#L2120) to create mappers.
 
 User can try the DSL mapper while having an existing customized C++ mapper, and we allow users to choose whether to choose DSL mapper or the original customized C++ mapper from command line (`-dslmapper`). This is function that we change for the [circuit mapper](https://github.com/Anjiang-Wei/legion/blob/example/language/examples/circuit_mapper.cc#L453-L522) to support it.
 
