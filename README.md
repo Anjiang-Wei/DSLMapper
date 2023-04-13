@@ -3,6 +3,8 @@
 
 ## Content Overview
 
+[Presentation](#presentation)
+
 [Getting Started](#getting-started)
 
 [Command Line Options](#command-line-options)
@@ -34,6 +36,10 @@
 [Full Examples](#full-examples)
 
 [Debugging Support](#debugging-support)
+
+## Presentation
+1) [Slides](https://docs.google.com/presentation/d/1-fC2mVHgLc0nzO--iuB7t0KAdqKDBTsr/edit?usp=sharing&ouid=104017234541721380507&rtpof=true&sd=true) presented at Legion meeting
+2) [Paper](https://drive.google.com/file/d/1m9o0SaHSSMqSPvMED_iDF_B4r9vUlKML/view?usp=share_link)
 
 ## Getting Started
 
