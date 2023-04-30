@@ -22,6 +22,7 @@ The resources for learning Legion's C++ mapping interface is on [Legion website]
 [Memory Collection](#memory-collection)
 
 [Index Task Launch Placement (Sharding and Slicing)](#index-task-launch-placement)
+- [Common pattern](#common-pattern)
 
 [Machine Model Transformation](#machine-model-transformation)
 
@@ -217,6 +218,21 @@ The `SLICE_TASK` will report the decision of choosing processors within the node
 
 Implementation:
 `select_sharding_functor`, `shard`, `slice_task`, `dsl_slice_task`, `dsl_decompose_points`, etc.
+
+#### Common pattern
+```
+def block1d(Task task) {
+    ip = task.ipoint
+    # is = task.ispace
+    return mgpu[ip[0] / mgpu.size[1], ip[0] % mgpu.size[1]];
+}
+
+def hierarchicalblock1d(Task task) {
+    ip = task.ipoint
+    is = task.ispace
+    return mgpu[ip[0] * mgpu.size[0] / is[0], ip[0] % (is[0] / mgpu.size[0])]
+}
+```
 ### Machine Model Transformation
 #### Merge
 The `merge` transformation is a method supported on a machine model, and it takes two integers (`dim1`, `dim2`) as the arguments. The `dim1` and `dim2` dimensions will be merged into the `dim1` dimension. More specifically, if `dim1 < dim2`, then the new merged dimension will be `dim1`; if `dim1 > dim2`, then the new merged dimension will be `dim1-1`. The returned machine model `model_new` will have one dimension smaller than `model_old`.
