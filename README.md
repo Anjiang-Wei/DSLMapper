@@ -232,7 +232,7 @@ def hierarchicalblock1d(Task task) {
     is = task.ispace;
     node_idx = ip[0] * mgpu.size[0] / is[0]; # block over node
     blk_size = is[0] / mgpu.size[0];
-    gpu_ip = is[0] % blk_size; # index within the node-partitioned block for mapping to GPU
+    gpu_ip = ip[0] % blk_size; # index within the node-partitioned block for mapping to GPU
     gpu_idx = gpu_ip * mgpu.size[1] / blk_size; # block over gpu
     return mgpu[node_idx, gpu_idx];
 }
