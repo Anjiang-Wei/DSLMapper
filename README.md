@@ -230,7 +230,7 @@ def block1d(Task task) {
 def hierarchicalblock1d(Task task) {
     ip = task.ipoint;
     is = task.ispace;
-    return mgpu[ip[0] * mgpu.size[0] / is[0], ip[0] % (is[0] / mgpu.size[0])];
+    return mgpu[ip[0] * mgpu.size[0] / is[0], ip[0] % (is[0] / mgpu.size[0]) / mgpu.size[1]];
 }
 ```
 ### Machine Model Transformation
