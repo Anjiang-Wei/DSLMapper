@@ -222,15 +222,15 @@ Implementation:
 #### Common pattern
 ```
 def block1d(Task task) {
-    ip = task.ipoint
-    # is = task.ispace
+    ip = task.ipoint;
+    # is = task.ispace;
     return mgpu[ip[0] / mgpu.size[1], ip[0] % mgpu.size[1]];
 }
 
 def hierarchicalblock1d(Task task) {
-    ip = task.ipoint
-    is = task.ispace
-    return mgpu[ip[0] * mgpu.size[0] / is[0], ip[0] % (is[0] / mgpu.size[0])]
+    ip = task.ipoint;
+    is = task.ispace;
+    return mgpu[ip[0] * mgpu.size[0] / is[0], ip[0] % (is[0] / mgpu.size[0])];
 }
 ```
 ### Machine Model Transformation
