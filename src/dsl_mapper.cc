@@ -1950,7 +1950,8 @@ void NSMapper::dsl_slice_task(const Task &task,
   std::string task_name = task.get_task_name();
   std::vector<int> launch_space;
   Legion::Domain task_index_domain = task.index_domain;
-  bool control_replicated = task.get_parent_task()->get_total_shards() > 1;
+  // bool control_replicated = task.get_parent_task()->get_total_shards() > 1;
+  bool control_replicated = true;
   switch (task_index_domain.get_dim())
   {
 #define DIMFUNC(DIM)                                                 \
