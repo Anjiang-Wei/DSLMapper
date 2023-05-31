@@ -181,6 +181,12 @@ public:
   virtual void select_task_options(const MapperContext ctx,
                                    const Task &task,
                                    TaskOptions &output) override;
+  virtual void select_steal_targets(const MapperContext         ctx,
+                                    const SelectStealingInput&  input,
+                                          SelectStealingOutput& output) override;
+  virtual void permit_steal_request(const MapperContext       ctx,
+                                    const StealRequestInput&  input,
+                                          StealRequestOutput& output) override;
   void dsl_default_remove_cached_task(MapperContext ctx,
                                       VariantID chosen_variant,
                                       unsigned long long task_hash,
@@ -1821,6 +1827,8 @@ void NSMapper::select_task_options(const MapperContext ctx,
   output.initial_proc = dsl_default_policy_select_initial_processor(ctx, task);
   output.inline_task = false;
   output.stealable = stealing_enabled;
+  // -1: no stealing; 1: same node; 0: all nodes
+  // output.stealable = tree_result.query_task_steal(task.get_task_name(), Processor::NO_KIND) != -1;
   // This is the best choice for the default mapper assuming
   // there is locality in the remote mapped tasks
   output.map_locally = map_locally;
@@ -2042,9 +2050,124 @@ void NSMapper::slice_task(const MapperContext ctx,
   }
 }
 
+// Work stealing algorithm
+void NSMapper::select_steal_targets(const MapperContext         ctx,
+                                    const SelectStealingInput&  input,
+                                    SelectStealingOutput& output)
+{
+  // printf("select_steal_targets\n");
+  output.targets.clear();
+  // local_kind defined in default_mapper.h
+  // only support "*" because no task_name info passed in
+  int res = tree_result.query_task_steal("*", this->local_kind);
+  if (res == -1)
+    return;
+  if (res == 1) // same node
+  {
+    switch (this->local_kind)
+    {
+      case Processor::LOC_PROC:
+      {
+        for (auto p : local_cpus)
+        {
+          if (local_proc == p) continue;
+          output.targets.insert(p);
+        }
+        break;
+      }
+      case Processor::TOC_PROC:
+      {
+        for (auto p : local_gpus)
+        {
+          if (local_proc == p) continue;
+          output.targets.insert(p);
+        }
+        break;
+      }
+      case Processor::IO_PROC:
+      {
+        for (auto p : local_ios)
+        {
+          if (local_proc == p) continue;
+          output.targets.insert(p);
+        }
+        break;
+      }
+      case Processor::OMP_PROC:
+      {
+        for (auto p : local_omps)
+        {
+          if (local_proc == p) continue;
+          output.targets.insert(p);
+        }
+        break;
+      }
+    }
+    return;
+  }
+  if (res == 0) // all nodes
+  {
+    switch (this->local_kind)
+    {
+      case Processor::LOC_PROC:
+      {
+        for (auto p : remote_cpus)
+        {
+          output.targets.insert(p);
+        }
+      }
+      case Processor::TOC_PROC:
+      {
+        for (auto p : remote_gpus)
+        {
+          output.targets.insert(p);
+        }
+      }
+      case Processor::IO_PROC:
+      {
+        for (auto p : remote_ios)
+        {
+          output.targets.insert(p);
+        }
+      }
+      case Processor::OMP_PROC:
+      {
+        for (auto p : remote_omps)
+        {
+          output.targets.insert(p);
+        }
+      }
+    }
+    return;
+  }
+  printf("Should never reach here\n");
+  assert(false);
+}
+
+
+void NSMapper::permit_steal_request(const MapperContext       ctx,
+                                            const StealRequestInput&  input,
+                                                  StealRequestOutput& output)
+{
+  // printf("permit_steal_request\n");
+  output.stolen_tasks.clear();
+  // Iterate over stealable tasks
+  for (auto task : input.stealable_tasks)
+  {
+    int res = tree_result.query_task_steal(task->get_task_name(), task->current_proc.kind());
+    if (res != -1 && task->current_proc.kind() == input.thief_proc.kind())
+    {
+      // if task was assigned to a proc of the same kind, then allow stealing
+      output.stolen_tasks.insert(task);
+      // printf("stolen allowed for task %s\n", task->get_task_name());
+    }
+  }
+}
+
 NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const char *mapper_name, bool first)
     : DefaultMapper(rt, machine, local, mapper_name)
 {
+  stealing_enabled = true;
   if (first)
   {
     std::string policy_file = get_policy_file();

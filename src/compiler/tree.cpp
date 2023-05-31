@@ -1560,23 +1560,23 @@ std::vector<Memory::Kind> Tree2Legion::query_memory_list(std::string task_name, 
   return res;
 }
 
-bool Tree2Legion::query_task_steal(std::string task_name, Processor::Kind proc_kind)
+int Tree2Legion::query_task_steal(std::string task_name, Processor::Kind proc_kind)
 {
   // quick test
   if (task_steal.size() == 0)
   {
-    return false;
+    return -1; // -1: no steal
   }
   // task_name exact match first
   if (task_steal.count(task_name) > 0)
   {
     if (task_steal.at(task_name).count(proc_kind) > 0)
     {
-      return true;
+      return task_steal.at(task_name).count(proc_kind) ? 1 : 0; // 1: same node, 0: all node
     }
     if (task_steal.at(task_name).count(Processor::NO_KIND) > 0)
     {
-      return true;
+      return task_steal.at(task_name).count(proc_kind) ? 1 : 0; // 1: same node, 0: all node
     }
   }
   // task_name *
@@ -1584,14 +1584,14 @@ bool Tree2Legion::query_task_steal(std::string task_name, Processor::Kind proc_k
   {
     if (task_steal.at("*").count(proc_kind) > 0)
     {
-      return true;
+      return task_steal.at(task_name).count(proc_kind) ? 1 : 0; // 1: same node, 0: all node
     }
     if (task_steal.at("*").count(Processor::NO_KIND) > 0)
     {
-      return true;
+      return task_steal.at(task_name).count(proc_kind) ? 1 : 0; // 1: same node, 0: all node
     }
   }
-  return false;
+  return -1; // no stealing
 }
 
 ConstraintsNode *Tree2Legion::query_constraint_one_region(const std::string &task_name, const std::string &region_name,

@@ -1345,7 +1345,7 @@ public:
                                     const std::vector<std::string> &region_names,
                                     const Memory::Kind &mem_kind);
   int query_max_instance(std::string task_name);
-  bool query_task_steal(std::string task_name, Processor::Kind proc_kind);
+  int query_task_steal(std::string task_name, Processor::Kind proc_kind);
 };
 
 std::unordered_map<std::string, std::vector<Processor::Kind>> Tree2Legion::task_policies;
