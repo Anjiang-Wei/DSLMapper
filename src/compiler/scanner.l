@@ -37,6 +37,7 @@ STRING              (\042[^\042\n]*\042)
 "IndexTaskMap"      { return T_IndexTaskMap; }
 "SingleTaskMap"     { return T_SingleTaskMap; }
 "ControlReplicate"  { return T_ControlReplicate; }
+"TaskSteal"         { return T_TaskSteal; }
 
 "F_order"           { return T_Positive_Dimension; }
 "C_order"           { return T_Reverse_Dimension; }
@@ -77,6 +78,8 @@ STRING              (\042[^\042\n]*\042)
 "SOCKMEM"           { return T_SOCKMEM; }
 "VIRTUAL"           { return T_VIRTUAL; }
 
+"SAME_NODE"         { return T_SAMENODE; }
+"ANY_NODE"          { return T_ANYNODE; }
 
 "Machine"           { yylval.string = strdup("Machine"); return T_Identifier; }
 

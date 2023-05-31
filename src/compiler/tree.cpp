@@ -504,6 +504,18 @@ Node *ControlReplicateNode::run(std::stack<std::unordered_map<std::string, Node 
   return NULL;
 }
 
+Node *TaskStealNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
+{
+  for (size_t i = 0; i < task_name.size(); i++)
+  {
+    // Tree2Legion::control_replicate.insert(task_name[i]);
+    Processor::Kind proc = MyProc2LegionProc(this->processor_type);
+    std::unordered_map<Processor::Kind, bool> result = {{proc, this->same_node}};
+    Tree2Legion::task_steal.insert({task_name[i], result});
+  }
+  return NULL;
+}
+
 Node *SingleTaskMapNode::run(std::stack<std::unordered_map<std::string, Node *>> &local_symbol, std::vector<Node *> &local_temps)
 {
   assert(local_symbol.size() == 0);
@@ -1546,6 +1558,40 @@ std::vector<Memory::Kind> Tree2Legion::query_memory_list(std::string task_name, 
   std::vector<Memory::Kind> to_append4 = query_memory_policy("*", "*", proc_kind);
   res.insert(res.end(), to_append4.begin(), to_append4.end());
   return res;
+}
+
+bool Tree2Legion::query_task_steal(std::string task_name, Processor::Kind proc_kind)
+{
+  // quick test
+  if (task_steal.size() == 0)
+  {
+    return false;
+  }
+  // task_name exact match first
+  if (task_steal.count(task_name) > 0)
+  {
+    if (task_steal.at(task_name).count(proc_kind) > 0)
+    {
+      return true;
+    }
+    if (task_steal.at(task_name).count(Processor::NO_KIND) > 0)
+    {
+      return true;
+    }
+  }
+  // task_name *
+  if (task_steal.count("*") > 0)
+  {
+    if (task_steal.at("*").count(proc_kind) > 0)
+    {
+      return true;
+    }
+    if (task_steal.at("*").count(Processor::NO_KIND) > 0)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 ConstraintsNode *Tree2Legion::query_constraint_one_region(const std::string &task_name, const std::string &region_name,
