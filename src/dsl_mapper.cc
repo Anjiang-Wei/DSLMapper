@@ -37,7 +37,7 @@
 // #define DEBUG_MEMORY_COLLECT
 // #define DEBUG_COMMAND_LINE
 
-// static Logger log_mapper("nsmapper");
+static Logger log_mapper("nsmapper");
 legion_equality_kind_t myop2legion(BinOpEnum myop);
 std::string processor_kind_to_string(Processor::Kind kind);
 std::string memory_kind_to_string(Memory::Kind kind);
@@ -202,7 +202,7 @@ protected:
                               const std::string &task_name,
                               MapTaskOutput &output);
   Memory query_best_memory_for_proc(const Processor &proc,
-                                    const Memory::Kind &mem_target_kind);
+                                    const Memory::Kind &mem_target_kind, size_t i=0);
   void dsl_slice_task(const Task &task,
                       const std::vector<Processor> &local_procs,
                       const std::vector<std::vector<Processor>> &all_procs,
@@ -604,13 +604,14 @@ void NSMapper::get_handle_names(const MapperContext ctx,
   Region2Names.insert({req.region, names});
 }
 
-Memory NSMapper::query_best_memory_for_proc(const Processor &proc, const Memory::Kind &mem_target_kind)
+Memory NSMapper::query_best_memory_for_proc(const Processor &proc, const Memory::Kind &mem_target_kind, size_t i)
 {
   if (cached_affinity_proc2mem.count({proc, mem_target_kind}) > 0)
   {
     return cached_affinity_proc2mem.at({proc, mem_target_kind});
   }
   Machine::MemoryQuery visible_memories(machine);
+
   // visible_memories.local_address_space()
   visible_memories.same_address_space_as(proc)
       .only_kind(mem_target_kind);
@@ -624,7 +625,17 @@ Memory NSMapper::query_best_memory_for_proc(const Processor &proc, const Memory:
   }
   if (visible_memories.count() > 0)
   {
-    Memory result = visible_memories.first();
+    Memory result;
+    if ((i > 0) && visible_memories.count() >= i) {
+      Memory m = visible_memories.first();
+      for (size_t j=1; j<=i; ++j) {
+	m = visible_memories.next(m);
+     }
+     result = m;
+    }
+    else
+      result = visible_memories.first();
+
     if (result.exists())
     {
       cached_affinity_proc2mem.insert({{proc, mem_target_kind}, result});
@@ -1770,8 +1781,9 @@ void NSMapper::select_sharding_functor(
     output.chosen_functor = task2sid.at(proc_kind_string);
     return;
   }
-  assert(tree_result.should_fall_back(task_name, task.is_index_space, proc_kind) == true);
-  // log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
+  log_mapper.print() << " task_name " << task_name << " task.is_index_space " << task.is_index_space << " proc_kind: " << proc_kind;
+  //  assert(tree_result.should_fall_back(task_name, task.is_index_space, proc_kind) == true);
+  log_mapper.debug("No sharding functor found in select_sharding_functor %s, fall back to default", task.get_task_name());
   output.chosen_functor = 0; // default functor
 }
 
@@ -2067,6 +2079,7 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     query_best_memory_for_proc(this->local_cpus[i], Memory::Z_COPY_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_cpus[i], Memory::REGDMA_MEM);
+    query_best_memory_for_proc(this->local_cpus[i], Memory::REG_SOCKET_MEM, i);
   }
   for (size_t i = 0; i < this->local_omps.size(); i++)
   {
@@ -2074,6 +2087,7 @@ NSMapper::NSMapper(MapperRuntime *rt, Machine machine, Processor local, const ch
     query_best_memory_for_proc(this->local_omps[i], Memory::Z_COPY_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::SOCKET_MEM);
     query_best_memory_for_proc(this->local_omps[i], Memory::REGDMA_MEM);
+    query_best_memory_for_proc(this->local_omps[i], Memory::REG_SOCKET_MEM, i);
   }
   all_gpus.resize(total_nodes, std::vector<Processor>{});
   all_cpus.resize(total_nodes, std::vector<Processor>{});
