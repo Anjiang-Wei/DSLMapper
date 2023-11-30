@@ -326,7 +326,9 @@ float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_sp
     // printf("Result:\n");
     // printvec(candidates[i]);
     std::vector<float> o_over_L = divide(candidates[i], launch_space);
-    float cur = std::accumulate(o_over_L.begin(), o_over_L.end(), 0.0); // Never use 0 to replace 0.0
+    float minimize_target = std::accumulate(o_over_L.begin(), o_over_L.end(), 0.0); // Never use 0 to replace 0.0
+    std::vector<float> L_over_o = divide(launch_space, candidates[i]); // workload vector
+    float cur = minimize_target * std::accumulate(L_over_o.begin(), L_over_o.end(), 1.0, std::multiplies<float>());
     results.push_back(cur);
     if (cur <= best_num)
     {
@@ -421,6 +423,6 @@ void summary_test()
 
 int main()
 {
-  test();
+  summary_test();
   return 0;
 }
