@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <iterator>
 #include <map>
 #include <unordered_map>
@@ -12,6 +13,8 @@
 #include <numeric>
 #include <math.h>
 #include <mutex>
+
+// #define DEBUG_COMPARE true
 
 void printvec(const std::vector<int> &my_vector);
 std::vector<int> greedy(const int number, const std::vector<int> &launch_domain);
@@ -45,11 +48,14 @@ void generate_prime_factor(int big_number, std::vector<int> &factors_result)
     }
   };
   // Fundamental theorem of arithmetic time!
-  const unsigned num_primes = 32;
+  const unsigned num_primes = 62;
   const int primes[num_primes] = {2, 3, 5, 7, 11, 13, 17, 19,
                                   23, 29, 31, 37, 41, 43, 47, 53,
                                   59, 61, 67, 71, 73, 79, 83, 89,
-                                  97, 101, 103, 107, 109, 113, 127, 131};
+                                  97, 101, 103, 107, 109, 113, 127, 131,
+                                  137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
+                                  211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293
+                                  };
   // Increase the size of the prime number table if you ever hit this
   assert(big_number <= (primes[num_primes - 1] * primes[num_primes - 1]));
   for (size_t i = 0; i < num_primes; i++)
@@ -121,6 +127,7 @@ std::vector<int> chapel_greedy(const int number, const std::vector<int> &launch_
     int next_prime = prime_nums[idx];
     result[next_dim] *= next_prime;
   }
+  std::sort(result.begin(), result.end(), std::greater<int>());
   return result;
 }
 
@@ -338,6 +345,7 @@ float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_sp
   }
   // assert(fabs(results[results.size()-1] - results[results.size()-2]) < 0.00001);
   float perc_improve = 0.0;
+  #ifdef DEBUG_COMPARE
   for (size_t i = 0; i < results.size(); i++)
   {
     if (fabs(results[i] - best_num) > 0.000001)
@@ -352,6 +360,7 @@ float judge(std::vector<std::vector<int>> candidates, std::vector<int> launch_sp
       printvec(candidates[i]);
     }
   }
+  #endif
   if (results[best_idx] < results[0])
   {
     float delta = results[0] - results[best_idx];
@@ -379,46 +388,76 @@ void summary_test()
   int improve_cnt = 0;
   float improve_perc_total = 0.0;
   float best_improve_perc = 0.0;
-  int best_node_cnt, best_dx, best_dy;
-  best_node_cnt = best_dx = best_dy = 0;
-  int node_num_max, x_max, y_max;
-  node_num_max = 128;
-  x_max = y_max = 128;
-  for (int node_num = 2; node_num < node_num_max; node_num++)
+  int best_gpu_cnt, best_dx, best_dy;
+  best_gpu_cnt = best_dx = best_dy = 0;
+  int node_num_max, gpus_per_node;
+  node_num_max = 64;
+  gpus_per_node = 4;
+  int total_cnt = 0;
+  std::vector<float> improve_perc_res;
+  // for (int gpu_num = 4; gpu_num <= node_num_max * gpus_per_node; gpu_num += gpus_per_node)
+  // {
+  //   for (int domain_x = 1; domain_x <= gpu_num; domain_x++)
+  //   {
+  //     if (gpu_num % domain_x != 0)
+  //       continue;
+  //     int domain_y = gpu_num / domain_x;
+  for (int domain_x = 1; domain_x <= 256; domain_x++)
   {
-    for (int domain_x = 2; domain_x < x_max; domain_x++)
+    for (int domain_y = 1; domain_y <= 256; domain_y++)
     {
-      for (int domain_y = 2; domain_y < y_max; domain_y++)
+      if (domain_x * domain_y % 4 != 0)
+        continue;
+      int gpu_num = domain_x * domain_y;
+      total_cnt++;
+      std::vector<int> launch_domain = std::vector<int>{domain_x, domain_y};
+      results.push_back(chapel_greedy(gpu_num, launch_domain));
+      // results.push_back(greedy(node_num, launch_domain)); // Default Mapper's heursitics
+      // results.push_back(brute_force(node_num, launch_domain, true)); // minimize maximal difference
+      // results.push_back(brute_force(node_num, launch_domain, false)); // minimize real cost
+      results.push_back(precise_enumerate(gpu_num, launch_domain)); // smarter algorithm to minimize cost
+      float cur_improve_perc = judge(results, launch_domain, gpu_num, domain_x, domain_y);
+      improve_perc_res.push_back(cur_improve_perc);
+      if (cur_improve_perc > 0)
       {
-        if (domain_x * domain_y < node_num)
-          continue;
-        std::vector<int> launch_domain = std::vector<int>{domain_x, domain_y};
-        results.push_back(greedy(node_num, launch_domain)); // Default Mapper's heursitics
-        // results.push_back(brute_force(node_num, launch_domain, true)); // minimize maximal difference
-        // results.push_back(brute_force(node_num, launch_domain, false)); // minimize real cost
-        results.push_back(precise_enumerate(node_num, launch_domain)); // smarter algorithm to minimize cost
-        float cur_improve_perc = judge(results, launch_domain, node_num, domain_x, domain_y);
-        if (cur_improve_perc > 0)
+        improve_cnt++;
+        improve_perc_total += cur_improve_perc;
+        if (cur_improve_perc > best_improve_perc)
         {
-          improve_cnt++;
-          improve_perc_total += cur_improve_perc;
-          if (cur_improve_perc > best_improve_perc)
-          {
-            best_improve_perc = cur_improve_perc;
-            best_node_cnt = node_num;
-            best_dx = domain_x;
-            best_dy = domain_y;
-          }
+          best_improve_perc = cur_improve_perc;
+          best_gpu_cnt = gpu_num;
+          best_dx = domain_x;
+          best_dy = domain_y;
         }
-        results.clear();
       }
+      results.clear();
     }
   }
-  int total_cnt = (node_num_max - 2) * (x_max - 2) * (y_max - 2);
   printf("improve percentage= %d / %d = %lf, average improve perc = %lf,\
         best improve perc = %lf, coming from %d and (%d, %d)\n",
          improve_cnt, total_cnt, improve_cnt * 1.0 / total_cnt, improve_perc_total / improve_cnt,
-         best_improve_perc, best_node_cnt, best_dx, best_dy);
+         best_improve_perc, best_gpu_cnt, best_dx, best_dy);
+  // write the values to a file with column: domain_x, domain_y, improve_percentage
+  std::ofstream myfile;
+  myfile.open("summary.csv");
+  int idx = 0;
+  // for (int gpu_num = 4; gpu_num <= node_num_max * gpus_per_node; gpu_num += gpus_per_node)
+  // {
+  //   for (int domain_x = 1; domain_x <= gpu_num; domain_x++)
+  //   {
+  //     if (gpu_num % domain_x != 0)
+  //       continue;
+  //     int domain_y = gpu_num / domain_x;
+  for (int domain_x = 1; domain_x <= 256; domain_x++)
+  {
+    for (int domain_y = 1; domain_y <= 256; domain_y++)
+    {
+      if (domain_x * domain_y % 4 != 0)
+        continue;
+      myfile << domain_x << "," << domain_y << "," << improve_perc_res[idx] << "\n";
+      idx++;
+    }
+  }
 }
 
 int main()
